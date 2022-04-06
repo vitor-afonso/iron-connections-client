@@ -1,7 +1,7 @@
 //jshint esversion:8
 import { Link } from "react-router-dom";
-import { useContext } from "react";                     // <== IMPORT 
-import { AuthContext } from "../context/auth.context";  // <== IMPORT
+import { useContext } from "react";                  
+import { AuthContext } from "../context/auth.context"; 
 
 export const Navbar = () => {
 
@@ -12,22 +12,18 @@ export const Navbar = () => {
   //  Update the rendering logic to display different content 
   //  depending on the user being logged in or not
   return (
-    <nav>
-      <Link to="/">
-        <button>Home</button>
-      </Link>
 
+    <nav>
       {isLoggedIn && (
         <>
-          <Link to="/posts">
-            <button>Feed</button>
-          </Link>        
-          <button onClick={logOutUser}>Logout</button>
-          <span>{user && user.name}</span>
+          <Link to="/feed"> <button> Feed </button> </Link>        
+          <button onClick={logOutUser}> Logout </button>
+          <span>{user && user.username}</span>
         </>
       )}
       {!isLoggedIn && (
         <>
+          <Link to="/"> <button>Home</button></Link>
           <Link to="/signup"> <button>Sign Up</button> </Link>
           <Link to="/login"> <button>Login</button> </Link>
         </>
