@@ -11,12 +11,12 @@ import {IsAnon} from "./components/IsAnon";
 import { ProfilePage } from './pages/ProfilePage';
 import { NotificationsPage } from './pages/NotificationsPage';
 import { IsPrivate } from './components/isPrivate';
-import { Container, Col, Row } from 'react-bootstrap';
+
 
 function App() {
   return (
     <div className="App">
-    
+
       <MenuBar />
       <Routes>      
         <Route exact path="/" element={ <IsAnon> <HomePage /> </IsAnon> } />
