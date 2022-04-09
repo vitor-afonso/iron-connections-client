@@ -8,6 +8,7 @@ const API_URL = `${process.env.REACT_APP_PROJECT_API}/api`;
 const storedToken = localStorage.getItem('authToken');
 
 export const getAllPosts = () => {
+    console.log('storedToken', storedToken);
     return axios.get(`${API_URL}/posts`, { headers: { Authorization: `Bearer ${storedToken}` } });
 };
 

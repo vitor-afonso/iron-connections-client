@@ -37,7 +37,7 @@ export const LoginPage = (props) => {
       // to the server's JWT validation endpoint. 
       authenticateUser();  
 
-      navigate("/");
+      navigate("/feed");
         
     } catch (error) {
 
