@@ -17,20 +17,20 @@ export const PostCard = ({post}) => {
 
     let likesNum = post.likes.length; 
     
-    console.log('onePost =>', post);
-    console.log('user in session =>', user);
+    /* console.log('onePost =>', post);
+    console.log('user in session =>', user); */
 
 
   return (
 
-    <div>
+    <div style={{marginTop: "30px"}}>
 
         <div id="post-header">
             <small>
                 <img src={post.userId.imageUrl} alt="Author" style={{width: "30px"}}/>
                 <span> {post.userId.username} </span>
                 <span> {postDate} </span>
-                {post.userId._id !== user._id && <button>Edit</button>}
+                {post.userId._id === user._id && <button>Edit</button>}
             </small>
 
         </div>
@@ -44,8 +44,7 @@ export const PostCard = ({post}) => {
             <span> <b>Comment</b> </span><span>{post.comments.length}</span>
             <span> <b>Share</b> </span>
         </div>
-        
-        
+        <hr/>
     </div>
   )
 }

@@ -4,6 +4,8 @@ import { useState, useEffect } from "react";
 import { getAllPosts } from './../api';
 import { Container } from "react-bootstrap";
 import { PostCard } from "../components/PostCard";
+import { AddPost } from "../components/AddPost";
+
 
 export const FeedPage = () => {
 
@@ -29,17 +31,26 @@ export const FeedPage = () => {
   useEffect(() => {
 
     getPosts();
+    
   }, [] );
 
   return (
+
     <Container>
+
       <h3>FeedPage</h3>
+
+      <AddPost refreshPosts={getPosts}/>
+
       {posts && posts.map((onePost) => {
 
         return (
-          <PostCard post={onePost}  key={onePost._id}/>
+
+          <PostCard post={onePost} key={onePost._id}/>
         )
+
       })}
+
     </Container>
   )
 }
