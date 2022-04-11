@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { getAllPosts } from './../api';
 import { Container } from "react-bootstrap";
+import { PostCard } from "../components/PostCard";
 
 export const FeedPage = () => {
 
@@ -33,13 +34,10 @@ export const FeedPage = () => {
   return (
     <Container>
       <h3>FeedPage</h3>
-      {posts && posts.map((post) => {
+      {posts && posts.map((onePost) => {
 
         return (
-          <div key={post._id}>
-            <h5>{post.title}</h5>
-            <p>{post.body}</p>
-          </div>
+          <PostCard post={onePost}  key={onePost._id}/>
         )
       })}
     </Container>
