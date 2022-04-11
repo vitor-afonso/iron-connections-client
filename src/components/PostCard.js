@@ -28,10 +28,11 @@ export const PostCard = ({post}) => {
         <div id="post-header">
             <small>
                 <img src={post.userId.imageUrl} alt="Author" style={{width: "30px"}}/>
-                <span>{post.userId.username}</span>
-                {post.userId._id !== user._id ? <button>Follow</button> : <button>Edit</button>}
+                <span> {post.userId.username} </span>
+                <span> {postDate} </span>
+                {post.userId._id !== user._id && <button>Edit</button>}
             </small>
-            <p>{postDate}</p>
+
         </div>
 
         <h5>{post.title}</h5>
