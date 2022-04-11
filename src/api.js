@@ -22,6 +22,22 @@ export const deletePost = (id) => {
   });
 };
 
+export const uploadImage = async (file) => {
+
+  try {
+    
+    let res = await axios.post(`${API_URL}/upload`, file, {
+      headers: { Authorization: `Bearer ${localStorage.getItem("authToken")}` },
+    } );
+    
+    return res.data;
+
+  } catch (error) {
+      
+    console.log(error);
+  }
+};
+
 export const addPost = (post) => {
   return axios.post(`${API_URL}/posts`, post, {
     headers: { Authorization: `Bearer ${localStorage.getItem("authToken")}` },

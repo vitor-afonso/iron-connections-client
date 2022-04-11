@@ -37,7 +37,7 @@ export const PostCard = ({post}) => {
 
         <h5>{post.title}</h5>
         <p>{post.body}</p>
-        {post.imageUrl && <img src={post.imageUrl} alt="Post" style={{width: "200px"}}/>}
+        {post.imageUrl && <img src={post.imageUrl} alt="Post" style={{width: "300px"}}/>}
 
         <div>
             <span>💙 </span><span>{likesNum}</span>
