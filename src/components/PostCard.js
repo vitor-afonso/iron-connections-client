@@ -35,7 +35,6 @@ export const PostCard = ({post}) => {
 
         </div>
 
-        <h5>{post.title}</h5>
         <p>{post.body}</p>
         {post.imageUrl && <img src={post.imageUrl} alt="Post" style={{width: "300px"}}/>}
 

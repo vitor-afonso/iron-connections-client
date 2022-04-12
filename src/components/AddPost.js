@@ -8,7 +8,6 @@ import { AuthContext } from '../context/auth.context';
 export const AddPost = ({refreshPosts}) => {
     
     const { user } = useContext(AuthContext);
-    const [title, setTitle] = useState("");
     const [body, setBody] = useState("");
     const [imageUrl, setImageUrl] = useState("");
     const fileInput = useRef(null);
@@ -41,10 +40,9 @@ export const AddPost = ({refreshPosts}) => {
     const handleSubmit = async (e) => {
 
         e.preventDefault();
-        let newPost = {title, body, userId: user._id, imageUrl};
+        let newPost = {body, userId: user._id, imageUrl};
         await addPost(newPost);
         refreshPosts();
-        setTitle("");
         setBody("");
         setImageUrl("");
 
@@ -56,12 +54,9 @@ export const AddPost = ({refreshPosts}) => {
         <div className="AddPost">
             <form onSubmit={handleSubmit}>    
             {user && <img src={user.imageUrl} alt="Author" style={{width: "30px"}}/>}
+               
             <label>
-                <input type="text" name="title" value={title} onChange={(e) => setTitle(e.target.value)} placeholder="Post title" />
-            </label>   
-                
-            <label>
-                <input type="text" name="body" value={body} onChange={(e) => setBody(e.target.value)} placeholder="Share your thoughts" />
+                <input type="text" name="body" value={body} onChange={(e) => setBody(e.target.value)} placeholder="Share your thoughts" style={{width: "250px"}}/>
             </label>
 
             <label>
