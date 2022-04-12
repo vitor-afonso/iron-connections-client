@@ -2,7 +2,7 @@
 
 import { useContext } from "react";
 import { AuthContext } from '../context/auth.context';
-
+import { updatePost } from './../api';
 
 
 export const PostCard = ({post}) => {

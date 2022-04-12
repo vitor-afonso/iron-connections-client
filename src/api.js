@@ -26,7 +26,9 @@ export const uploadImage = async (file) => {
 
   try {
     
-    let res = await axios.post(`${API_URL}/upload`, file, {
+    let res = await axios.post(`${API_URL}/upload`, file, {onUploadProgress: progressEvent => {
+      console.log('Upload', Math.round(progressEvent.loaded / progressEvent.total * 100) + "%");
+    }}, { 
       headers: { Authorization: `Bearer ${localStorage.getItem("authToken")}` },
     } );
     
