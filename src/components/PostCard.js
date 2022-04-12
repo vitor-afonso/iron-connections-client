@@ -3,7 +3,7 @@
 import { useContext } from "react";
 import { AuthContext } from '../context/auth.context';
 import { updatePost } from './../api';
-
+import { NavLink } from "react-router-dom";
 
 export const PostCard = ({post}) => {
 
@@ -30,7 +30,7 @@ export const PostCard = ({post}) => {
                 <img src={post.userId.imageUrl} alt="Author" style={{width: "30px"}}/>
                 <span> {post.userId.username} </span>
                 <span> {postDate} </span>
-                {post.userId._id === user._id && <button>Edit</button>}
+                {post.userId._id === user._id && <NavLink to={`/post/${post._id}/edit`}><button>Edit</button></NavLink>}
             </small>
 
         </div>

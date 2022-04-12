@@ -10,7 +10,7 @@ export const AddPost = ({refreshPosts}) => {
     const { user } = useContext(AuthContext);
     const [body, setBody] = useState("");
     const [imageUrl, setImageUrl] = useState("");
-    const fileInput = useRef(null);
+    
     
     
     // ******** this method handles the file upload ********
@@ -57,12 +57,12 @@ export const AddPost = ({refreshPosts}) => {
                
             <label>
                 <input type="text" name="body" value={body} onChange={(e) => setBody(e.target.value)} placeholder="Share your thoughts" style={{width: "250px"}}/>
+                <span style={{marginLeft: "-35px", marginRight: "18px"}}>📷</span>
             </label>
 
             <label>
-                <input type="file" onChange={(e) => handleFileUpload(e)} style={{display: "none"}} ref={fileInput}/>
+                <input type="file" onChange={(e) => handleFileUpload(e)} />
             </label>
-            <button onClick={() => fileInput.current.click()}>Upload Image</button>
             <button type="submit">Create Post</button>
             </form>
         </div>

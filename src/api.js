@@ -45,13 +45,13 @@ export const addPost = (post) => {
 };
 
 export const addNewComment = (postId, comment) => {
-  return axios.post(`${API_URL}/posts/:${postId}/comment`, comment, {
+  return axios.post(`${API_URL}/posts/${postId}/comment`, comment, {
     headers: { Authorization: `Bearer ${localStorage.getItem("authToken")}` },
   });
 };
 
-export const updatePost = (updatedPost) => {
-  return axios.put(`${API_URL}/projects/${updatedPost._id}`, updatedPost, {
+export const updatePost = (updatedPost, postId) => {
+  return axios.put(`${API_URL}/posts/${postId}`, updatedPost, {
     headers: { Authorization: `Bearer ${localStorage.getItem("authToken")}` },
   });
 };

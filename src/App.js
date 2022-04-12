@@ -11,6 +11,7 @@ import {IsAnon} from "./components/IsAnon";
 import { ProfilePage } from './pages/ProfilePage';
 import { NotificationsPage } from './pages/NotificationsPage';
 import { IsPrivate } from './components/isPrivate';
+import { EditPostPage } from './pages/EditPostPage';
 
 
 function App() {
@@ -20,9 +21,10 @@ function App() {
 
       <MenuBar />
       <Routes>      
-        <Route exact path="/" element={ <IsAnon> <HomePage /> </IsAnon> } />
-        <Route exact path="/feed" element={ <IsPrivate> <FeedPage /> </IsPrivate>} />
-        <Route exact path="/profile" element={ <IsPrivate> <ProfilePage /> </IsPrivate> } />
+        <Route path="/" element={ <IsAnon> <HomePage /> </IsAnon> } />
+        <Route path="/feed" element={ <IsPrivate> <FeedPage /> </IsPrivate>} />
+        <Route path="/profile" element={ <IsPrivate> <ProfilePage /> </IsPrivate> } />
+        <Route path="/post/:postId/edit" element={ <IsPrivate> <EditPostPage /> </IsPrivate> }/>
         <Route exact path="/notifications" element={ <IsPrivate> <NotificationsPage /> </IsPrivate>} />
         <Route path="/signup" element={ <IsAnon> <SignupPage /> </IsAnon> } /> 
         <Route path="/login" element={  <IsAnon> <LoginPage /> </IsAnon> } />
