@@ -23,9 +23,9 @@ function App() {
       <Routes>      
         <Route path="/" element={ <IsAnon> <HomePage /> </IsAnon> } />
         <Route path="/feed" element={ <IsPrivate> <FeedPage /> </IsPrivate>} />
-        <Route path="/profile" element={ <IsPrivate> <ProfilePage /> </IsPrivate> } />
+        <Route path="/profile/:userId" element={ <IsPrivate> <ProfilePage /> </IsPrivate> } />
         <Route path="/post/:postId/edit" element={ <IsPrivate> <EditPostPage /> </IsPrivate> }/>
-        <Route exact path="/notifications" element={ <IsPrivate> <NotificationsPage /> </IsPrivate>} />
+        <Route path="/notifications" element={ <IsPrivate> <NotificationsPage /> </IsPrivate>} />
         <Route path="/signup" element={ <IsAnon> <SignupPage /> </IsAnon> } /> 
         <Route path="/login" element={  <IsAnon> <LoginPage /> </IsAnon> } />
       </Routes>

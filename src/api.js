@@ -44,14 +44,39 @@ export const addPost = (post) => {
   });
 };
 
+
+export const updatePost = (updatedPost, postId) => {
+  return axios.put(`${API_URL}/posts/${postId}`, updatedPost, {
+    headers: { Authorization: `Bearer ${localStorage.getItem("authToken")}` },
+  });
+};
+
 export const addNewComment = (postId, comment) => {
   return axios.post(`${API_URL}/posts/${postId}/comment`, comment, {
     headers: { Authorization: `Bearer ${localStorage.getItem("authToken")}` },
   });
 };
 
-export const updatePost = (updatedPost, postId) => {
-  return axios.put(`${API_URL}/posts/${postId}`, updatedPost, {
+export const getUsers = () => {
+  return axios.get(`${API_URL}/users/`, {
+    headers: { Authorization: `Bearer ${localStorage.getItem("authToken")}` },
+  });
+};
+
+export const getUser = (userId) => {
+  return axios.get(`${API_URL}/users/${userId}`, {
+    headers: { Authorization: `Bearer ${localStorage.getItem("authToken")}` },
+  });
+};
+
+export const updateUser = (updatedUser, userId) => {
+  return axios.put(`${API_URL}/users/${userId}`, updatedUser, {
+    headers: { Authorization: `Bearer ${localStorage.getItem("authToken")}` },
+  });
+};
+
+export const deleteUser = (id) => {
+  return axios.delete(`${API_URL}/users/${id}`, {
     headers: { Authorization: `Bearer ${localStorage.getItem("authToken")}` },
   });
 };
