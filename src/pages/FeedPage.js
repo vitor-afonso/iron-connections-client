@@ -31,7 +31,7 @@ export const FeedPage = () => {
   useEffect(() => {
 
     getPosts();
-    
+
   }, [] );
 
   return (
@@ -46,7 +46,7 @@ export const FeedPage = () => {
 
         return (
 
-          <PostCard post={onePost} key={onePost._id}/>
+          <PostCard post={onePost} key={onePost._id} refreshPosts={getPosts}/>
         )
 
       })}
