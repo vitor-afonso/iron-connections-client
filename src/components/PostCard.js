@@ -1,6 +1,6 @@
 //jshint esversion:9
 
-import { useContext, useState, useEffect, useRef } from "react";
+import { useContext, useEffect, useRef } from "react";
 import { AuthContext } from '../context/auth.context';
 import { NavLink } from "react-router-dom";
 
@@ -24,7 +24,7 @@ export const PostCard = ({post, refreshPosts}) => {
     useEffect(() => {
 
         toggleComments.current.style.display = "none";
-        
+
     }, []);
 
     const showComments = () => {
@@ -45,7 +45,9 @@ export const PostCard = ({post, refreshPosts}) => {
 
             <div className="post-header">
                 <small>
-                    <img src={post.userId.imageUrl} alt="Author" style={{width: "30px"}}/>
+                    <NavLink to={`/profile/${post.userId._id}`}>
+                        <img src={post.userId.imageUrl} alt="Author" style={{width: "30px"}}/>
+                    </NavLink>
                     <span> {post.userId.username} </span>
                     <span> {postDate} </span>
                     {post.userId._id === user._id && <NavLink to={`/post/${post._id}/edit`}><button>Edit</button></NavLink>}
@@ -54,6 +56,7 @@ export const PostCard = ({post, refreshPosts}) => {
             </div>
 
             <p>{post.body}</p>
+            
             {post.imageUrl && <img src={post.imageUrl} alt="Post" style={{width: "300px"}}/>}
 
             <div>

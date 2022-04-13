@@ -9,20 +9,21 @@ export const CommentCard = ({comment}) => {
     let commentDate = `${dateDay}-${dateMonth}-${dateYear}`;
     
   return (
+
     <div className="CommentCard">
-        <div className="comment-header">
-                
-            <small>
-                <img src={comment.userId.imageUrl} alt="Author" style={{width: "30px"}}/>
-                <span> {comment.userId.username} </span>
-                <span> {commentDate} </span>
-            </small>
+      <div className="comment-header">
+              
+        <small>
+            <img src={comment.userId.imageUrl} alt="Author" style={{width: "30px"}}/>
+            <span> {comment.userId.username} </span>
+            <span> {commentDate} </span>
+        </small>
 
-        </div>
+      </div>
 
-        <p>{comment.content}</p>
+      <p>{comment.content}</p>
 
-        {comment.imageUrl && <img src={comment.imageUrl} alt="Comment" style={{width: "300px"}}/>}
+      {comment.imageUrl && <img src={comment.imageUrl} alt="Comment" style={{width: "300px"}}/>}
 
     </div>
   )
