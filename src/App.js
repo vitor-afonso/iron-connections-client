@@ -1,6 +1,8 @@
 // jshint esversion:9
 
 import './App.css';
+import { useState, useEffect } from "react";
+import { getAllPosts } from './api';
 import {MenuBar} from "./components/MenuBar";
 import {Routes, Route} from "react-router-dom";
 import {FeedPage} from "./pages/FeedPage";
@@ -15,6 +17,29 @@ import { EditPostPage } from './pages/EditPostPage';
 
 
 function App() {
+
+  const [posts, setPosts] = useState([]);
+
+  const getPosts = async () => {
+
+    try {
+
+      let response = await getAllPosts();
+      setPosts(response.data);
+      /* console.log('all posts =>', response.data); */
+      
+    } catch (error) {
+
+      console.log("No posts... ",error);
+    }
+      
+  };
+
+  useEffect(() => {
+
+    getPosts();
+
+  }, [] );
   
   return (
     <div className="App">
@@ -22,8 +47,8 @@ function App() {
       <MenuBar />
       <Routes>      
         <Route path="/" element={ <IsAnon> <HomePage /> </IsAnon> } />
-        <Route path="/feed" element={ <IsPrivate> <FeedPage /> </IsPrivate>} />
-        <Route path="/profile/:userId" element={ <IsPrivate> <ProfilePage /> </IsPrivate> } />
+        <Route path="/feed" element={ <IsPrivate> <FeedPage refreshPosts={getPosts} posts={posts}/> </IsPrivate>} />
+        <Route path="/profile/:userId" element={ <IsPrivate> <ProfilePage refreshPosts={getPosts}/> </IsPrivate> } />
         <Route path="/post/:postId/edit" element={ <IsPrivate> <EditPostPage /> </IsPrivate> }/>
         <Route path="/notifications" element={ <IsPrivate> <NotificationsPage /> </IsPrivate>} />
         <Route path="/signup" element={ <IsAnon> <SignupPage /> </IsAnon> } /> 

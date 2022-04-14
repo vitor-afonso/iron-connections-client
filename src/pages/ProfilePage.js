@@ -7,25 +7,47 @@ import { getUser, getUsers } from './../api';
 import { AddPost } from "../components/AddPost";
 import { PostCard } from "../components/PostCard";
 
-export const ProfilePage = () => {
+export const ProfilePage = ({refreshPosts, posts}) => {
 
   const [userProfile, setUserProfile] = useState(null);
   const [users, setUsers] = useState(null);
   const { user } = useContext(AuthContext);
   const { userId } = useParams();
 
+  const getOneUser = async () => {
+
+    try {
+
+      let oneUser = await getUser(userId);
+      setUserProfile(oneUser.data);
+      
+    } catch (error) {
+
+      console.log('Something went wrong while trying to get user in profile =>', error);
+    }
+      
+  };
+
   useEffect(()=>{
 
     (async()=>{
+      
+      try {
 
-      let oneUser = await getUser(userId);
-      let usersFromDB = await getUsers();
-      setUserProfile(oneUser.data);
-      setUsers(usersFromDB.data);
+        getOneUser();
+        let usersFromDB = await getUsers();
+        setUsers(usersFromDB.data);
+
+      } catch (error) {
+        
+        console.log('Something went wrong while trying to get user in profile =>', error);
+
+      }
 
     })();
 
   },[userId]);
+
 
   return (
     <>
@@ -46,9 +68,10 @@ export const ProfilePage = () => {
           })}
           <div>See All</div>
         </div>
-        {user._id === userProfile._id && <AddPost />}
+    
+        {user._id === userProfile._id && <AddPost refreshPosts={refreshPosts} refreshUser={getOneUser}/>}
 
-        {userProfile.posts && userProfile.posts.map((onePost) => {
+        {userProfile && userProfile.posts.map((onePost) => {
 
           return (
 

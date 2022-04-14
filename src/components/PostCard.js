@@ -67,7 +67,7 @@ export const PostCard = ({post, refreshPosts}) => {
 
             <div className="comment-area" ref={toggleComments}>
 
-                <AddComment post={post} refreshAllPosts={refreshPosts}/>
+                <AddComment post={post} refreshAllPosts={refreshPosts} />
 
                 {post.comments.map((oneComment) => {
 

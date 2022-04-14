@@ -1,11 +1,11 @@
 //jshint esversion:9
 
-import { useContext, useState, useRef, useEffect } from "react";
+import { useContext, useState } from "react";
 import { addPost, uploadImage } from './../api';
 import { AuthContext } from '../context/auth.context';
 
 
-export const AddPost = ({refreshPosts}) => {
+export const AddPost = ({refreshPosts, refreshUser}) => {
     
     const { user } = useContext(AuthContext);
     const [body, setBody] = useState("");
@@ -43,6 +43,9 @@ export const AddPost = ({refreshPosts}) => {
         let newPost = {body, userId: user._id, imageUrl};
         await addPost(newPost);
         refreshPosts();
+        if(refreshUser){
+            refreshUser();
+        }
         setBody("");
         setImageUrl("");
 
