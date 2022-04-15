@@ -43,7 +43,7 @@ function App() {
       <MenuBar />
       <Routes>      
         <Route path="/" element={ <IsAnon> <HomePage /> </IsAnon> } />
-        <Route path="/feed" element={ <IsPrivate> <FeedPage /> </IsPrivate>} />
+        <Route path="/feed" element={ <IsPrivate> <FeedPage refreshPosts={getPosts} posts={posts}/> </IsPrivate>} />
         <Route path="/profile/:userId" element={ <IsPrivate> <ProfilePage refreshPosts={getPosts}/> </IsPrivate> } />
         <Route path="/post/:postId/edit" element={ <IsPrivate> <EditPostPage /> </IsPrivate> }/>
         <Route path="/notifications" element={ <IsPrivate> <NotificationsPage /> </IsPrivate>} />

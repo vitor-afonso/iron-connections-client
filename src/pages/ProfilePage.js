@@ -39,9 +39,9 @@ export const ProfilePage = ({refreshPosts}) => {
       
       try {
 
-        let usersFromDB = await getUsers();
-        setUsers(usersFromDB.data);
         getOneUser();
+        let allUsers = await getUsers();
+        setUsers(allUsers.data);
 
       } catch (error) {
         
@@ -80,7 +80,7 @@ export const ProfilePage = ({refreshPosts}) => {
 
           return (
 
-            <PostCard post={onePost} key={onePost._id} />
+            <PostCard post={onePost} key={onePost._id} refreshPosts={refreshPosts} />
           )
 
         })}
