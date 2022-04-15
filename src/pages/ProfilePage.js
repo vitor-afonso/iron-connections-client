@@ -7,19 +7,24 @@ import { getUser, getUsers } from './../api';
 import { AddPost } from "../components/AddPost";
 import { PostCard } from "../components/PostCard";
 
-export const ProfilePage = ({refreshPosts, posts}) => {
+export const ProfilePage = ({refreshPosts}) => {
 
   const [userProfile, setUserProfile] = useState(null);
   const [users, setUsers] = useState(null);
   const { user } = useContext(AuthContext);
   const { userId } = useParams();
+  const [sortedListOfPosts, setSortedListOfPosts] = useState([]);
 
   const getOneUser = async () => {
 
     try {
 
       let oneUser = await getUser(userId);
+
       setUserProfile(oneUser.data);
+
+      setSortedListOfPosts([...oneUser.data.posts.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))]);
+      
       
     } catch (error) {
 
@@ -34,9 +39,9 @@ export const ProfilePage = ({refreshPosts, posts}) => {
       
       try {
 
-        getOneUser();
         let usersFromDB = await getUsers();
         setUsers(usersFromDB.data);
+        getOneUser();
 
       } catch (error) {
         
@@ -46,7 +51,7 @@ export const ProfilePage = ({refreshPosts, posts}) => {
 
     })();
 
-  },[userId]);
+  },[]);
 
 
   return (
@@ -71,7 +76,7 @@ export const ProfilePage = ({refreshPosts, posts}) => {
     
         {user._id === userProfile._id && <AddPost refreshPosts={refreshPosts} refreshUser={getOneUser}/>}
 
-        {userProfile && userProfile.posts.map((onePost) => {
+        {userProfile && sortedListOfPosts.map((onePost) => {
 
           return (
 

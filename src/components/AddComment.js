@@ -20,7 +20,6 @@ export const AddComment = ({post, refreshAllPosts}) => {
             await addNewComment(post._id, requestBody);
             setContent("");
             refreshAllPosts();
-            
 
         } catch (error) {
             

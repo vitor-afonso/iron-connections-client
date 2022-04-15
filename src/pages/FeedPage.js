@@ -1,15 +1,15 @@
 //jshint esversion:9
 
-/* import { useState, useEffect } from "react";
-import { getAllPosts } from './../api'; */
+import { useState, useEffect } from "react";
+import { getAllPosts } from './../api';
 import { Container } from "react-bootstrap";
 import { PostCard } from "../components/PostCard";
 import { AddPost } from "../components/AddPost";
 
 
-export const FeedPage = ({refreshPosts, posts}) => {
+export const FeedPage = ({}) => {
 
-  /* const [posts, setPosts] = useState([]);
+  const [posts, setPosts] = useState([]);
 
   const getPosts = async () => {
 
@@ -31,7 +31,7 @@ export const FeedPage = ({refreshPosts, posts}) => {
 
     getPosts();
 
-  }, [] );*/
+  }, [] );
 
   return (
 
@@ -39,13 +39,13 @@ export const FeedPage = ({refreshPosts, posts}) => {
 
       <h3>FeedPage</h3>
 
-      <AddPost refreshPosts={refreshPosts}/>
+      <AddPost refreshPosts={getPosts}/>
 
       {posts && posts.map((onePost) => {
 
         return (
 
-          <PostCard post={onePost} key={onePost._id} refreshPosts={refreshPosts}/>
+          <PostCard post={onePost} key={onePost._id} refreshPosts={getPosts} />
         )
 
       })}

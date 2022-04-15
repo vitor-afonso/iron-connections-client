@@ -19,6 +19,7 @@ export const PostCard = ({post, refreshPosts}) => {
     let dateDay = date.getDate();
     let postDate = `${dateDay}-${dateMonth}-${dateYear}`;
 
+
     let likesNum = post.likes.length; 
     
     useEffect(() => {
