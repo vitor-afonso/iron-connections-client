@@ -9,11 +9,14 @@ import { PostCard } from "../components/PostCard";
 
 export const ProfilePage = ({refreshPosts}) => {
 
-  const [userProfile, setUserProfile] = useState(null);
-  const [users, setUsers] = useState(null);
   const { user } = useContext(AuthContext);
-  const { userId } = useParams();
+
+  const [userProfile, setUserProfile] = useState(null);
   const [sortedListOfPosts, setSortedListOfPosts] = useState([]);
+  const [users, setUsers] = useState(null);
+
+  const { userId } = useParams();
+
 
   const getOneUser = async () => {
 
@@ -57,6 +60,7 @@ export const ProfilePage = ({refreshPosts}) => {
   return (
     <>
       {userProfile ? <div>
+
         <div className="profile-header">
           <img src={userProfile.imageUrl} alt={userProfile.username} style={{width: "50px"}}/>
           <span> {userProfile.username} </span>
@@ -80,7 +84,7 @@ export const ProfilePage = ({refreshPosts}) => {
 
           return (
 
-            <PostCard post={onePost} key={onePost._id} refreshPosts={refreshPosts} />
+            <PostCard post={onePost} key={onePost._id} refreshPosts={refreshPosts} refreshUser={getOneUser} />
           )
 
         })}

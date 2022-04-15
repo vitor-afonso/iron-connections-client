@@ -43,9 +43,7 @@ export const AddPost = ({refreshPosts, refreshUser}) => {
         let newPost = {body, userId: user._id, imageUrl};
         await addPost(newPost);
         refreshPosts();
-        if(refreshUser){
-            refreshUser();
-        }
+        refreshUser();
         setBody("");
         setImageUrl("");
 

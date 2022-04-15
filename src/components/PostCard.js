@@ -7,7 +7,7 @@ import { NavLink } from "react-router-dom";
 import { AddComment } from "./AddComment";
 import { CommentCard } from "./CommentCard";
 
-export const PostCard = ({post, refreshPosts}) => {
+export const PostCard = ({post, refreshPosts, refreshUser}) => {
 
     const { user } = useContext(AuthContext);
     
@@ -68,7 +68,7 @@ export const PostCard = ({post, refreshPosts}) => {
 
             <div className="comment-area" ref={toggleComments}>
 
-                <AddComment post={post} refreshAllPosts={refreshPosts} />
+                <AddComment post={post} refreshAllPosts={refreshPosts} refreshProfileUser={refreshUser}/>
 
                 {post.comments.map((oneComment) => {
 

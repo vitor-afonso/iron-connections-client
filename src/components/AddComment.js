@@ -4,7 +4,7 @@ import { useContext, useState } from "react";
 import { AuthContext } from '../context/auth.context';
 import { addNewComment } from './../api';
 
-export const AddComment = ({post, refreshAllPosts}) => {
+export const AddComment = ({post, refreshAllPosts, refreshProfileUser}) => {
 
     const { user } = useContext(AuthContext);
     const [content, setContent] = useState("");
@@ -18,8 +18,9 @@ export const AddComment = ({post, refreshAllPosts}) => {
             
             let requestBody = {content, userId: user._id};
             await addNewComment(post._id, requestBody);
-            setContent("");
             refreshAllPosts();
+            refreshProfileUser();
+            setContent("");
 
         } catch (error) {
             
