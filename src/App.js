@@ -14,6 +14,7 @@ import { ProfilePage } from './pages/ProfilePage';
 import { NotificationsPage } from './pages/NotificationsPage';
 import { IsPrivate } from './components/isPrivate';
 import { EditPostPage } from './pages/EditPostPage';
+import { EditProfilePage } from './pages/EditProfilePage';
 
 
 function App() {
@@ -46,6 +47,7 @@ function App() {
         <Route path="/feed" element={ <IsPrivate> <FeedPage refreshPosts={getPosts} posts={posts}/> </IsPrivate>} />
         <Route path="/profile/:userId" element={ <IsPrivate> <ProfilePage refreshPosts={getPosts}/> </IsPrivate> } />
         <Route path="/post/:postId/edit" element={ <IsPrivate> <EditPostPage /> </IsPrivate> }/>
+        <Route path="/profile/:userId/edit" element={ <IsPrivate> <EditProfilePage /> </IsPrivate> }/>
         <Route path="/notifications" element={ <IsPrivate> <NotificationsPage /> </IsPrivate>} />
         <Route path="/signup" element={ <IsAnon> <SignupPage /> </IsAnon> } /> 
         <Route path="/login" element={  <IsAnon> <LoginPage /> </IsAnon> } />

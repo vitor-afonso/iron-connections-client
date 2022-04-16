@@ -63,7 +63,7 @@ export const EditPostPage = () => {
 
         } catch (error) {
 
-            console.log('Something went wront while deleting project from API', error);
+            console.log('Something went wront while deleting post from API', error);
         }
         
     }; 

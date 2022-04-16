@@ -36,13 +36,18 @@ export const ProfilePage = ({refreshPosts}) => {
       
   };
 
-  useEffect(()=>{
+  useEffect(() => {
 
     (async()=>{
       
       try {
 
-        getOneUser();
+        let oneUser = await getUser(userId);
+
+        setUserProfile(oneUser.data);
+
+        setSortedListOfPosts([...oneUser.data.posts.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))]);
+
         let allUsers = await getUsers();
         setUsers(allUsers.data);
 
@@ -54,7 +59,7 @@ export const ProfilePage = ({refreshPosts}) => {
 
     })();
 
-  },[]);
+  },[userId]);
 
 
   return (
@@ -65,7 +70,7 @@ export const ProfilePage = ({refreshPosts}) => {
           <img src={userProfile.imageUrl} alt={userProfile.username} style={{width: "50px"}}/>
           <span> {userProfile.username} </span>
           
-          {user._id === userProfile._id ? <NavLink to={`/users/${userProfile._id}/edit`}><button>Edit Profile</button></NavLink>: <button>Follow</button>}
+          {user._id === userProfile._id ? <NavLink to={`/profile/${userProfile._id}/edit`}><button>Edit Profile</button></NavLink>: <button>Follow</button>}
         </div> 
         <div>
           <h6>Connects</h6>
