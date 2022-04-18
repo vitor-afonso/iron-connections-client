@@ -1,7 +1,7 @@
 //jshint esversion:9
 
-import { useContext, useState } from "react";
-import { addPost, uploadImage } from './../api';
+import { useContext, useState, useEffect } from "react";
+import { addPost, uploadImage, getUser } from './../api';
 import { AuthContext } from '../context/auth.context';
 
 
@@ -49,12 +49,20 @@ export const AddPost = ({refreshPosts, refreshUser}) => {
 
     };
 
+    useEffect(() => {
+        
+        (async()=>{
+            let response = await getUser(user._id);
+            setImageUrl(response.data.imageUrl);
+        })();
+
+    },[user]);
   
 
     return (
         <div className="AddPost">
             <form onSubmit={handleSubmit}>    
-            {user && <img src={user.imageUrl} alt="Author" style={{width: "30px"}}/>}
+            {imageUrl && <img src={imageUrl} alt="Author" style={{width: "30px"}}/>}
                
             <label>
                 <input type="text" name="body" value={body} onChange={(e) => setBody(e.target.value)} placeholder="Share your thoughts" style={{width: "250px"}}/>

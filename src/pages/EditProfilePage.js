@@ -12,7 +12,7 @@ export const EditProfilePage = () => {
     const [imageUrl, setImageUrl] = useState("");
     let navigate = useNavigate();
     const { userId } = useParams();
-
+    console.log('user :>> ', user);
 
     const handleFileUpload = async (e) => {
         
