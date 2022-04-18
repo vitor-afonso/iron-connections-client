@@ -3,7 +3,7 @@
 import { useContext } from "react";
 import { AuthContext } from "../context/auth.context";
 import { Navbar, Container, Nav } from "react-bootstrap";
-import { NavLink, Link } from "react-router-dom";
+/* import { NavLink, Link } from "react-router-dom"; */
 
 export const MenuBar = () => {
 
@@ -24,6 +24,7 @@ export const MenuBar = () => {
               <>
                 <Nav.Link href="/feed"> Feed </Nav.Link>
                 {user && <Nav.Link href={`/profile/${user._id}`}>Profile</Nav.Link>}
+                <Nav.Link href="/users"> Users </Nav.Link>
                 <Nav.Link href="/notifications"> Notifications </Nav.Link>
                 <Nav.Link onClick={logOutUser}>Logout</Nav.Link>
               </>

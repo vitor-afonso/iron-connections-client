@@ -1,7 +1,6 @@
 //jshint esversion:9
 
-import { useState, useEffect } from "react";
-import { getAllPosts } from './../api';
+import { useEffect } from "react";
 import { Container } from "react-bootstrap";
 import { PostCard } from "../components/PostCard";
 import { AddPost } from "../components/AddPost";
