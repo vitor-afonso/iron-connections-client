@@ -10,6 +10,7 @@ export const AddPost = ({refreshPosts, refreshUser}) => {
     const { user } = useContext(AuthContext);
     const [body, setBody] = useState("");
     const [imageUrl, setImageUrl] = useState("");
+    const [userImageUrl, setUserImageUrl] = useState("");
     
     
     
@@ -52,8 +53,13 @@ export const AddPost = ({refreshPosts, refreshUser}) => {
     useEffect(() => {
         
         (async()=>{
+
+            if(!user) {
+                return;
+            }
+            
             let response = await getUser(user._id);
-            setImageUrl(response.data.imageUrl);
+            setUserImageUrl(response.data.imageUrl);
         })();
 
     },[user]);
@@ -62,7 +68,7 @@ export const AddPost = ({refreshPosts, refreshUser}) => {
     return (
         <div className="AddPost">
             <form onSubmit={handleSubmit}>    
-            {imageUrl && <img src={imageUrl} alt="Author" style={{width: "30px"}}/>}
+            {userImageUrl && <img src={userImageUrl} alt="Author" style={{width: "30px"}}/>}
                
             <label>
                 <input type="text" name="body" value={body} onChange={(e) => setBody(e.target.value)} placeholder="Share your thoughts" style={{width: "250px"}}/>

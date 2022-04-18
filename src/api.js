@@ -57,6 +57,12 @@ export const addNewComment = (postId, comment) => {
   });
 };
 
+export const deleteComment = (postId, commentId) => {
+  return axios.delete(`${API_URL}/posts/${postId}/comment/delete?commentId=${commentId}`, {
+    headers: { Authorization: `Bearer ${localStorage.getItem("authToken")}` },
+  });
+};
+
 export const getUsers = () => {
   return axios.get(`${API_URL}/users/`, {
     headers: { Authorization: `Bearer ${localStorage.getItem("authToken")}` },

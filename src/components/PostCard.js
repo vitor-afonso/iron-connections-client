@@ -74,7 +74,7 @@ export const PostCard = ({post, refreshPosts, refreshUser}) => {
 
                     return (
                         
-                        <CommentCard comment={oneComment} key={oneComment._id}/>
+                        <CommentCard postId={post._id} comment={oneComment} key={oneComment._id} refreshAllPosts={refreshPosts} refreshProfileUser={refreshUser} />
                     
                     )
                 })}

@@ -20,7 +20,7 @@ export const EditPostPage = () => {
             try {
                 
                 let postFromDB = await getPost(postId);
-                console.log('postFromDB =>', postFromDB);
+                console.log('postFromDB =>', user);
                 setBody(postFromDB.data.body);
                 setImageUrl(postFromDB.data.imageUrl);
 
@@ -31,7 +31,7 @@ export const EditPostPage = () => {
 
         })();
 
-    }, [postId]);
+    }, [postId, user]);
 
 
     const handleFileUpload = async (e) => {
