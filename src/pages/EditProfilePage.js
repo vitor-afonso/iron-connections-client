@@ -11,7 +11,7 @@ export const EditProfilePage = () => {
   const [imageUrl, setImageUrl] = useState("");
   let navigate = useNavigate();
   const { userId } = useParams();
-  console.log("user :>> ", user);
+  
 
   const handleFileUpload = async (e) => {
 
@@ -23,6 +23,7 @@ export const EditProfilePage = () => {
       let response = await uploadImage(uploadData);
 
       setImageUrl(response.fileUrl);
+      
     } catch (error) {
       console.log("Error while uploading the file to update user =>", error);
     }
@@ -30,9 +31,10 @@ export const EditProfilePage = () => {
   };
 
   const removeUser = async () => {
+
     try {
       let response = await deleteUser(userId);
-      console.log(response.data.message);
+      
       navigate(`/profile/${userId}`);
     } catch (error) {
       console.log("Something went wront while deleting user from API", error);

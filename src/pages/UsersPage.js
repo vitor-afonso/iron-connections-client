@@ -5,17 +5,22 @@ import { addFollower, getUser, getUsers } from "./../api";
 import { NavLink } from "react-router-dom";
 
 export const UsersPage = () => {
+
   const { user } = useContext(AuthContext);
   const [currentUser, setCurrentUser] = useState({});
   const [allUsers, setAllUsers] = useState([]);
   const [userFollowersId, setUserFollowersId] = useState([]);
 
   const getAllUsers = async () => {
+
     try {
+
       let response = await getUsers();
-      console.log("allUsers =>>", response.data);
+      /* console.log("allUsers =>>", response.data); */
       setAllUsers(response.data);
+
     } catch (error) {
+
       console.log(
         "Something went wrong while trying to get users from DB =>",
         error
@@ -42,16 +47,20 @@ export const UsersPage = () => {
   };
 
   const handleAddFollower = async (followerId) => {
+
+    if (userFollowersId.includes(followerId)) {
+    return;
+    }
+
     try {
-      if (currentUser.followers.some(followerId)) {
-        return;
-      }
 
       await addFollower(user._id, followerId);
 
       getOneUser();
       getAllUsers();
+
     } catch (error) {
+
       console.log("Something went wrong while trying add follower =>", error);
     }
   };

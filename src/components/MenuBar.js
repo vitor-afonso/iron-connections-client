@@ -19,16 +19,16 @@ export const MenuBar = () => {
           <Nav className="ms-auto">
             {isLoggedIn && (
               <>
-                <Nav.Link href="/feed"> Feed </Nav.Link>
+                <Link to="/feed"> Feed </Link>
                 {user && (
-                  <Nav.Link href={`/profile/${user._id}`}>
+                  <Link to={`/profile/${user._id}`}>
                     Profile {user.username}
-                  </Nav.Link>
+                  </Link>
                 )}
 
-                <Link to="/users">
-                  <Nav.Link href="/users"> Users </Nav.Link>
-                </Link>
+                
+                  <Link to="/users"> Users </Link>
+                
 
                 <Nav.Link href="/notifications"> Notifications </Nav.Link>
                 <Nav.Link onClick={logOutUser}>Logout</Nav.Link>
