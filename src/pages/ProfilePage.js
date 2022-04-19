@@ -3,11 +3,11 @@
 import { useContext, useState, useEffect } from "react";
 import { AuthContext } from '../context/auth.context';
 import { NavLink, useParams } from "react-router-dom";
-import { getUser, getUsers } from './../api';
+import { getUser, getUsers, getAllPosts } from './../api';
 import { AddPost } from "../components/AddPost";
 import { PostCard } from "../components/PostCard";
 
-export const ProfilePage = ({refreshPosts}) => {
+export const ProfilePage = () => {
 
   const { user } = useContext(AuthContext);
 
@@ -16,6 +16,23 @@ export const ProfilePage = ({refreshPosts}) => {
   const [users, setUsers] = useState(null);
 
   const { userId } = useParams();
+  const [posts, setPosts] = useState([]);
+  
+  
+  const getPosts = async () => {
+
+    try {
+
+      let response = await getAllPosts();
+      setPosts(response.data);
+      /* console.log('all posts =>', response.data); */
+      
+    } catch (error) {
+
+      console.log("Something went wrong while trying to get posts from DB =>",error);
+    }
+      
+  };
 
 
   const getOneUser = async () => {
@@ -42,11 +59,7 @@ export const ProfilePage = ({refreshPosts}) => {
       
       try {
 
-        let oneUser = await getUser(userId);
-
-        setUserProfile(oneUser.data);
-
-        setSortedListOfPosts([...oneUser.data.posts.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))]);
+        getOneUser();
 
         let allUsers = await getUsers();
         setUsers(allUsers.data);
@@ -83,13 +96,13 @@ export const ProfilePage = ({refreshPosts}) => {
           <div>See All</div>
         </div>
     
-        {user._id === userProfile._id && <AddPost refreshPosts={refreshPosts} refreshUser={getOneUser}/>}
+        {user._id === userProfile._id && <AddPost refreshPosts={getPosts} refreshUser={getOneUser}/>}
 
         {userProfile && sortedListOfPosts.map((onePost) => {
 
           return (
 
-            <PostCard post={onePost} key={onePost._id} refreshPosts={refreshPosts} refreshUser={getOneUser} />
+            <PostCard post={onePost} key={onePost._id} refreshPosts={getPosts} refreshUser={getOneUser} />
           )
 
         })}

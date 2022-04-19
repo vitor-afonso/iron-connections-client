@@ -1,39 +1,100 @@
 //jshint esversion:9
-import { useContext, useEffect } from "react";
-import { AuthContext } from '../context/auth.context';
-
+import { useContext, useEffect, useState } from "react";
+import { AuthContext } from "../context/auth.context";
+import { addFollower, getUser, getUsers } from "./../api";
 import { NavLink } from "react-router-dom";
 
-export const UsersPage = ({allUsers, refreshAllUsers}) => {
+export const UsersPage = () => {
+  const { user } = useContext(AuthContext);
+  const [currentUser, setCurrentUser] = useState({});
+  const [allUsers, setAllUsers] = useState([]);
+  const [userFollowersId, setUserFollowersId] = useState([]);
 
-    const { user } = useContext(AuthContext);
+  const getAllUsers = async () => {
+    try {
+      let response = await getUsers();
+      console.log("allUsers =>>", response.data);
+      setAllUsers(response.data);
+    } catch (error) {
+      console.log(
+        "Something went wrong while trying to get users from DB =>",
+        error
+      );
+    }
+  };
 
-    useEffect(() => {
+  const getOneUser = async () => {
 
-        refreshAllUsers();
+    try {
+
+      let response = await getUser(user._id);
+      setCurrentUser(response.data);
+      setUserFollowersId(response.data.followers.map((user) => user._id));
+      /* console.log('response.data =>>', response.data); */
+
+    } catch (error) {
+
+      console.log(
+        "Something went wrong while trying to get user from DB =>",
+        error
+      );
+    }
+  };
+
+  const handleAddFollower = async (followerId) => {
+    try {
+      if (currentUser.followers.some(followerId)) {
+        return;
+      }
+
+      await addFollower(user._id, followerId);
+
+      getOneUser();
+      getAllUsers();
+    } catch (error) {
+      console.log("Something went wrong while trying add follower =>", error);
+    }
+  };
+
+  useEffect(() => {
+
+    if (user) {
+
+      getAllUsers();
+      getOneUser();
+      
+    }
     
-    }, [] );
-    
+  }, [user]);
+
   return (
 
-    <div>UsersPage
-    
-        {allUsers && allUsers.map(oneUser => {
-            
+    <div>
+      UsersPage
+      {allUsers.length &&
+        allUsers.map((oneUser) => {
+          return (
 
-            return (
+            <div key={oneUser._id}>
 
-                <div>
-                    <NavLink to={`/profile/${oneUser._id}`}>   
-                        <img src={oneUser.imageUrl} alt={oneUser.username} style={{width: "30px"}} />
-                    </NavLink>
-                    <span>{oneUser.username}</span> 
-                    {user._id !== oneUser._id && <button>Follow</button>}
-                </div>
-            )
+              <NavLink to={`/profile/${oneUser._id}`}>
+                <img
+                  src={oneUser.imageUrl}
+                  alt={oneUser.username}
+                  style={{ width: "30px" }}
+                />
+              </NavLink>
+
+              <span>{oneUser.username}</span>
+
+              {currentUser._id !== oneUser._id && !userFollowersId.includes(oneUser._id) && (
+
+                <button onClick={() => handleAddFollower(oneUser._id)}> Follow </button>
+              )}
+
+            </div>
+          );
         })}
-    
     </div>
-
-  )
-}
+  );
+};

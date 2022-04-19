@@ -11,7 +11,10 @@ export const EditPostPage = () => {
     const [body, setBody] = useState("");
     const [imageUrl, setImageUrl] = useState("");
     let navigate = useNavigate();
+    
     const { postId } = useParams();
+
+
 
     useEffect( () => {
 
@@ -22,7 +25,7 @@ export const EditPostPage = () => {
                 let postFromDB = await getPost(postId);
                 console.log('postFromDB =>', user);
                 setBody(postFromDB.data.body);
-                setImageUrl(postFromDB.data.imageUrl);
+                setImageUrl(postFromDB.data.imageUrl); 
 
             } catch (error) {
                 
@@ -105,7 +108,7 @@ export const EditPostPage = () => {
             <button type="submit">Update Post</button> 
             
             </form>: <p>Loading...</p>}
-            <NavLink to="/feed"><button>Back</button></NavLink>
+            <NavLink to="/feed"><button onClick={() => navigate(-1)}>Back</button></NavLink>
             <button onClick={removePost}>Delete</button>
         </div>
     )

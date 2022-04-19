@@ -1,8 +1,6 @@
 // jshint esversion:9
 
 import './App.css';
-import { useEffect, useState } from "react";
-import { getAllPosts, getUsers } from './api';
 import {MenuBar} from "./components/MenuBar";
 import {Routes, Route} from "react-router-dom";
 import {FeedPage} from "./pages/FeedPage";
@@ -20,50 +18,18 @@ import { UsersPage } from './pages/UsersPage';
 
 function App() {
 
-  const [posts, setPosts] = useState([]);
-  const [users, setUsers] = useState([]);
-
-  const getPosts = async () => {
-
-    try {
-
-      let response = await getAllPosts();
-      setPosts(response.data);
-      /* console.log('all posts =>', response.data); */
-      
-    } catch (error) {
-
-      console.log("No posts... ",error);
-    }
-      
-  };
-
-  const getAllUsers = async () => {
-
-    try {
-
-      let response = await getUsers();
-      setUsers(response.data);
-      
-    } catch (error) {
-
-      console.log("No posts... ",error);
-    }
-  };
-
-  
   return (
     <div className="App">
 
       <MenuBar />
       <Routes>      
         <Route path="/" element={ <IsAnon> <HomePage /> </IsAnon> } />
-        <Route path="/feed" element={ <IsPrivate> <FeedPage refreshPosts={getPosts} posts={posts}/> </IsPrivate>} />
-        <Route path="/profile/:userId" element={ <IsPrivate> <ProfilePage refreshPosts={getPosts}/> </IsPrivate> } />
+        <Route path="/feed" element={ <IsPrivate> <FeedPage /> </IsPrivate>} />
+        <Route path="/profile/:userId" element={ <IsPrivate> <ProfilePage /> </IsPrivate> } />
         <Route path="/post/:postId/edit" element={ <IsPrivate> <EditPostPage /> </IsPrivate> }/>
         <Route path="/profile/:userId/edit" element={ <IsPrivate> <EditProfilePage /> </IsPrivate> }/>
         <Route path="/notifications" element={ <IsPrivate> <NotificationsPage /> </IsPrivate>} />
-        <Route path="/users" element={ <IsPrivate> <UsersPage allUsers={users} refreshAllUsers={getAllUsers}/> </IsPrivate>} />
+        <Route path="/users" element={ <IsPrivate> <UsersPage /> </IsPrivate>} />
         <Route path="/signup" element={ <IsAnon> <SignupPage /> </IsAnon> } /> 
         <Route path="/login" element={  <IsAnon> <LoginPage /> </IsAnon> } />
       </Routes>

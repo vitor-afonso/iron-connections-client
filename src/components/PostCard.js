@@ -2,7 +2,7 @@
 
 import { useContext, useEffect, useRef } from "react";
 import { AuthContext } from '../context/auth.context';
-import { NavLink } from "react-router-dom";
+import { NavLink , useLocation } from "react-router-dom";
 
 import { AddComment } from "./AddComment";
 import { CommentCard } from "./CommentCard";
