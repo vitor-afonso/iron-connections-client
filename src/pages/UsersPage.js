@@ -80,30 +80,6 @@ export const UsersPage = () => {
 
       <FilterUsers usersList={allUsers} currentUser={currentUser} userFollowersIds={userFollowersId} handleAddFollower={handleAddFollower}/>
 
-      {/* {allUsers.length &&
-        allUsers.map((oneUser) => {
-          return (
-
-            <div key={oneUser._id}>
-
-              <NavLink to={`/profile/${oneUser._id}`}>
-                <img
-                  src={oneUser.imageUrl}
-                  alt={oneUser.username}
-                  style={{ width: "30px" }}
-                />
-              </NavLink>
-
-              <span>{oneUser.username}</span>
-
-              {currentUser._id !== oneUser._id && !userFollowersId.includes(oneUser._id) && (
-
-                <button onClick={() => handleAddFollower(oneUser._id)}> Follow </button>
-              )}
-
-            </div>
-          );
-        })} */}
     </div>
   );
 };

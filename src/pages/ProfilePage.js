@@ -80,21 +80,25 @@ export const ProfilePage = () => {
       {userProfile ? <div>
 
         <div className="profile-header">
+
           <img src={userProfile.imageUrl} alt={userProfile.username} style={{width: "50px"}}/>
           <span> {userProfile.username} </span>
           
           {user._id === userProfile._id ? <NavLink to={`/profile/${userProfile._id}/edit`}><button>Edit Profile</button></NavLink>: <button>Follow</button>}
+          
         </div> 
-        <div>
+
+        {userProfile.followers.length &&  <div>
           <h6>Connects</h6>
-          {users && users.map(user => {
+          {userProfile && userProfile.followers.slice(-3).map(user => {
+
             return (
-              
               <img src={user.imageUrl} alt={user.username} style={{width: "50px"}} key={user._id}/>
             );
+            
           })}
-          <div>See All</div>
-        </div>
+          <NavLink to={`/profile/${userId}/connects`}>See All</NavLink>
+        </div>}
     
         {user._id === userProfile._id && <AddPost refreshPosts={getPosts} refreshUser={getOneUser}/>}
 

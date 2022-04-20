@@ -1,16 +1,19 @@
 //jshint esversion:9
 
 import { useEffect, useState } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 
-export const FilterUsers = ({usersList, userFollowersIds, currentUser, handleAddFollower}) => {
+
+export const FilterUsers = ({usersList, userFollowersIds, currentUser, handleAddFollower, profileId }) => {
 
     const [users, setUsers] = useState("");
     const [str, setStr] = useState("");
+    
 
     useEffect(()=>{
         
         let sortedUsersList = usersList.sort((a, b) => a.username.toLowerCase() > b.username.toLowerCase()? 1 : -1);
+        console.log('profileId', profileId);
         
         if (str === "") {
 
@@ -38,20 +41,22 @@ export const FilterUsers = ({usersList, userFollowersIds, currentUser, handleAdd
 
             <div key={oneUser._id}>
 
-              <NavLink to={`/profile/${oneUser._id}`}>
-                <img
-                  src={oneUser.imageUrl}
-                  alt={oneUser.username}
-                  style={{ width: "30px" }}
-                />
-              </NavLink>
+              {!oneUser._id.includes(profileId) && <>
+                <NavLink to={`/profile/${oneUser._id}`}>
+                    <img
+                    src={oneUser.imageUrl}
+                    alt={oneUser.username}
+                    style={{ width: "50px" }}
+                    />
+                </NavLink>
 
-              <span>{oneUser.username}</span>
+                <span>{oneUser.username}</span>
 
-              {currentUser._id !== oneUser._id && !userFollowersIds.includes(oneUser._id) && (
+                {currentUser._id !== oneUser._id && !userFollowersIds.includes(oneUser._id) && (
 
-                <button onClick={() => handleAddFollower(oneUser._id)}> Follow </button>
-              )}
+                    <button onClick={() => handleAddFollower(oneUser._id)}> Follow </button>
+                )}
+              </>}
 
             </div>
           );
