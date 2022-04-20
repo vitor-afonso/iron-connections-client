@@ -3,6 +3,7 @@ import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../context/auth.context";
 import { addFollower, getUser, getUsers } from "./../api";
 import { NavLink } from "react-router-dom";
+import { FilterUsers } from "../components/FilterUsers";
 
 export const UsersPage = () => {
 
@@ -16,7 +17,6 @@ export const UsersPage = () => {
     try {
 
       let response = await getUsers();
-      /* console.log("allUsers =>>", response.data); */
       setAllUsers(response.data);
 
     } catch (error) {
@@ -35,7 +35,6 @@ export const UsersPage = () => {
       let response = await getUser(user._id);
       setCurrentUser(response.data);
       setUserFollowersId(response.data.followers.map((user) => user._id));
-      /* console.log('response.data =>>', response.data); */
 
     } catch (error) {
 
@@ -71,7 +70,6 @@ export const UsersPage = () => {
 
       getAllUsers();
       getOneUser();
-      
     }
     
   }, [user]);
@@ -79,8 +77,10 @@ export const UsersPage = () => {
   return (
 
     <div>
-      UsersPage
-      {allUsers.length &&
+
+      <FilterUsers usersList={allUsers} currentUser={currentUser} userFollowersIds={userFollowersId} handleAddFollower={handleAddFollower}/>
+
+      {/* {allUsers.length &&
         allUsers.map((oneUser) => {
           return (
 
@@ -103,7 +103,7 @@ export const UsersPage = () => {
 
             </div>
           );
-        })}
+        })} */}
     </div>
   );
 };

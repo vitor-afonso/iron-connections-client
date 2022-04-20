@@ -3,13 +3,15 @@
 import { useContext } from "react";
 import { AuthContext } from "../context/auth.context";
 import { Navbar, Container, Nav } from "react-bootstrap";
-import { Link } from "react-router-dom";
-/* import { NavLink, Link } from "react-router-dom"; */
+import { Link, NavLink } from "react-router-dom";
+
 
 export const MenuBar = () => {
+
   // Subscribe to the AuthContext to gain access to
   // the values from AuthContext.Provider `value` prop
   const { isLoggedIn, user, logOutUser } = useContext(AuthContext);
+
   return (
     <Navbar bg="light" expand="lg">
       <Container>
@@ -17,18 +19,18 @@ export const MenuBar = () => {
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="ms-auto">
+
             {isLoggedIn && (
-              <>
-                <Link to="/feed"> Feed </Link>
+              <>  
+                <NavLink to="/feed">Feed</NavLink>
+
                 {user && (
-                  <Link to={`/profile/${user._id}`}>
-                    Profile {user.username}
-                  </Link>
+                  <NavLink to={`/profile/${user._id}`}>
+                    Profile
+                  </NavLink>
                 )}
 
-                
-                  <Link to="/users"> Users </Link>
-                
+                <NavLink to="/users"> Users </NavLink>
 
                 <Nav.Link href="/notifications"> Notifications </Nav.Link>
                 <Nav.Link onClick={logOutUser}>Logout</Nav.Link>
@@ -37,11 +39,12 @@ export const MenuBar = () => {
 
             {!isLoggedIn && (
               <>
-                <Nav.Link href="/">Home</Nav.Link>
-                <Nav.Link href="/signup">Sign Up</Nav.Link>
-                <Nav.Link href="/login">Login</Nav.Link>
+                <Link to="/">Home</Link>
+                <Link to="/signup">Sign Up</Link>
+                <Link to="/login">Login</Link>
               </>
             )}
+
           </Nav>
         </Navbar.Collapse>
       </Container>
