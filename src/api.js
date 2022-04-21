@@ -86,6 +86,11 @@ export const addFollower = (userId, followerId) => {
     headers: { Authorization: `Bearer ${localStorage.getItem("authToken")}` },
   });
 };
+export const removeFollower = (userId, followerId) => {
+  return axios.put(`${API_URL}/remove-follower/${userId}?followerId=${followerId}`,{}, {
+    headers: { Authorization: `Bearer ${localStorage.getItem("authToken")}` },
+  });
+};
 
 export const deleteUser = (id) => {
   return axios.delete(`${API_URL}/users/${id}`, {
