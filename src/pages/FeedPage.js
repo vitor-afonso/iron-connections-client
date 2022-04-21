@@ -1,13 +1,16 @@
 //jshint esversion:9
 
-import { useEffect, useState } from "react";
-import { getAllPosts } from "../api";
-import { Container } from "react-bootstrap";
-import { PostCard } from "../components/PostCard";
-import { AddPost } from "../components/AddPost";
+import { useContext, useEffect, useState } from 'react';
+import { getAllPosts, getUser } from '../api';
+import { Container } from 'react-bootstrap';
+import { PostCard } from '../components/PostCard';
+import { AddPost } from '../components/AddPost';
+import { AuthContext } from '../context/auth.context';
 
 export const FeedPage = () => {
   const [posts, setPosts] = useState([]);
+  const [followersPostsIds, setFollowersPostsIds] = useState([]);
+  const { user } = useContext(AuthContext);
 
   const getPosts = async () => {
     try {
@@ -15,16 +18,22 @@ export const FeedPage = () => {
       setPosts(response.data);
       /* console.log('all posts =>', response.data); */
     } catch (error) {
-      console.log(
-        "Something went wrong while trying to get posts from DB =>",
-        error
-      );
+      console.log('Something went wrong while trying to get posts from DB =>', error);
     }
   };
 
   useEffect(() => {
     getPosts();
-  }, []);
+
+    (async () => {
+      if (user) {
+        let response = await getUser(user._id);
+        let followersPosts = [...response.data.followers.map((oneUser) => oneUser.posts)];
+
+        setFollowersPostsIds(followersPosts.flat(Infinity));
+      }
+    })();
+  }, [user]);
 
   return (
     <Container>
@@ -32,15 +41,10 @@ export const FeedPage = () => {
 
       <AddPost refreshPosts={getPosts} />
 
-      {posts &&
+      {followersPostsIds &&
+        posts &&
         posts.map((onePost) => {
-          return (
-            <PostCard
-              post={onePost}
-              key={onePost._id}
-              refreshPosts={getPosts}
-            />
-          );
+          return <>{followersPostsIds.includes(onePost._id) && <PostCard post={onePost} key={onePost._id} refreshPosts={getPosts} />}</>;
         })}
     </Container>
   );
