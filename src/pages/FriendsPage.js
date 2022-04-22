@@ -13,7 +13,7 @@ export const FriendsPage = () => {
   const { profileOwnerId } = useParams();
   const [flag, setFlag] = useState(true); //to force it to refresh the user followers after pressing button
 
-  const getOneUser = async () => {
+  const setProfileOwnerFollowers = async () => {
     try {
       if (user) {
         let response = await getUser(profileOwnerId);
@@ -27,19 +27,18 @@ export const FriendsPage = () => {
     }
   };
 
-  const handleFilter = (e) => {
+  const handleFilter = async (e) => {
     setStr(e.target.value);
+    console.log('str =>', str);
 
-    (async () => {
-      let response = await getUser(profileOwnerId);
-
-      if (str === '') {
-        setFollowers(response.data);
-      } else {
-        let filteredUsers = response.data.followers.filter((user) => user.username.toLowerCase().includes(str.toLowerCase()));
-        setFollowers(filteredUsers);
-      }
-    })();
+    let response = await getUser(profileOwnerId);
+    /* console.log('response.data', response.data.followers); */
+    if (str === '') {
+      setFollowers([...response.data.followers]);
+    } else {
+      let filteredUsers = response.data.followers.filter((user) => user.username.toLowerCase().includes(str.toLowerCase()));
+      setFollowers(filteredUsers);
+    }
   };
 
   const handleAddFollower = async (followerId) => {
@@ -71,7 +70,7 @@ export const FriendsPage = () => {
 
   useEffect(() => {
     //Call to get profile owner and display its friends
-    getOneUser();
+    setProfileOwnerFollowers();
 
     //Call to get the user in session and make a list of followers id's
     //to decide on which user to show the follow/unfollow button

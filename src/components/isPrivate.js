@@ -1,21 +1,20 @@
 // jshint esversion:9
 
-import { useContext } from "react";
-import { AuthContext } from "../context/auth.context";
-import { Navigate } from "react-router-dom";
+import { useContext } from 'react';
+import { AuthContext } from '../context/auth.context';
+import { Navigate } from 'react-router-dom';
 
-export const IsPrivate = ( { children } ) => {
-  
+export const IsPrivate = ({ children }) => {
   const { isLoggedIn, isLoading } = useContext(AuthContext);
 
-  // If the authentication is still loading 
+  // If the authentication is still loading
   if (isLoading) return <p>Loading ...</p>;
 
   if (!isLoggedIn) {
-    // If the user is logged in, navigate to home page     
-    return <Navigate to="/" />;
+    // If the user is not logged in, navigate to home page
+    return <Navigate to='/' />;
   } else {
-    // If the user is not logged in, allow to see the page 
+    // If the user is logged in, allow to see the page
     return children;
   }
-}
+};

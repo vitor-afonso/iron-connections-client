@@ -9,7 +9,7 @@ import { AuthContext } from '../context/auth.context';
 
 export const FeedPage = () => {
   const [posts, setPosts] = useState([]);
-  const [followersPostsIds, setFollowersPostsIds] = useState([]);
+  const [allPostsIdsToDisplay, setAllPostsIdsToDisplay] = useState([]);
   const { user } = useContext(AuthContext);
 
   const getPosts = async () => {
@@ -28,9 +28,10 @@ export const FeedPage = () => {
     (async () => {
       if (user) {
         let response = await getUser(user._id);
+        let currentUserPostsIds = response.data.posts.map((onePost) => onePost._id);
         let followersPosts = [...response.data.followers.map((oneUser) => oneUser.posts)];
 
-        setFollowersPostsIds(followersPosts.flat(Infinity));
+        setAllPostsIdsToDisplay([...currentUserPostsIds, ...followersPosts.flat(Infinity)]);
       }
     })();
   }, [user]);
@@ -41,10 +42,10 @@ export const FeedPage = () => {
 
       <AddPost refreshPosts={getPosts} />
 
-      {followersPostsIds &&
+      {allPostsIdsToDisplay &&
         posts &&
         posts.map((onePost) => {
-          return <>{followersPostsIds.includes(onePost._id) && <PostCard post={onePost} key={onePost._id} refreshPosts={getPosts} />}</>;
+          return <div key={onePost._id}>{allPostsIdsToDisplay.includes(onePost._id) && <PostCard post={onePost} key={onePost._id} refreshPosts={getPosts} />}</div>;
         })}
     </Container>
   );
