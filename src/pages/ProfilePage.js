@@ -3,7 +3,7 @@
 import { useContext, useState, useEffect } from 'react';
 import { AuthContext } from '../context/auth.context';
 import { NavLink, useParams } from 'react-router-dom';
-import { getUser, getUsers, getAllPosts } from './../api';
+import { getUser, getAllPosts } from './../api';
 import { AddPost } from '../components/AddPost';
 import { PostCard } from '../components/PostCard';
 
@@ -29,7 +29,6 @@ export const ProfilePage = () => {
   const getOneUser = async () => {
     try {
       let oneUser = await getUser(userId);
-
       setUserProfile(oneUser.data);
 
       setSortedListOfPosts([...oneUser.data.posts.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))]);

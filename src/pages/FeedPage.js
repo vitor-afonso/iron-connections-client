@@ -21,26 +21,26 @@ export const FeedPage = () => {
       console.log('Something went wrong while trying to get posts from DB =>', error);
     }
   };
+  const getOneUser = async () => {
+    if (user) {
+      let response = await getUser(user._id);
+      let currentUserPostsIds = response.data.posts.map((onePost) => onePost._id);
+      let followersPosts = [...response.data.followers.map((oneUser) => oneUser.posts)];
+
+      setAllPostsIdsToDisplay([...currentUserPostsIds, ...followersPosts.flat(Infinity)]);
+    }
+  };
 
   useEffect(() => {
     getPosts();
-
-    (async () => {
-      if (user) {
-        let response = await getUser(user._id);
-        let currentUserPostsIds = response.data.posts.map((onePost) => onePost._id);
-        let followersPosts = [...response.data.followers.map((oneUser) => oneUser.posts)];
-
-        setAllPostsIdsToDisplay([...currentUserPostsIds, ...followersPosts.flat(Infinity)]);
-      }
-    })();
+    getOneUser();
   }, [user]);
 
   return (
     <Container>
       <h3>FeedPage</h3>
 
-      <AddPost refreshPosts={getPosts} />
+      <AddPost refreshPosts={getPosts} refreshUser={getOneUser} />
 
       {allPostsIdsToDisplay &&
         posts &&
