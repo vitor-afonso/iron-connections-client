@@ -6,38 +6,20 @@ import { AuthContext } from '../context/auth.context';
 import { addFollower, getUser, removeFollower } from './../api';
 
 export const FriendsPage = () => {
-  const [followers, setFollowers] = useState([]);
-  const [str, setStr] = useState('');
-  const [currentUserFollowersIds, setCurrentUserFollowersIds] = useState('');
   const { user } = useContext(AuthContext);
+  const [followers, setFollowers] = useState([]);
+  const [filteredFollowers, setFilteredFollowers] = useState([]);
+  const [currentUserFollowersIds, setCurrentUserFollowersIds] = useState([]); //<= used to decide which button(follow/unfollow) to show
+  const [str, setStr] = useState('');
   const { profileOwnerId } = useParams();
-  const [flag, setFlag] = useState(true); //to force it to refresh the user followers after pressing button
+  const [flag, setFlag] = useState(false); //<= used to force refresh of currentUser list of followers
 
-  const setProfileOwnerFollowers = async () => {
-    try {
-      if (user) {
-        let response = await getUser(profileOwnerId);
-
-        let followers = response.data.followers.filter((oneUser) => oneUser._id !== user._id);
-
-        setFollowers(followers.sort((a, b) => (a.username.toLowerCase() > b.username.toLowerCase() ? 1 : -1)));
-      }
-    } catch (error) {
-      console.log('Something went wrong while trying to get user from DB =>', error);
-    }
-  };
-
-  const handleFilter = async (e) => {
-    setStr(e.target.value);
-    console.log('str =>', str);
-
-    let response = await getUser(profileOwnerId);
-    /* console.log('response.data', response.data.followers); */
+  const handleFilter = () => {
     if (str === '') {
-      setFollowers([...response.data.followers]);
+      setFilteredFollowers(followers);
     } else {
-      let filteredUsers = response.data.followers.filter((user) => user.username.toLowerCase().includes(str.toLowerCase()));
-      setFollowers(filteredUsers);
+      let filteredUsers = followers.filter((user) => user.username.toLowerCase().includes(str.toLowerCase()));
+      setFilteredFollowers(filteredUsers);
     }
   };
 
@@ -61,7 +43,6 @@ export const FriendsPage = () => {
 
     try {
       await removeFollower(user._id, followerId);
-
       setFlag(!flag);
     } catch (error) {
       console.log('Something went wrong while trying remove follower =>', error);
@@ -69,28 +50,35 @@ export const FriendsPage = () => {
   };
 
   useEffect(() => {
-    //Call to get profile owner and display its friends
-    setProfileOwnerFollowers();
+    if (str) {
+      handleFilter();
+      return;
+    }
 
-    //Call to get the user in session and make a list of followers id's
-    //to decide on which user to show the follow/unfollow button
     (async () => {
       if (user) {
         let response = await getUser(user._id);
+        let userInSession = response.data;
+        let response2 = await getUser(profileOwnerId);
+        let profileOwner = response2.data;
 
-        setCurrentUserFollowersIds(response.data.followers.map((follower) => follower._id));
+        setCurrentUserFollowersIds(userInSession.followers.map((follower) => follower._id));
+
+        let sortedFollowers = profileOwner.followers.sort((a, b) => (a.username.toLowerCase() > b.username.toLowerCase() ? 1 : -1));
+
+        setFollowers(sortedFollowers);
+        setFilteredFollowers(sortedFollowers);
       }
     })();
-  }, [str, profileOwnerId, user, flag]);
+  }, [profileOwnerId, user, str, flag]);
 
   return (
     <div>
-      FriendsPage
       <label>
-        <input type='text' name='search' value={str} onChange={handleFilter} />
+        <input type='text' name='search' value={str} onChange={(e) => setStr(e.target.value)} placeholder='Search user by name' />
       </label>
-      {followers.length &&
-        followers.map((oneUser) => {
+      {filteredFollowers.length &&
+        filteredFollowers.map((oneUser) => {
           return (
             <div key={oneUser._id}>
               {oneUser._id !== user._id && (
