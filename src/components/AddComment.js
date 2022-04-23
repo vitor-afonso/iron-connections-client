@@ -18,7 +18,9 @@ export const AddComment = ({ post, refreshAllPosts, refreshProfileUser }) => {
       await addNewComment(post._id, requestBody);
       refreshAllPosts();
       setContent('');
-      refreshProfileUser();
+      if (refreshProfileUser) {
+        refreshProfileUser();
+      }
       updateFollowersNotifications();
     } catch (error) {
       console.log('Error while adding comment to post =>', error);
@@ -31,7 +33,6 @@ export const AddComment = ({ post, refreshAllPosts, refreshProfileUser }) => {
 
   const updateFollowersNotifications = async () => {
     const month = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-
     let date = new Date();
     let dateYear = date.getFullYear();
     let dateMonth = month[date.getMonth()];
@@ -39,15 +40,32 @@ export const AddComment = ({ post, refreshAllPosts, refreshProfileUser }) => {
     let postDate = `${dateDay}-${dateMonth}-${dateYear}`;
 
     try {
-      let str = `${user.username} commented your post . ${postDate}`;
+      let str = `${user.username} commented your post. ${postDate}`;
       let str2 = `${user.username} commented a post that you also commented. ${postDate}`;
-      let response = await createNotification({ content: str, commentMessage: str2, userId: user._id });
+      let newlyCreatedNotificationId;
 
-      await updateUserNotification({ notificationId: response.data._id }, post.userId._id);
+      if (post.comments.length !== 0) {
+        if (post.userId._id !== user._id) {
+          let response1 = await createNotification({ content: str, userId: user._id });
+          await updateUserNotification({ notificationId: response1.data._id }, post.userId._id);
+        }
 
-      post.comments.forEach((oneComment) => {
-        updateUserNotification({ notificationId: response.data._id }, oneComment.userId._id);
-      });
+        let response = await createNotification({ content: '', commentMessage: str2, userId: user._id });
+
+        newlyCreatedNotificationId = response.data._id;
+
+        post.comments.forEach((oneComment) => {
+          if (post.userId._id !== oneComment.userId._id) {
+            updateUserNotification({ notificationId: newlyCreatedNotificationId }, oneComment.userId._id);
+          }
+        });
+      } else {
+        if (post.userId._id !== user._id) {
+          let response = await createNotification({ content: str, userId: user._id });
+          newlyCreatedNotificationId = response.data._id;
+          updateUserNotification({ notificationId: newlyCreatedNotificationId }, post.userId._id);
+        }
+      }
     } catch (error) {
       console.log('Something went wrong while trying to update notification =>', error);
     }
@@ -65,7 +83,6 @@ export const AddComment = ({ post, refreshAllPosts, refreshProfileUser }) => {
       <form onSubmit={handleSubmit}>
         {userImageUrl && (
           <NavLink to={`/profile/${post.userId._id}`} style={{ display: 'inline-block' }}>
-            {' '}
             <img src={userImageUrl} alt='Author' style={{ width: '30px' }} />
           </NavLink>
         )}

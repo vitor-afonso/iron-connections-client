@@ -1,7 +1,7 @@
 // jshint esversion:9
 import { useContext, useEffect, useState } from 'react';
 import { AuthContext } from '../context/auth.context';
-import { getNotifications } from '../api';
+import { getNotifications, getUser } from '../api';
 import { Container } from 'react-bootstrap';
 
 export const NotificationsPage = () => {
@@ -20,14 +20,18 @@ export const NotificationsPage = () => {
   useEffect(() => {
     (async () => {
       try {
-        let response = await getNotifications();
-        console.log('getNotifications data =>', response.data);
-        setNotifications(response.data);
+        if (user) {
+          let currentUser = await getUser(user._id);
+          currentUser = currentUser.data;
+          let response = await getNotifications();
+          let userNotifications = response.data.filter((oneNotification) => currentUser.notifications.includes(oneNotification._id));
+          setNotifications(userNotifications);
+        }
       } catch (error) {
         console.log('Something went wrong while trying to get notifications =>', error);
       }
     })();
-  }, []);
+  }, [user]);
   return (
     <div>
       <h2>Notifications</h2>
@@ -35,7 +39,7 @@ export const NotificationsPage = () => {
         notifications.map((oneNotification) => {
           return (
             <div key={oneNotification._id}>
-              <span>{oneNotification.content}</span>
+              {oneNotification.commentMessage ? <span>{oneNotification.commentMessage}</span> : <span>{oneNotification.content}</span>}
               <button onClick={() => removeNotification(oneNotification._id)}>X</button>
             </div>
           );
