@@ -3,7 +3,7 @@
 import { useContext, useEffect, useState } from 'react';
 import { NavLink, useParams } from 'react-router-dom';
 import { AuthContext } from '../context/auth.context';
-import { addFollower, getUser, removeFollower } from './../api';
+import { addFollower, createNotification, getUser, removeFollower, updateUserNotification } from './../api';
 
 export const FriendsPage = () => {
   const { user } = useContext(AuthContext);
@@ -12,7 +12,6 @@ export const FriendsPage = () => {
   const [currentUserFollowersIds, setCurrentUserFollowersIds] = useState([]); //<= used to decide which button(follow/unfollow) to show
   const [str, setStr] = useState('');
   const { profileOwnerId } = useParams();
-  const [flag, setFlag] = useState(false); //<= used to force refresh of currentUser list of followers
 
   const handleFilter = () => {
     if (str === '') {
@@ -23,6 +22,26 @@ export const FriendsPage = () => {
     }
   };
 
+  const updateFollowersNotifications = async (followerId) => {
+    const month = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+
+    let date = new Date();
+    let dateYear = date.getFullYear();
+    let dateMonth = month[date.getMonth()];
+    let dateDay = date.getDate();
+    let postDate = `${dateDay}-${dateMonth}-${dateYear}`;
+
+    try {
+      let str = `${user.username} started following you. ${postDate}`;
+
+      let response = await createNotification({ content: str, userId: user._id });
+
+      updateUserNotification({ notificationId: response.data._id }, followerId);
+    } catch (error) {
+      console.log('Something went wrong while trying to update notification =>', error);
+    }
+  };
+
   const handleAddFollower = async (followerId) => {
     if (currentUserFollowersIds.includes(followerId)) {
       return;
@@ -30,7 +49,8 @@ export const FriendsPage = () => {
 
     try {
       await addFollower(user._id, followerId);
-      setFlag(!flag);
+      refreshFollowers();
+      updateFollowersNotifications(followerId);
     } catch (error) {
       console.log('Something went wrong while trying add follower =>', error);
     }
@@ -43,9 +63,24 @@ export const FriendsPage = () => {
 
     try {
       await removeFollower(user._id, followerId);
-      setFlag(!flag);
+      refreshFollowers();
     } catch (error) {
       console.log('Something went wrong while trying remove follower =>', error);
+    }
+  };
+
+  const refreshFollowers = async () => {
+    let response = await getUser(user._id);
+    let userInSession = response.data;
+    let response2 = await getUser(profileOwnerId);
+    let profileOwner = response2.data;
+
+    setCurrentUserFollowersIds(userInSession.followers.map((follower) => follower._id));
+    if (followers.length === 0) {
+      let sortedFollowers = profileOwner.followers.sort((a, b) => (a.username.toLowerCase() > b.username.toLowerCase() ? 1 : -1));
+
+      setFollowers(sortedFollowers);
+      setFilteredFollowers(sortedFollowers);
     }
   };
 
@@ -56,21 +91,11 @@ export const FriendsPage = () => {
     }
 
     (async () => {
-      if (user) {
-        let response = await getUser(user._id);
-        let userInSession = response.data;
-        let response2 = await getUser(profileOwnerId);
-        let profileOwner = response2.data;
-
-        setCurrentUserFollowersIds(userInSession.followers.map((follower) => follower._id));
-
-        let sortedFollowers = profileOwner.followers.sort((a, b) => (a.username.toLowerCase() > b.username.toLowerCase() ? 1 : -1));
-
-        setFollowers(sortedFollowers);
-        setFilteredFollowers(sortedFollowers);
+      if (user && followers.length === 0) {
+        refreshFollowers();
       }
     })();
-  }, [profileOwnerId, user, str, flag]);
+  }, [profileOwnerId, user, str, followers]);
 
   return (
     <div>

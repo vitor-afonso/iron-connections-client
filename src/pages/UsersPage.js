@@ -1,9 +1,9 @@
 //jshint esversion:9
-import { useContext, useEffect, useState } from "react";
-import { AuthContext } from "../context/auth.context";
-import { addFollower, getUser, getUsers, removeFollower } from "./../api";
-import { NavLink } from "react-router-dom";
-import { FilterUsers } from "../components/FilterUsers";
+import { useContext, useEffect, useState } from 'react';
+import { AuthContext } from '../context/auth.context';
+import { addFollower, createNotification, getUser, getUsers, removeFollower, updateUserNotification } from './../api';
+import { NavLink } from 'react-router-dom';
+import { FilterUsers } from '../components/FilterUsers';
 
 export const UsersPage = () => {
   const { user } = useContext(AuthContext);
@@ -16,10 +16,7 @@ export const UsersPage = () => {
       let response = await getUsers();
       setAllUsers(response.data);
     } catch (error) {
-      console.log(
-        "Something went wrong while trying to get users from DB =>",
-        error
-      );
+      console.log('Something went wrong while trying to get users from DB =>', error);
     }
   };
 
@@ -29,10 +26,27 @@ export const UsersPage = () => {
       setCurrentUser(response.data);
       setUserFollowersId(response.data.followers.map((user) => user._id));
     } catch (error) {
-      console.log(
-        "Something went wrong while trying to get user from DB =>",
-        error
-      );
+      console.log('Something went wrong while trying to get user from DB =>', error);
+    }
+  };
+
+  const updateFollowersNotifications = async (followerId) => {
+    const month = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+
+    let date = new Date();
+    let dateYear = date.getFullYear();
+    let dateMonth = month[date.getMonth()];
+    let dateDay = date.getDate();
+    let postDate = `${dateDay}-${dateMonth}-${dateYear}`;
+
+    try {
+      let str = `${user.username} started following you. ${postDate}`;
+
+      let response = await createNotification({ content: str, userId: user._id });
+
+      updateUserNotification({ notificationId: response.data._id }, followerId);
+    } catch (error) {
+      console.log('Something went wrong while trying to update notification =>', error);
     }
   };
 
@@ -46,8 +60,9 @@ export const UsersPage = () => {
 
       getOneUser();
       getAllUsers();
+      updateFollowersNotifications(followerId);
     } catch (error) {
-      console.log("Something went wrong while trying add follower =>", error);
+      console.log('Something went wrong while trying add follower =>', error);
     }
   };
 
@@ -62,10 +77,7 @@ export const UsersPage = () => {
       getOneUser();
       getAllUsers();
     } catch (error) {
-      console.log(
-        "Something went wrong while trying remove follower =>",
-        error
-      );
+      console.log('Something went wrong while trying remove follower =>', error);
     }
   };
 
@@ -77,16 +89,6 @@ export const UsersPage = () => {
   }, [user]);
 
   return (
-    <div>
-      {
-        <FilterUsers
-          usersList={allUsers}
-          currentUser={currentUser}
-          userFollowersIds={userFollowersId}
-          handleAddFollower={handleAddFollower}
-          handleRemoveFollower={handleRemoveFollower}
-        />
-      }
-    </div>
+    <div>{<FilterUsers usersList={allUsers} currentUser={currentUser} userFollowersIds={userFollowersId} handleAddFollower={handleAddFollower} handleRemoveFollower={handleRemoveFollower} />}</div>
   );
 };

@@ -1,7 +1,7 @@
 //jshint esversion:9
 
 import { useContext, useState, useEffect } from 'react';
-import { addPost, uploadImage, getUser, updateUserNotification } from './../api';
+import { addPost, uploadImage, getUser, updateUserNotification, createNotification } from './../api';
 import { AuthContext } from '../context/auth.context';
 
 export const AddPost = ({ refreshPosts, refreshUser }) => {
@@ -46,7 +46,7 @@ export const AddPost = ({ refreshPosts, refreshUser }) => {
     }
   };
 
-  const updateFollowersNotifications = () => {
+  const updateFollowersNotifications = async () => {
     const month = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 
     let date = new Date();
@@ -56,10 +56,12 @@ export const AddPost = ({ refreshPosts, refreshUser }) => {
     let postDate = `${dateDay}-${dateMonth}-${dateYear}`;
 
     try {
-      userFollowers.forEach((follower) => {
-        let str = `${user.username} have a new post. ${postDate}`;
+      let str = `${user.username} have a new post. ${postDate}`;
 
-        updateUserNotification({ notification: str }, follower._id);
+      let response = await createNotification({ content: str, userId: user._id });
+
+      userFollowers.forEach((follower) => {
+        updateUserNotification({ notificationId: response.data._id }, follower._id);
       });
     } catch (error) {
       console.log('Something went wrong while trying to update notification =>', error);

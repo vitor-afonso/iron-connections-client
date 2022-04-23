@@ -76,8 +76,14 @@ export const updateUser = (updatedUser, userId) => {
   });
 };
 
+export const createNotification = (requestBody) => {
+  return axios.post(`${API_URL}/notifications`, requestBody, {
+    headers: { Authorization: `Bearer ${localStorage.getItem('authToken')}` },
+  });
+};
+
 export const updateUserNotification = (updatedUser, userId) => {
-  return axios.put(`${API_URL}/users/${userId}/notification`, updatedUser, {
+  return axios.put(`${API_URL}/notifications/${userId}`, updatedUser, {
     headers: { Authorization: `Bearer ${localStorage.getItem('authToken')}` },
   });
 };
