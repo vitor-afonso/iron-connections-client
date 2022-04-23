@@ -76,6 +76,22 @@ export const updateUser = (updatedUser, userId) => {
   });
 };
 
+export const removeUserNotification = (userId, notificationId) => {
+  return axios.put(
+    `${API_URL}/users/${userId}/remove-follower?followerId=${notificationId}`,
+    {},
+    {
+      headers: { Authorization: `Bearer ${localStorage.getItem('authToken')}` },
+    }
+  );
+};
+
+export const getNotifications = () => {
+  return axios.get(`${API_URL}/notifications`, {
+    headers: { Authorization: `Bearer ${localStorage.getItem('authToken')}` },
+  });
+};
+
 export const createNotification = (requestBody) => {
   return axios.post(`${API_URL}/notifications`, requestBody, {
     headers: { Authorization: `Bearer ${localStorage.getItem('authToken')}` },
@@ -88,9 +104,15 @@ export const updateUserNotification = (updatedUser, userId) => {
   });
 };
 
+export const deleteNotification = (updatedUser, userId) => {
+  return axios.put(`${API_URL}/notifications/${userId}/remove`, updatedUser, {
+    headers: { Authorization: `Bearer ${localStorage.getItem('authToken')}` },
+  });
+};
+
 export const addFollower = (userId, followerId) => {
   return axios.put(
-    `${API_URL}/add-follower/${userId}?followerId=${followerId}`,
+    `${API_URL}/users/${userId}/add-follower?followerId=${followerId}`,
     {},
     {
       headers: { Authorization: `Bearer ${localStorage.getItem('authToken')}` },
@@ -99,7 +121,7 @@ export const addFollower = (userId, followerId) => {
 };
 export const removeFollower = (userId, followerId) => {
   return axios.put(
-    `${API_URL}/remove-follower/${userId}?followerId=${followerId}`,
+    `${API_URL}/users/${userId}/remove-follower?followerId=${followerId}`,
     {},
     {
       headers: { Authorization: `Bearer ${localStorage.getItem('authToken')}` },
