@@ -13,19 +13,6 @@ export const EditPostPage = () => {
 
   const { postId } = useParams();
 
-  useEffect(() => {
-    (async () => {
-      try {
-        let postFromDB = await getPost(postId);
-        console.log('postFromDB', postFromDB.data);
-        setBody(postFromDB.data.body);
-        setImageUrl(postFromDB.data.imageUrl);
-      } catch (error) {
-        console.log('error getting post to update from DB', error);
-      }
-    })();
-  }, [postId, user]);
-
   const handleFileUpload = async (e) => {
     try {
       const uploadData = new FormData();
@@ -56,12 +43,24 @@ export const EditPostPage = () => {
     try {
       let requestBody = { body, imageUrl };
       await updatePost(requestBody, postId);
-      navigate(`/feed`);
+      navigate(-1);
     } catch (error) {
       console.log('Something went wront while updating project in API', error);
     }
   };
 
+  useEffect(() => {
+    (async () => {
+      try {
+        let postFromDB = await getPost(postId);
+        console.log('postFromDB', postFromDB.data);
+        setBody(postFromDB.data.body);
+        setImageUrl(postFromDB.data.imageUrl);
+      } catch (error) {
+        console.log('error getting post to update from DB', error);
+      }
+    })();
+  }, [postId, user]);
   return (
     <div className='AddPost'>
       {body ? (

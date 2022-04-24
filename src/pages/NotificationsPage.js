@@ -2,6 +2,7 @@
 import { useContext, useEffect, useState } from 'react';
 import { AuthContext } from '../context/auth.context';
 import { deleteNotification, getNotifications, getUser, removeUserNotification } from '../api';
+import { Link } from 'react-router-dom';
 
 export const NotificationsPage = () => {
   const [notifications, setNotifications] = useState([]);
@@ -11,10 +12,10 @@ export const NotificationsPage = () => {
     // delete the notification
     let response = await deleteNotification(notificationId);
     console.log(response.data.message);
-    deleteUserNotification(notificationId); //<= updates user notifications array
+    updateUserNotifications(notificationId); //<= updates user notifications array
   };
 
-  const deleteUserNotification = async (notificationId) => {
+  const updateUserNotifications = async (notificationId) => {
     // call users and filter the array of notifications
     let response2 = await removeUserNotification(notificationId, user._id);
     console.log(response2.data.message);
@@ -48,7 +49,15 @@ export const NotificationsPage = () => {
         notifications.map((oneNotification) => {
           return (
             <div key={oneNotification._id}>
-              {oneNotification.commentMessage ? <span>{oneNotification.commentMessage}</span> : <span>{oneNotification.content}</span>}
+              {oneNotification.commentMessage ? (
+                <Link to={`/profile/${oneNotification.userId._id}`}>
+                  <span>{oneNotification.commentMessage}</span>
+                </Link>
+              ) : (
+                <Link to={`/profile/${oneNotification.userId._id}`}>
+                  <span>{oneNotification.content}</span>
+                </Link>
+              )}
               <button onClick={() => removeNotification(oneNotification._id)}>x</button>
             </div>
           );

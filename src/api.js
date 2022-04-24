@@ -46,6 +46,18 @@ export const updatePost = (updatedPost, postId) => {
   });
 };
 
+export const updatePostLikesAdd = (requestBody, postId) => {
+  return axios.put(`${API_URL}/posts/${postId}/add-like`, requestBody, {
+    headers: { Authorization: `Bearer ${localStorage.getItem('authToken')}` },
+  });
+};
+
+export const updatePostLikesRemove = (requestBody, postId) => {
+  return axios.put(`${API_URL}/posts/${postId}/remove-like`, requestBody, {
+    headers: { Authorization: `Bearer ${localStorage.getItem('authToken')}` },
+  });
+};
+
 export const addNewComment = (postId, comment) => {
   return axios.post(`${API_URL}/posts/${postId}/comment`, comment, {
     headers: { Authorization: `Bearer ${localStorage.getItem('authToken')}` },
@@ -106,6 +118,18 @@ export const updateUserNotification = (updatedUser, userId) => {
 
 export const deleteNotification = (notificationId) => {
   return axios.delete(`${API_URL}/notifications/${notificationId}`, {
+    headers: { Authorization: `Bearer ${localStorage.getItem('authToken')}` },
+  });
+};
+
+export const updateUserLikesAdd = (requestBody, userId) => {
+  return axios.put(`${API_URL}/users/${userId}/add-like`, requestBody, {
+    headers: { Authorization: `Bearer ${localStorage.getItem('authToken')}` },
+  });
+};
+
+export const updateUserLikesRemove = (requestBody, userId) => {
+  return axios.put(`${API_URL}/users/${userId}/remove-like`, requestBody, {
     headers: { Authorization: `Bearer ${localStorage.getItem('authToken')}` },
   });
 };
