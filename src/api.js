@@ -76,9 +76,9 @@ export const updateUser = (updatedUser, userId) => {
   });
 };
 
-export const removeUserNotification = (userId, notificationId) => {
+export const removeUserNotification = (notificationId, userId) => {
   return axios.put(
-    `${API_URL}/users/${userId}/remove-follower?followerId=${notificationId}`,
+    `${API_URL}/users/${userId}/remove-notification?notificationId=${notificationId}`,
     {},
     {
       headers: { Authorization: `Bearer ${localStorage.getItem('authToken')}` },
@@ -104,8 +104,8 @@ export const updateUserNotification = (updatedUser, userId) => {
   });
 };
 
-export const deleteNotification = (updatedUser, userId) => {
-  return axios.put(`${API_URL}/notifications/${userId}/remove`, updatedUser, {
+export const deleteNotification = (notificationId) => {
+  return axios.delete(`${API_URL}/notifications/${notificationId}`, {
     headers: { Authorization: `Bearer ${localStorage.getItem('authToken')}` },
   });
 };
