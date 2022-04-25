@@ -1,7 +1,7 @@
 // jshint esversion:9
 import { useContext, useEffect, useState } from 'react';
 import { AuthContext } from '../context/auth.context';
-import { deleteNotification, getNotifications, getUser, getUsers, removeUserNotification } from '../api';
+import { deleteNotification, getUser, getUsers, removeUserNotification } from '../api';
 import { Link } from 'react-router-dom';
 
 export const NotificationsPage = () => {
@@ -32,11 +32,8 @@ export const NotificationsPage = () => {
     try {
       if (user) {
         let currentUser = await getUser(user._id);
-        console.log('currentUser', currentUser.data);
 
         currentUser = currentUser.data;
-        /* let response = await getNotifications();
-        let userNotifications = response.data.filter((oneNotification) => currentUser.notifications.includes(oneNotification._id)); */
 
         setNotifications(currentUser.notifications);
       }
@@ -58,15 +55,9 @@ export const NotificationsPage = () => {
         notifications.map((oneNotification) => {
           return (
             <div key={oneNotification._id}>
-              {oneNotification.commentMessage || oneNotification.content.includes('liked') ? (
-                <Link to={`/profile/${oneNotification.postId.userId}`}>
-                  <span>{oneNotification.commentMessage}</span>
-                </Link>
-              ) : (
-                <Link to={`/profile/${oneNotification.userId}`}>
-                  <span>{oneNotification.content}</span>
-                </Link>
-              )}
+              <Link to={`/profile/${oneNotification.postId.userId}?postId=${oneNotification.postId._id}`}>
+                {oneNotification.commentMessage || oneNotification.content.includes('liked') ? <span>{oneNotification.commentMessage}</span> : <span>{oneNotification.content}</span>}
+              </Link>
               <button onClick={() => removeNotification(oneNotification._id)}>x</button>
             </div>
           );

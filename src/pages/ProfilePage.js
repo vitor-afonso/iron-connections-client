@@ -1,20 +1,32 @@
 // jshint esversion:9
 
-import { useContext, useState, useEffect } from 'react';
+import { useContext, useState, useEffect, useRef } from 'react';
 import { AuthContext } from '../context/auth.context';
-import { NavLink, useParams } from 'react-router-dom';
+import { NavLink, useParams, useSearchParams } from 'react-router-dom';
 import { getUser, getAllPosts } from './../api';
 import { AddPost } from '../components/AddPost';
 import { PostCard } from '../components/PostCard';
 
 export const ProfilePage = () => {
   const { user } = useContext(AuthContext);
-
   const [userProfile, setUserProfile] = useState(null);
   const [sortedListOfPosts, setSortedListOfPosts] = useState([]);
-
-  const { userId } = useParams();
   const [posts, setPosts] = useState([]);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const { userId } = useParams();
+  const postRef = useRef();
+
+  let queryPostId;
+
+  const scrollToElement = (postRef) => postRef.current.scrollIntoView({ behavior: 'smooth' });
+  /* const scrollToElement = (postRef) => window.scrollTo(0, postRef.current.offsetTop); */
+
+  /* const scrollToElement = () =>
+    window.current.scroll({
+      top: 2000,
+      left: 0,
+      behavior: 'smooth',
+    }); */
 
   const getPosts = async () => {
     try {
@@ -30,8 +42,14 @@ export const ProfilePage = () => {
     try {
       let oneUser = await getUser(userId);
       setUserProfile(oneUser.data);
-
       setSortedListOfPosts([...oneUser.data.posts.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))]);
+
+      queryPostId = searchParams.get('postId');
+      /* console.log('postId from query =>', queryPostId); */
+
+      if (queryPostId) {
+        setTimeout(scrollToElement, 2000);
+      }
     } catch (error) {
       console.log('Something went wrong while trying to get user in profile =>', error);
     }
@@ -77,7 +95,10 @@ export const ProfilePage = () => {
 
           {userProfile &&
             sortedListOfPosts.map((onePost) => {
-              return <PostCard post={onePost} key={onePost._id} refreshPosts={getPosts} refreshUser={getOneUser} />;
+              if (queryPostId && queryPostId === onePost._id) {
+                return <PostCard href={postRef} id={`#${onePost._id}`} post={onePost} key={onePost._id} refreshPosts={getPosts} refreshUser={getOneUser} />;
+              }
+              return <PostCard className={onePost._id} post={onePost} key={onePost._id} refreshPosts={getPosts} refreshUser={getOneUser} />;
             })}
         </div>
       ) : (
