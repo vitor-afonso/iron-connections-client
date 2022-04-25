@@ -20,8 +20,8 @@ export const ChatPage = () => {
   };
 
   const createNewMessage = async (message) => {
-    let response = await createMessage(message);
-    console.log('Message created =>', response.data);
+    await createMessage(message);
+
     getAllMessages();
     setMessage('');
   };
