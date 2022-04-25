@@ -9,16 +9,14 @@ export const NotificationsPage = () => {
   const { user } = useContext(AuthContext);
 
   const removeNotification = async (notificationId) => {
-    // delete the notification
-    let response = await deleteNotification(notificationId);
-    console.log(response.data.message);
-    updateUserNotifications(notificationId); //<= updates user notifications array
+    await deleteNotification(notificationId);
+    updateUserNotifications({ notificationId: notificationId }, user._id); //<= updates user notifications array
   };
 
   const updateUserNotifications = async (notificationId) => {
     // call users and filter the array of notifications
-    let response2 = await removeUserNotification(notificationId, user._id);
-    console.log(response2.data.message);
+    await removeUserNotification(notificationId, user._id);
+
     getUpdatedUser();
   };
 
@@ -26,10 +24,13 @@ export const NotificationsPage = () => {
     try {
       if (user) {
         let currentUser = await getUser(user._id);
+        console.log('currentUser', currentUser.data);
+
         currentUser = currentUser.data;
-        let response = await getNotifications();
-        let userNotifications = response.data.filter((oneNotification) => currentUser.notifications.includes(oneNotification._id));
-        setNotifications(userNotifications);
+        /* let response = await getNotifications();
+        let userNotifications = response.data.filter((oneNotification) => currentUser.notifications.includes(oneNotification._id)); */
+
+        setNotifications(currentUser.notifications);
       }
     } catch (error) {
       console.log('Something went wrong while trying to get user and set notifications =>', error);
@@ -49,12 +50,12 @@ export const NotificationsPage = () => {
         notifications.map((oneNotification) => {
           return (
             <div key={oneNotification._id}>
-              {oneNotification.commentMessage ? (
-                <Link to={`/profile/${oneNotification.userId._id}`}>
+              {oneNotification.commentMessage || oneNotification.content.includes('liked') ? (
+                <Link to={`/profile/${oneNotification.postId.userId}`}>
                   <span>{oneNotification.commentMessage}</span>
                 </Link>
               ) : (
-                <Link to={`/profile/${oneNotification.userId._id}`}>
+                <Link to={`/profile/${oneNotification.userId}`}>
                   <span>{oneNotification.content}</span>
                 </Link>
               )}

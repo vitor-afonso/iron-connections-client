@@ -88,14 +88,10 @@ export const updateUser = (updatedUser, userId) => {
   });
 };
 
-export const removeUserNotification = (notificationId, userId) => {
-  return axios.put(
-    `${API_URL}/users/${userId}/remove-notification?notificationId=${notificationId}`,
-    {},
-    {
-      headers: { Authorization: `Bearer ${localStorage.getItem('authToken')}` },
-    }
-  );
+export const removeUserNotification = (requestBody, userId) => {
+  return axios.put(`${API_URL}/users/${userId}/remove-notification`, requestBody, {
+    headers: { Authorization: `Bearer ${localStorage.getItem('authToken')}` },
+  });
 };
 
 export const getNotifications = () => {

@@ -46,22 +46,21 @@ export const AddComment = ({ post, refreshAllPosts, refreshProfileUser }) => {
 
       if (post.comments.length !== 0) {
         if (post.userId._id !== user._id) {
-          let response1 = await createNotification({ content: str, userId: user._id });
-          await updateUserNotification({ notificationId: response1.data._id }, post.userId._id);
+          let response = await createNotification({ commentMessage: str2, userId: user._id, postId: post._id });
+          newlyCreatedNotificationId = response.data._id;
         }
-
-        let response = await createNotification({ content: '', commentMessage: str2, userId: user._id });
-
-        newlyCreatedNotificationId = response.data._id;
 
         post.comments.forEach((oneComment) => {
           if (post.userId._id !== oneComment.userId._id) {
             updateUserNotification({ notificationId: newlyCreatedNotificationId }, oneComment.userId._id);
           }
         });
+
+        let response = await createNotification({ content: str, userId: user._id, postId: post._id });
+        await updateUserNotification({ notificationId: response.data._id }, post.userId._id);
       } else {
         if (post.userId._id !== user._id) {
-          let response = await createNotification({ content: str, userId: user._id });
+          let response = await createNotification({ content: str, userId: user._id, postId: post._id });
           newlyCreatedNotificationId = response.data._id;
           updateUserNotification({ notificationId: newlyCreatedNotificationId }, post.userId._id);
         }
@@ -73,8 +72,10 @@ export const AddComment = ({ post, refreshAllPosts, refreshProfileUser }) => {
 
   useEffect(() => {
     (async () => {
-      let response = await getUser(user._id);
-      setUserImageUrl(response.data.imageUrl);
+      if (user) {
+        let response = await getUser(user._id);
+        setUserImageUrl(response.data.imageUrl);
+      }
     })();
   }, [user, post]);
 
