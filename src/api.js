@@ -155,6 +155,18 @@ export const deleteUser = (id) => {
   });
 };
 
+export const getMessages = () => {
+  return axios.get(`${API_URL}/messages`, {
+    headers: { Authorization: `Bearer ${localStorage.getItem('authToken')}` },
+  });
+};
+
+export const createMessage = (requestBody) => {
+  return axios.post(`${API_URL}/messages`, requestBody, {
+    headers: { Authorization: `Bearer ${localStorage.getItem('authToken')}` },
+  });
+};
+
 export const signup = (user) => {
   return axios.post(`${API_URL}/signup`, user);
 };

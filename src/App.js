@@ -16,6 +16,7 @@ import { EditProfilePage } from './pages/EditProfilePage';
 import { UsersPage } from './pages/UsersPage';
 import { FriendsPage } from './pages/FriendsPage';
 import { IsFriend } from './components/isFriend';
+import { ChatPage } from './pages/ChatPage';
 
 function App() {
   return (
@@ -77,6 +78,14 @@ function App() {
           element={
             <IsPrivate>
               <NotificationsPage />
+            </IsPrivate>
+          }
+        />
+        <Route
+          path='/chat-page'
+          element={
+            <IsPrivate>
+              <ChatPage />
             </IsPrivate>
           }
         />
