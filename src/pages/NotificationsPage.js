@@ -1,7 +1,7 @@
 // jshint esversion:9
 import { useContext, useEffect, useState } from 'react';
 import { AuthContext } from '../context/auth.context';
-import { deleteNotification, getNotifications, getUser, removeUserNotification } from '../api';
+import { deleteNotification, getNotifications, getUser, getUsers, removeUserNotification } from '../api';
 import { Link } from 'react-router-dom';
 
 export const NotificationsPage = () => {
@@ -9,13 +9,21 @@ export const NotificationsPage = () => {
   const { user } = useContext(AuthContext);
 
   const removeNotification = async (notificationId) => {
-    await deleteNotification(notificationId);
-    updateUserNotifications({ notificationId: notificationId }, user._id); //<= updates user notifications array
+    let allUsers = await getUsers();
+
+    allUsers = allUsers.data.filter((oneUser) => oneUser._id !== user._id);
+
+    if (!allUsers.find((oneUser) => oneUser.notifications.includes(notificationId))) {
+      let response = await deleteNotification(notificationId);
+      console.log(response);
+    }
+
+    updateUserNotifications({ notificationId: notificationId }); //<= updates user notifications array
   };
 
-  const updateUserNotifications = async (notificationId) => {
+  const updateUserNotifications = async (requestBody) => {
     // call users and filter the array of notifications
-    await removeUserNotification(notificationId, user._id);
+    await removeUserNotification(requestBody, user._id);
 
     getUpdatedUser();
   };
