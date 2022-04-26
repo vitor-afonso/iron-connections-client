@@ -16,18 +16,6 @@ export const ProfilePage = () => {
   const { userId } = useParams();
   const postRef = useRef();
 
-  let queryPostId;
-
-  const scrollToElement = (postRef) => postRef.current.scrollIntoView({ behavior: 'smooth' });
-  /* const scrollToElement = (postRef) => window.scrollTo(0, postRef.current.offsetTop); */
-
-  /* const scrollToElement = () =>
-    window.current.scroll({
-      top: 2000,
-      left: 0,
-      behavior: 'smooth',
-    }); */
-
   const getPosts = async () => {
     try {
       let response = await getAllPosts();
@@ -44,12 +32,7 @@ export const ProfilePage = () => {
       setUserProfile(oneUser.data);
       setSortedListOfPosts([...oneUser.data.posts.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))]);
 
-      queryPostId = searchParams.get('postId');
-      /* console.log('postId from query =>', queryPostId); */
-
-      if (queryPostId) {
-        setTimeout(scrollToElement, 2000);
-      }
+      console.log('postId from query =>', searchParams.get('postId'));
     } catch (error) {
       console.log('Something went wrong while trying to get user in profile =>', error);
     }
@@ -64,6 +47,14 @@ export const ProfilePage = () => {
       }
     })();
   }, [userId]);
+
+  useEffect(() => {
+    setTimeout(() => {
+      if (postRef.current) {
+        postRef.current.scrollIntoView({ behavior: 'smooth' });
+      }
+    }, 1000);
+  }, [postRef]);
 
   return (
     <>
@@ -95,10 +86,18 @@ export const ProfilePage = () => {
 
           {userProfile &&
             sortedListOfPosts.map((onePost) => {
-              if (queryPostId && queryPostId === onePost._id) {
-                return <PostCard href={postRef} id={`#${onePost._id}`} post={onePost} key={onePost._id} refreshPosts={getPosts} refreshUser={getOneUser} />;
+              if (searchParams.get('postId') && searchParams.get('postId') === onePost._id) {
+                return (
+                  <div ref={postRef} key={onePost._id} style={{ height: '50vh' }}>
+                    <PostCard id={`#${onePost._id}`} post={onePost} refreshPosts={getPosts} refreshUser={getOneUser} />
+                  </div>
+                );
               }
-              return <PostCard className={onePost._id} post={onePost} key={onePost._id} refreshPosts={getPosts} refreshUser={getOneUser} />;
+              return (
+                <div key={onePost._id} style={{ height: '50vh' }}>
+                  <PostCard className={onePost._id} post={onePost} refreshPosts={getPosts} refreshUser={getOneUser} />
+                </div>
+              );
             })}
         </div>
       ) : (
