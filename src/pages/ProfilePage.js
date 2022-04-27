@@ -6,6 +6,8 @@ import { NavLink, useParams, useSearchParams } from 'react-router-dom';
 import { getUser, getAllPosts } from './../api';
 import { AddPost } from '../components/AddPost';
 import { PostCard } from '../components/PostCard';
+import Aos from 'aos';
+import 'aos/dist/aos.css';
 
 export const ProfilePage = () => {
   const { user } = useContext(AuthContext);
@@ -49,6 +51,10 @@ export const ProfilePage = () => {
   }, [userId]);
 
   useEffect(() => {
+    Aos.init({ duration: 1000 });
+  }, []);
+
+  useEffect(() => {
     setTimeout(() => {
       if (postRef.current) {
         postRef.current.scrollIntoView({ behavior: 'smooth' });
@@ -83,22 +89,23 @@ export const ProfilePage = () => {
           )}
 
           {user._id === userProfile._id && <AddPost refreshPosts={getPosts} refreshUser={getOneUser} />}
-
-          {userProfile &&
-            sortedListOfPosts.map((onePost) => {
-              if (searchParams.get('postId') && searchParams.get('postId') === onePost._id) {
+          <div className='postCards-container'>
+            {userProfile &&
+              sortedListOfPosts.map((onePost) => {
+                if (searchParams.get('postId') && searchParams.get('postId') === onePost._id) {
+                  return (
+                    <div ref={postRef} key={onePost._id} className='postCard-container' data-aos='fade-up'>
+                      <PostCard id={`#${onePost._id}`} post={onePost} refreshPosts={getPosts} refreshUser={getOneUser} />
+                    </div>
+                  );
+                }
                 return (
-                  <div ref={postRef} key={onePost._id} style={{ height: '50vh' }}>
-                    <PostCard id={`#${onePost._id}`} post={onePost} refreshPosts={getPosts} refreshUser={getOneUser} />
+                  <div key={onePost._id} className='postCard-container' data-aos='fade-up'>
+                    <PostCard className={onePost._id} post={onePost} refreshPosts={getPosts} refreshUser={getOneUser} />
                   </div>
                 );
-              }
-              return (
-                <div key={onePost._id} style={{ height: '50vh' }}>
-                  <PostCard className={onePost._id} post={onePost} refreshPosts={getPosts} refreshUser={getOneUser} />
-                </div>
-              );
-            })}
+              })}
+          </div>
         </div>
       ) : (
         <p>Loading...</p>

@@ -2,10 +2,11 @@
 
 import { useContext, useEffect, useState } from 'react';
 import { getAllPosts, getUser } from '../api';
-import { Container } from 'react-bootstrap';
 import { PostCard } from '../components/PostCard';
 import { AddPost } from '../components/AddPost';
 import { AuthContext } from '../context/auth.context';
+import Aos from 'aos';
+import 'aos/dist/aos.css';
 
 export const FeedPage = () => {
   const [posts, setPosts] = useState([]);
@@ -36,21 +37,23 @@ export const FeedPage = () => {
     getOneUser();
   }, [user]);
 
-  return (
-    <Container>
-      <h3>FeedPage</h3>
+  useEffect(() => {
+    Aos.init({ duration: 1000 });
+  }, []);
 
+  return (
+    <div className='postCards-container'>
       <AddPost refreshPosts={getPosts} refreshUser={getOneUser} />
 
       {allPostsIdsToDisplay &&
         posts &&
         posts.map((onePost) => {
           return (
-            <div style={{ height: '100vh' }} key={onePost._id}>
-              {allPostsIdsToDisplay.includes(onePost._id) && <PostCard post={onePost} key={onePost._id} refreshPosts={getPosts} />}
+            <div className='postCard-container' data-aos='fade-up' key={onePost._id}>
+              {allPostsIdsToDisplay.includes(onePost._id) && <PostCard post={onePost} refreshPosts={getPosts} />}
             </div>
           );
         })}
-    </Container>
+    </div>
   );
 };

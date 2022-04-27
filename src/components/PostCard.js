@@ -10,7 +10,6 @@ import { createNotification, updatePostLikesAdd, updatePostLikesRemove, updateUs
 
 export const PostCard = ({ post, refreshPosts, refreshUser }) => {
   const { user } = useContext(AuthContext);
-
   const toggleComments = useRef(null);
 
   let date = new Date(post.createdAt);
@@ -69,7 +68,7 @@ export const PostCard = ({ post, refreshPosts, refreshUser }) => {
   };
 
   return (
-    <div style={{ marginTop: '30px' }}>
+    <div>
       <div className='post-header'>
         <small>
           <NavLink to={`/profile/${post.userId._id}`}>
@@ -93,13 +92,11 @@ export const PostCard = ({ post, refreshPosts, refreshUser }) => {
         <span onClick={() => handleLike(post._id)}>💙 </span>
         <span>{likesNum}</span>
         <span onClick={showComments}>
-          {' '}
-          <b>Comment</b>{' '}
+          <b>Comment</b>
         </span>
         <span>{post.comments.length}</span>
         <span>
-          {' '}
-          <b>Share</b>{' '}
+          <b>Share</b>
         </span>
       </div>
 
@@ -110,8 +107,6 @@ export const PostCard = ({ post, refreshPosts, refreshUser }) => {
           return <CommentCard postId={post._id} comment={oneComment} key={oneComment._id} refreshAllPosts={refreshPosts} refreshProfileUser={refreshUser} />;
         })}
       </div>
-
-      <hr />
     </div>
   );
 };
