@@ -53,6 +53,7 @@ export const NotificationsPage = () => {
       <h2>Notifications</h2>
       {notifications.length !== 0 &&
         notifications.map((oneNotification) => {
+          console.log('have notifications');
           return (
             <div key={oneNotification._id}>
               <Link to={`/profile/${oneNotification.postId.userId}?postId=${oneNotification.postId._id}`}>

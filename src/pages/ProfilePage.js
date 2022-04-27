@@ -21,8 +21,8 @@ export const ProfilePage = () => {
   const getPosts = async () => {
     try {
       let response = await getAllPosts();
-      /* setPosts(response.data); */
-      console.log('all posts =>', response.data);
+      setPosts(response.data);
+      /* console.log('all posts =>', response.data); */
     } catch (error) {
       console.log('Something went wrong while trying to get posts from DB =>', error);
     }
@@ -94,7 +94,7 @@ export const ProfilePage = () => {
               sortedListOfPosts.map((onePost) => {
                 if (searchParams.get('postId') && searchParams.get('postId') === onePost._id) {
                   return (
-                    <div ref={postRef} key={onePost._id} className='postCard-container' data-aos='fade-up'>
+                    <div ref={postRef} key={onePost._id} className='postCard-container' data-aos='flip-left'>
                       <PostCard id={`#${onePost._id}`} post={onePost} refreshPosts={getPosts} refreshUser={getOneUser} />
                     </div>
                   );

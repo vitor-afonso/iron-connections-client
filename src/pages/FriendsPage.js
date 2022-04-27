@@ -4,6 +4,8 @@ import { useContext, useEffect, useState } from 'react';
 import { NavLink, useParams } from 'react-router-dom';
 import { AuthContext } from '../context/auth.context';
 import { addFollower, createNotification, getUser, removeFollower, updateUserNotification } from './../api';
+import Aos from 'aos';
+import 'aos/dist/aos.css';
 
 export const FriendsPage = () => {
   const { user } = useContext(AuthContext);
@@ -97,6 +99,10 @@ export const FriendsPage = () => {
     })();
   }, [profileOwnerId, user, str, followers]);
 
+  useEffect(() => {
+    Aos.init({ duration: 1000 });
+  }, []);
+
   return (
     <div>
       <label>
@@ -105,7 +111,7 @@ export const FriendsPage = () => {
       {filteredFollowers.length &&
         filteredFollowers.map((oneUser) => {
           return (
-            <div key={oneUser._id}>
+            <div key={oneUser._id} className='userCard-container' data-aos='fade-up'>
               {oneUser._id !== user._id && (
                 <>
                   <NavLink to={`/profile/${oneUser._id}`}>

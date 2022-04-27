@@ -3,6 +3,9 @@
 import { useEffect, useState } from 'react';
 import { NavLink } from 'react-router-dom';
 
+import Aos from 'aos';
+import 'aos/dist/aos.css';
+
 export const FilterUsers = ({ usersList, userFollowersIds, currentUser, handleAddFollower, handleRemoveFollower }) => {
   const [users, setUsers] = useState('');
   const [str, setStr] = useState('');
@@ -18,6 +21,10 @@ export const FilterUsers = ({ usersList, userFollowersIds, currentUser, handleAd
     }
   }, [str, usersList, currentUser]);
 
+  useEffect(() => {
+    Aos.init({ duration: 1000 });
+  }, []);
+
   return (
     <div>
       <label>
@@ -26,7 +33,7 @@ export const FilterUsers = ({ usersList, userFollowersIds, currentUser, handleAd
       {users.length &&
         users.map((oneUser) => {
           return (
-            <div key={oneUser._id}>
+            <div key={oneUser._id} className='userCard-container' data-aos='fade-up'>
               {!oneUser._id.includes(currentUser._id) && (
                 <>
                   <NavLink to={`/profile/${oneUser._id}`}>
