@@ -32,6 +32,7 @@ export const ProfilePage = () => {
     try {
       let oneUser = await getUser(userId);
       setUserProfile(oneUser.data);
+      console.log('profile onwer =>', oneUser.data);
       setSortedListOfPosts([...oneUser.data.posts.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))]);
 
       console.log('postId from query =>', searchParams.get('postId'));

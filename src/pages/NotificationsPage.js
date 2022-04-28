@@ -53,11 +53,10 @@ export const NotificationsPage = () => {
       <h2>Notifications</h2>
       {notifications.length !== 0 &&
         notifications.map((oneNotification) => {
-          console.log('have notifications');
           return (
             <div key={oneNotification._id}>
               <Link to={`/profile/${oneNotification.postId.userId}?postId=${oneNotification.postId._id}`}>
-                {oneNotification.commentMessage || oneNotification.content.includes('liked') ? <span>{oneNotification.commentMessage}</span> : <span>{oneNotification.content}</span>}
+                {oneNotification.commentMessage ? <span>{oneNotification.commentMessage}</span> : <span>{oneNotification.content}</span>}
               </Link>
               <button onClick={() => removeNotification(oneNotification._id)}>x</button>
             </div>
