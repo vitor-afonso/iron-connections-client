@@ -48,8 +48,16 @@ export const ProfilePage = () => {
     setTimeout(() => {
       if (postRef.current) {
         postRef.current.scrollIntoView({ behavior: 'smooth' });
+        postRef.current.style.border = '1px solid blue';
+        postRef.current.style.borderRadius = '15px';
       }
     }, 1000);
+
+    setTimeout(() => {
+      if (postRef.current) {
+        postRef.current.style.border = 'none';
+      }
+    }, 3000);
   }, [postRef]);
 
   return (
