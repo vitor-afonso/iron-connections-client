@@ -36,7 +36,9 @@ export const AddPost = ({ refreshPosts, refreshUser }) => {
     try {
       let requestBody = { body, userId: user._id, imageUrl };
       let newPost = await addPost(requestBody);
-      refreshPosts();
+      if (refreshPosts) {
+        refreshPosts();
+      }
       refreshUser();
       setBody('');
       setImageUrl('');

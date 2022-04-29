@@ -32,10 +32,7 @@ export const NotificationsPage = () => {
     try {
       if (user) {
         let currentUser = await getUser(user._id);
-
-        currentUser = currentUser.data;
-
-        setNotifications(currentUser.notifications);
+        setNotifications(currentUser.data.notifications);
       }
     } catch (error) {
       console.log('Something went wrong while trying to get user and set notifications =>', error);

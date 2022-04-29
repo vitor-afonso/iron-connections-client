@@ -13,29 +13,18 @@ export const ProfilePage = () => {
   const { user } = useContext(AuthContext);
   const [userProfile, setUserProfile] = useState(null);
   const [sortedListOfPosts, setSortedListOfPosts] = useState([]);
-  const [posts, setPosts] = useState([]);
   const [searchParams, setSearchParams] = useSearchParams();
   const { userId } = useParams();
   const postRef = useRef();
-
-  const getPosts = async () => {
-    try {
-      let response = await getAllPosts();
-      setPosts(response.data);
-      /* console.log('all posts =>', response.data); */
-    } catch (error) {
-      console.log('Something went wrong while trying to get posts from DB =>', error);
-    }
-  };
 
   const getOneUser = async () => {
     try {
       let oneUser = await getUser(userId);
       setUserProfile(oneUser.data);
-      console.log('profile onwer =>', oneUser.data);
+
       setSortedListOfPosts([...oneUser.data.posts.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))]);
 
-      console.log('postId from query =>', searchParams.get('postId'));
+      /* console.log('postId from query =>', searchParams.get('postId')); */
     } catch (error) {
       console.log('Something went wrong while trying to get user in profile =>', error);
     }
@@ -89,20 +78,20 @@ export const ProfilePage = () => {
             </div>
           )}
 
-          {user._id === userProfile._id && <AddPost refreshPosts={getPosts} refreshUser={getOneUser} />}
+          {user._id === userProfile._id && <AddPost refreshUser={getOneUser} />}
           <div className='postCards-container'>
             {userProfile &&
               sortedListOfPosts.map((onePost) => {
                 if (searchParams.get('postId') && searchParams.get('postId') === onePost._id) {
                   return (
-                    <div ref={postRef} key={onePost._id} className='postCard-container' data-aos='flip-left'>
-                      <PostCard id={`#${onePost._id}`} post={onePost} refreshPosts={getPosts} refreshUser={getOneUser} />
+                    <div ref={postRef} key={onePost._id}>
+                      <PostCard id={`#${onePost._id}`} post={onePost} refreshUser={getOneUser} />
                     </div>
                   );
                 }
                 return (
-                  <div key={onePost._id} className='postCard-container' data-aos='fade-up'>
-                    <PostCard className={onePost._id} post={onePost} refreshPosts={getPosts} refreshUser={getOneUser} />
+                  <div key={onePost._id}>
+                    <PostCard className={onePost._id} post={onePost} refreshUser={getOneUser} />
                   </div>
                 );
               })}

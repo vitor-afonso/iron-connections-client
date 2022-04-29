@@ -87,17 +87,16 @@ export const FriendsPage = () => {
   };
 
   useEffect(() => {
-    if (str) {
-      handleFilter();
-      return;
-    }
-
     (async () => {
       if (user && followers.length === 0) {
         refreshFollowers();
       }
     })();
-  }, [profileOwnerId, user, str, followers]);
+  }, [profileOwnerId, user]);
+
+  useEffect(() => {
+    handleFilter();
+  }, [str]);
 
   useEffect(() => {
     Aos.init({ duration: 1000 });

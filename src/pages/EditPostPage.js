@@ -53,7 +53,7 @@ export const EditPostPage = () => {
     (async () => {
       try {
         let postFromDB = await getPost(postId);
-        console.log('postFromDB', postFromDB.data);
+
         setBody(postFromDB.data.body);
         setImageUrl(postFromDB.data.imageUrl);
       } catch (error) {

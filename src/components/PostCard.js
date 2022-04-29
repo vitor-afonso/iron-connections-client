@@ -38,7 +38,9 @@ export const PostCard = ({ post, refreshPosts, refreshUser }) => {
           let notification = await createNotification({ content: str, userId: user._id, postId: post._id });
           updateUserNotification({ notificationId: notification.data._id }, post.userId._id);
         }
-        refreshPosts();
+        if (refreshPosts) {
+          refreshPosts();
+        }
         if (refreshUser) {
           refreshUser();
         }
@@ -68,7 +70,7 @@ export const PostCard = ({ post, refreshPosts, refreshUser }) => {
   };
 
   return (
-    <div>
+    <div className='postCard-container' data-aos='fade-up'>
       <div className='post-header'>
         <small>
           <NavLink to={`/profile/${post.userId._id}`}>
