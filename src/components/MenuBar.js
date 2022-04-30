@@ -73,7 +73,7 @@ export const MenuBar = () => {
         )}
       </ul>
 
-      <ul class='menu menu-horizontal rounded-box sm:hidden'>
+      <ul className='menu menu-horizontal rounded-box sm:hidden'>
         {!isLoggedIn && (
           <>
             <li>
