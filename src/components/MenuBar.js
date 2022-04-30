@@ -11,21 +11,29 @@ export const MenuBar = () => {
 
   return (
     <nav>
-      <ul className='menu menu-horizontal bg-primary-content rounded-box flex'>
+      <ul className='menu menu-horizontal bg-primary-content rounded-box flex '>
         <li className='flex-1'>
-          <Link to='/'>Iron-Connections</Link>
+          <Link to='/' className='font-semibold'>
+            <span className='text-indigo-500 inline'>IronConnections</span>
+          </Link>
         </li>
 
         {!isLoggedIn && (
           <>
             <li>
-              <Link to='/'>Home</Link>
+              <Link to='/' className='hover:text-indigo-500'>
+                Home
+              </Link>
             </li>
             <li>
-              <Link to='/signup'>Sign Up</Link>
+              <Link to='/signup' className='hover:text-indigo-500'>
+                Sign Up
+              </Link>
             </li>
             <li>
-              <Link to='/login'>Login</Link>
+              <Link to='/login' className='hover:text-indigo-500'>
+                Login
+              </Link>
             </li>
           </>
         )}
@@ -33,23 +41,33 @@ export const MenuBar = () => {
         {isLoggedIn && user && (
           <>
             <li>
-              <Link to='/feed'>Feed</Link>
+              <Link to='/feed' className='hover:text-indigo-500'>
+                Feed
+              </Link>
             </li>
 
             <li>
-              <Link to={`/profile/${user._id}`}>Profile</Link>
+              <Link to={`/profile/${user._id}`} className='hover:text-indigo-500'>
+                Profile
+              </Link>
             </li>
 
             <li>
-              <Link to='/users'> Users </Link>
+              <Link to='/users' className='hover:text-indigo-500'>
+                Users
+              </Link>
             </li>
 
             <li>
-              <Link href='/notifications'> Notifications </Link>
+              <Link href='/notifications' className='hover:text-indigo-500'>
+                Notifications
+              </Link>
             </li>
 
             <li>
-              <Link onClick={logOutUser}>Logout</Link>
+              <Link onClick={logOutUser} className='hover:text-indigo-500'>
+                Logout
+              </Link>
             </li>
           </>
         )}
