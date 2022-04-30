@@ -2,7 +2,6 @@
 
 import { useContext } from 'react';
 import { AuthContext } from '../context/auth.context';
-import { Navbar, Container, Nav } from 'react-bootstrap';
 import { Link, NavLink } from 'react-router-dom';
 
 export const MenuBar = () => {
@@ -11,36 +10,50 @@ export const MenuBar = () => {
   const { isLoggedIn, user, logOutUser } = useContext(AuthContext);
 
   return (
-    <Navbar bg='light' expand='lg'>
-      <Container>
-        <Navbar.Brand href='/'>Iron-Connections</Navbar.Brand>
-        <Navbar.Toggle aria-controls='basic-navbar-nav' />
-        <Navbar.Collapse id='basic-navbar-nav'>
-          <Nav className='ms-auto'>
-            {isLoggedIn && (
-              <>
-                <NavLink to='/feed'>Feed</NavLink>
+    <nav>
+      <ul className='menu menu-horizontal bg-primary-content rounded-box flex'>
+        <li className='flex-1'>
+          <Link to='/'>Iron-Connections</Link>
+        </li>
 
-                {user && <NavLink to={`/profile/${user._id}`}>Profile</NavLink>}
+        {!isLoggedIn && (
+          <>
+            <li>
+              <Link to='/'>Home</Link>
+            </li>
+            <li>
+              <Link to='/signup'>Sign Up</Link>
+            </li>
+            <li>
+              <Link to='/login'>Login</Link>
+            </li>
+          </>
+        )}
 
-                <NavLink to='/users'> Users </NavLink>
+        {isLoggedIn && user && (
+          <>
+            <li>
+              <Link to='/feed'>Feed</Link>
+            </li>
 
-                <Nav.Link href='/notifications'> Notifications </Nav.Link>
+            <li>
+              <Link to={`/profile/${user._id}`}>Profile</Link>
+            </li>
 
-                <Nav.Link onClick={logOutUser}>Logout</Nav.Link>
-              </>
-            )}
+            <li>
+              <Link to='/users'> Users </Link>
+            </li>
 
-            {!isLoggedIn && (
-              <>
-                <Link to='/'>Home</Link>
-                <Link to='/signup'>Sign Up</Link>
-                <Link to='/login'>Login</Link>
-              </>
-            )}
-          </Nav>
-        </Navbar.Collapse>
-      </Container>
-    </Navbar>
+            <li>
+              <Link href='/notifications'> Notifications </Link>
+            </li>
+
+            <li>
+              <Link onClick={logOutUser}>Logout</Link>
+            </li>
+          </>
+        )}
+      </ul>
+    </nav>
   );
 };
