@@ -2,7 +2,7 @@
 
 import { useContext } from 'react';
 import { AuthContext } from '../context/auth.context';
-import { Link, NavLink } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 export const MenuBar = () => {
   // Subscribe to the AuthContext to gain access to
@@ -11,7 +11,7 @@ export const MenuBar = () => {
 
   return (
     <nav>
-      <ul className='menu menu-horizontal bg-primary-content rounded-box flex '>
+      <ul className='menu menu-horizontal rounded-box flex '>
         <li className='flex-1'>
           <Link to='/' className='font-semibold'>
             <span className='text-indigo-500 inline'>IronConnections</span>

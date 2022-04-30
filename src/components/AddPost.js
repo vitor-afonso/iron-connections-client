@@ -83,19 +83,40 @@ export const AddPost = ({ refreshPosts, refreshUser }) => {
   }, [user]);
 
   return (
-    <div className='AddPost'>
+    <div className='AddPost border-solid border-2 border-indigo-500 rounded-md'>
       <form onSubmit={handleSubmit}>
-        {userImageUrl && <img src={userImageUrl} alt='Author' style={{ width: '30px' }} />}
-
-        <label>
-          <input type='text' name='body' value={body} onChange={(e) => setBody(e.target.value)} placeholder='Share your thoughts' style={{ width: '250px' }} />
-          <span style={{ marginLeft: '-35px', marginRight: '18px' }}>📷</span>
-        </label>
-
-        <label>
-          <input type='file' onChange={(e) => handleFileUpload(e)} />
-        </label>
-        <button type='submit'>Create Post</button>
+        <div className='overflow-x-auto w-full'>
+          <table className='table w-full  '>
+            <tbody>
+              <tr>
+                <td className='border-none'>
+                  <div className='flex items-center space-x-3'>
+                    <div className='avatar'>
+                      <div className='mask mask-squircle w-12 h-12'>{userImageUrl && <img src={userImageUrl} alt='Author' />}</div>
+                    </div>
+                    <label className='w-full'>
+                      <textarea type='textarea' name='body' value={body} onChange={(e) => setBody(e.target.value)} placeholder='Share your thoughts' />
+                    </label>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <div className='flex '>
+                    <label className='flex-1'>
+                      <button className='btn btn-active btn-ghost'>
+                        <input type='file' onChange={(e) => handleFileUpload(e)} />
+                      </button>
+                    </label>
+                    <button type='submit' className='btn btn-outline btn-primary'>
+                      Create Post
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </form>
     </div>
   );
