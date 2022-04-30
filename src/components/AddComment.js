@@ -1,7 +1,7 @@
 //jshint esversion:9
 
 import { useContext, useState, useEffect } from 'react';
-import { NavLink } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
 import { AuthContext } from '../context/auth.context';
 import { addNewComment, createNotification, getUser, updateUserNotification } from './../api';
 
@@ -83,9 +83,9 @@ export const AddComment = ({ post, refreshAllPosts, refreshProfileUser }) => {
     <div>
       <form onSubmit={handleSubmit}>
         {userImageUrl && (
-          <NavLink to={`/profile/${post.userId._id}`} style={{ display: 'inline-block' }}>
+          <Link to={`/profile/${post.userId._id}`} style={{ display: 'inline-block' }}>
             <img src={userImageUrl} alt='Author' style={{ width: '30px' }} />
-          </NavLink>
+          </Link>
         )}
 
         <label>
