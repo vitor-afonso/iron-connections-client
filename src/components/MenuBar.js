@@ -10,8 +10,8 @@ export const MenuBar = () => {
   const { isLoggedIn, user, logOutUser } = useContext(AuthContext);
 
   return (
-    <nav>
-      <ul className='menu menu-horizontal rounded-box flex '>
+    <nav className='fixed top-0 left-0 right-0 bg-white'>
+      <ul className='menu menu-horizontal rounded-box hidden sm:flex'>
         <li className='flex-1'>
           <Link to='/' className='font-semibold'>
             <span className='text-indigo-500 inline'>IronConnections</span>
@@ -67,6 +67,62 @@ export const MenuBar = () => {
             <li>
               <span onClick={logOutUser} className='hover:text-indigo-500'>
                 Logout
+              </span>
+            </li>
+          </>
+        )}
+      </ul>
+
+      <ul class='menu menu-horizontal rounded-box sm:hidden'>
+        {!isLoggedIn && (
+          <>
+            <li>
+              <Link to='/' className='hover:text-indigo-500'>
+                <img src='./icons/home_black_24dp.svg' alt='Home' className='h-6 w-6' />
+              </Link>
+            </li>
+            <li>
+              <Link to='/signup' className='hover:text-indigo-500'>
+                <img src='./icons/app_registration_black_24dp.svg' alt='Home' className='h-6 w-6' />
+              </Link>
+            </li>
+            <li>
+              <Link to='/login' className='hover:text-indigo-500'>
+                <img src='./icons/login_black_24dp.svg' alt='Home' className='h-6 w-6' />
+              </Link>
+            </li>
+          </>
+        )}
+
+        {isLoggedIn && user && (
+          <>
+            <li>
+              <Link to='/feed' className='hover:text-indigo-500'>
+                <img src='./icons/dynamic_feed_black_24dp.svg' alt='Home' className='h-6 w-6' />
+              </Link>
+            </li>
+
+            <li>
+              <Link to={`/profile/${user._id}`} className='hover:text-indigo-500'>
+                <img src='./icons/account_circle_black_24dp.svg' alt='Home' className='h-6 w-6' />
+              </Link>
+            </li>
+
+            <li>
+              <Link to='/users' className='hover:text-indigo-500'>
+                <img src='./icons/people_black_24dp.svg' alt='Home' className='h-6 w-6' />
+              </Link>
+            </li>
+
+            <li>
+              <Link to='/notifications' className='hover:text-indigo-500'>
+                <img src='./icons/notifications_black_24dp.svg' alt='Home' className='h-6 w-6' />
+              </Link>
+            </li>
+
+            <li>
+              <span onClick={logOutUser} className='hover:text-indigo-500'>
+                <img src='./icons/logout_black_24dp.svg' alt='Home' className='h-6 w-6' />
               </span>
             </li>
           </>
