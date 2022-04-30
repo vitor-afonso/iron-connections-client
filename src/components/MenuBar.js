@@ -59,15 +59,15 @@ export const MenuBar = () => {
             </li>
 
             <li>
-              <Link href='/notifications' className='hover:text-indigo-500'>
+              <Link to='/notifications' className='hover:text-indigo-500'>
                 Notifications
               </Link>
             </li>
 
             <li>
-              <Link onClick={logOutUser} className='hover:text-indigo-500'>
+              <span onClick={logOutUser} className='hover:text-indigo-500'>
                 Logout
-              </Link>
+              </span>
             </li>
           </>
         )}
