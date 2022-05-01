@@ -49,7 +49,7 @@ export const FeedPage = () => {
           posts &&
           posts.map((onePost) => {
             return (
-              <div key={onePost._id} className='first:mt-14'>
+              <div key={onePost._id} className='first:mt-14 last:pb-4'>
                 {allPostsIdsToDisplay.includes(onePost._id) && <PostCard post={onePost} refreshPosts={getPosts} />}
               </div>
             );
