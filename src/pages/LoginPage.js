@@ -44,7 +44,7 @@ export const LoginPage = (props) => {
         <p className='mt-2 text-center text-sm text-gray-600 max-w'>
           New to IronConnections?
           <Link to='/signup' className='font-medium text-indigo-600 hover:text-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500'>
-            Sign in
+            Sign up
           </Link>
         </p>
       </div>

@@ -1,6 +1,6 @@
 //jshint esversion:9
 
-import { useContext, useState, useEffect } from 'react';
+import { useContext, useState, useEffect, useRef } from 'react';
 import { addPost, uploadImage, getUser, updateUserNotification, createNotification } from './../api';
 import { AuthContext } from '../context/auth.context';
 
@@ -8,10 +8,10 @@ export const AddPost = ({ refreshPosts, refreshUser }) => {
   const { user } = useContext(AuthContext);
   const [body, setBody] = useState('');
   const [imageUrl, setImageUrl] = useState('');
-  const [userImageUrl, setUserImageUrl] = useState('');
+  const [postImageUrl, setPostImageUrl] = useState('');
   const [userFollowers, setUserFollowers] = useState([]);
+  const inputFileUpload = useRef(null);
 
-  // ******** this method handles the file upload ********
   const handleFileUpload = async (e) => {
     try {
       const uploadData = new FormData();
@@ -19,10 +19,14 @@ export const AddPost = ({ refreshPosts, refreshUser }) => {
       // imageUrl => this name has to be the same as in the model if we pass
       // req.body to .create() method when creating a new post in '/api/posts' POST route
 
+      /* if (e.target.files.lenght !== 0) {
+        setTempImageUrl(URL.createObjectURL(e.target.files[0]));
+      } */
+
       uploadData.append('imageUrl', e.target.files[0]);
 
       let response = await uploadImage(uploadData);
-      /* console.log("response is: ", response); */
+
       // response carries "fileUrl" which we can use to update the state
       setImageUrl(response.fileUrl);
     } catch (error) {
@@ -75,7 +79,7 @@ export const AddPost = ({ refreshPosts, refreshUser }) => {
       if (user) {
         let response = await getUser(user._id);
 
-        setUserImageUrl(response.data.imageUrl);
+        setPostImageUrl(response.data.imageUrl);
 
         setUserFollowers(response.data.followers);
       }
@@ -83,7 +87,7 @@ export const AddPost = ({ refreshPosts, refreshUser }) => {
   }, [user]);
 
   return (
-    <div className='AddPost border-solid border-2 border-indigo-500 rounded-md'>
+    <div className='AddPost fixed top-12 z-10 rounded-md min-w-96 w-full px-4 max-w-md  sm:max-w-lg sm-left-auto sm-right-auto'>
       <form onSubmit={handleSubmit}>
         <div className='overflow-x-auto w-full'>
           <table className='table w-full  '>
@@ -92,7 +96,7 @@ export const AddPost = ({ refreshPosts, refreshUser }) => {
                 <td className='border-none'>
                   <div className='flex items-center space-x-3'>
                     <div className='avatar'>
-                      <div className='mask mask-squircle w-12 h-12'>{userImageUrl && <img src={userImageUrl} alt='Author' />}</div>
+                      <div className='mask mask-squircle w-12 h-12'>{postImageUrl && <img src={postImageUrl} alt='Author' />}</div>
                     </div>
                     <label className='w-full'>
                       <textarea type='textarea' name='body' value={body} onChange={(e) => setBody(e.target.value)} placeholder='Share your thoughts' />
@@ -102,13 +106,12 @@ export const AddPost = ({ refreshPosts, refreshUser }) => {
               </tr>
               <tr>
                 <td>
-                  <div className='flex '>
-                    <label className='flex-1'>
-                      <button className='btn btn-active btn-ghost'>
-                        <input type='file' onChange={(e) => handleFileUpload(e)} />
-                      </button>
-                    </label>
-                    <button type='submit' className='btn btn-outline btn-primary'>
+                  <div className='flex'>
+                    <button onClick={() => inputFileUpload.current.click()} className='btn btn-active btn-ghost mr-4'>
+                      Choose File
+                    </button>
+                    <input ref={inputFileUpload} className='hidden' type='file' onChange={(e) => handleFileUpload(e)} />
+                    <button type='submit' className='btn btn-outline btn-primary justify-self-end'>
                       Create Post
                     </button>
                   </div>

@@ -1,6 +1,6 @@
 //jshint esversion:8
 
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
 import { AuthContext } from '../context/auth.context';
 import { Link } from 'react-router-dom';
 
@@ -10,7 +10,7 @@ export const MenuBar = () => {
   const { isLoggedIn, user, logOutUser } = useContext(AuthContext);
 
   return (
-    <nav className='fixed top-0 left-0 right-0 bg-white'>
+    <nav className='fixed top-0 left-0 right-0 bg-white z-10'>
       <ul className='menu menu-horizontal rounded-box hidden sm:flex'>
         <li className='flex-1'>
           <Link to='/' className='font-semibold'>
@@ -83,12 +83,12 @@ export const MenuBar = () => {
             </li>
             <li>
               <Link to='/signup' className='hover:text-indigo-500'>
-                <img src='./icons/app_registration_black_24dp.svg' alt='Home' className='h-6 w-6' />
+                <img src='./icons/app_registration_black_24dp.svg' alt='Signup' className='h-6 w-6' />
               </Link>
             </li>
             <li>
               <Link to='/login' className='hover:text-indigo-500'>
-                <img src='./icons/login_black_24dp.svg' alt='Home' className='h-6 w-6' />
+                <img src='./icons/login_black_24dp.svg' alt='Login' className='h-6 w-6' />
               </Link>
             </li>
           </>
@@ -98,31 +98,31 @@ export const MenuBar = () => {
           <>
             <li>
               <Link to='/feed' className='hover:text-indigo-500'>
-                <img src='./icons/dynamic_feed_black_24dp.svg' alt='Home' className='h-6 w-6' />
+                <img src='./icons/dynamic_feed_black_24dp.svg' alt='Feed' className='h-6 w-6' />
               </Link>
             </li>
 
             <li>
               <Link to={`/profile/${user._id}`} className='hover:text-indigo-500'>
-                <img src='./icons/account_circle_black_24dp.svg' alt='Home' className='h-6 w-6' />
+                <img src='./icons/account_circle_black_24dp.svg' alt='Profile' className='h-6 w-6' />
               </Link>
             </li>
 
             <li>
               <Link to='/users' className='hover:text-indigo-500'>
-                <img src='./icons/people_black_24dp.svg' alt='Home' className='h-6 w-6' />
+                <img src='./icons/people_black_24dp.svg' alt='Friends' className='h-6 w-6' />
               </Link>
             </li>
 
             <li>
               <Link to='/notifications' className='hover:text-indigo-500'>
-                <img src='./icons/notifications_black_24dp.svg' alt='Home' className='h-6 w-6' />
+                <img src='./icons/notifications_black_24dp.svg' alt='Notifications' className='h-6 w-6' />
               </Link>
             </li>
 
             <li>
               <span onClick={logOutUser} className='hover:text-indigo-500'>
-                <img src='./icons/logout_black_24dp.svg' alt='Home' className='h-6 w-6' />
+                <img src='./icons/logout_black_24dp.svg' alt='Logout' className='h-6 w-6' />
               </span>
             </li>
           </>

@@ -42,14 +42,15 @@ export const FeedPage = () => {
   }, []);
 
   return (
-    <div className='postCards-container'>
+    <div className='FeedPage pt-28 flex justify-center'>
       <AddPost refreshPosts={getPosts} refreshUser={getOneUser} />
-
-      {allPostsIdsToDisplay &&
-        posts &&
-        posts.map((onePost) => {
-          return <div key={onePost._id}>{allPostsIdsToDisplay.includes(onePost._id) && <PostCard post={onePost} refreshPosts={getPosts} />}</div>;
-        })}
+      <div className='feed-posts-container mt-20'>
+        {allPostsIdsToDisplay &&
+          posts &&
+          posts.map((onePost) => {
+            return <div key={onePost._id}>{allPostsIdsToDisplay.includes(onePost._id) && <PostCard post={onePost} refreshPosts={getPosts} />}</div>;
+          })}
+      </div>
     </div>
   );
 };
