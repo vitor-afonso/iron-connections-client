@@ -87,9 +87,9 @@ export const AddPost = ({ refreshPosts, refreshUser }) => {
   }, [user]);
 
   return (
-    <div className='AddPost fixed top-12 z-10 rounded-md min-w-96 w-full px-4 max-w-md  sm:max-w-lg sm-left-auto sm-right-auto'>
+    <div className='AddPost fixed top-12 z-10 rounded-md px-4 w-full' style={{ maxWidth: '515px' }}>
       <form onSubmit={handleSubmit}>
-        <div className='overflow-x-auto w-full'>
+        <div className='overflow-x-auto'>
           <table className='table w-full  '>
             <tbody>
               <tr>

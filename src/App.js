@@ -20,7 +20,7 @@ import { ChatPage } from './pages/ChatPage';
 
 function App() {
   return (
-    <div className='App bg-gray-100 h-screen '>
+    <div className='App bg-gray-200 min-h-screen min-w-screen'>
       <MenuBar />
       <Routes>
         <Route

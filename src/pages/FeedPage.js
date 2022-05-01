@@ -44,11 +44,15 @@ export const FeedPage = () => {
   return (
     <div className='FeedPage pt-28 flex justify-center'>
       <AddPost refreshPosts={getPosts} refreshUser={getOneUser} />
-      <div className='feed-posts-container mt-20'>
+      <div className='feed-posts-container mt-20 space-y-4'>
         {allPostsIdsToDisplay &&
           posts &&
           posts.map((onePost) => {
-            return <div key={onePost._id}>{allPostsIdsToDisplay.includes(onePost._id) && <PostCard post={onePost} refreshPosts={getPosts} />}</div>;
+            return (
+              <div key={onePost._id} className='first:mt-14'>
+                {allPostsIdsToDisplay.includes(onePost._id) && <PostCard post={onePost} refreshPosts={getPosts} />}
+              </div>
+            );
           })}
       </div>
     </div>

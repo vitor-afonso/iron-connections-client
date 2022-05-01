@@ -53,20 +53,20 @@ export const LoginPage = (props) => {
         <div className='bg-white py-8 px-6 shadow rounded-lg sm:px-10'>
           <form onSubmit={handleLoginSubmit} className='mb-0 space-y-6'>
             <div>
-              <label for='email' className='block text-sm font-medium text-gray-700'>
+              <label htmlFor='email' className='block text-sm font-medium text-gray-700'>
                 Email address
               </label>
               <div className='mt-1'>
-                <input id='email' name='email' type='email' autocomplete='email' required className='' value={email} onChange={(e) => setEmail(e.target.value)} />
+                <input id='email' name='email' type='email' autoComplete='email' required className='' value={email} onChange={(e) => setEmail(e.target.value)} />
               </div>
             </div>
 
             <div>
-              <label for='password' className='block text-sm font-medium text-gray-700'>
+              <label htmlFor='password' className='block text-sm font-medium text-gray-700'>
                 Password
               </label>
               <div className='mt-1'>
-                <input id='password' name='password' type='password' autocomplete='current-password' required className='' value={password} onChange={(e) => setPassword(e.target.value)} />
+                <input id='password' name='password' type='password' autoComplete='current-password' required className='' value={password} onChange={(e) => setPassword(e.target.value)} />
               </div>
             </div>
 

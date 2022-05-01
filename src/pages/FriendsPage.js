@@ -103,7 +103,7 @@ export const FriendsPage = () => {
   }, []);
 
   return (
-    <div>
+    <div className='min-h-full'>
       <label>
         <input type='text' name='search' value={str} onChange={(e) => setStr(e.target.value)} placeholder='Search user by name' />
       </label>
