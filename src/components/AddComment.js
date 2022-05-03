@@ -80,19 +80,31 @@ export const AddComment = ({ post, refreshAllPosts, refreshProfileUser }) => {
   }, [user, post]);
 
   return (
-    <div>
+    <div className='AddComment my-4'>
       <form onSubmit={handleSubmit}>
-        {userImageUrl && (
-          <Link to={`/profile/${post.userId._id}`} style={{ display: 'inline-block' }}>
-            <img src={userImageUrl} alt='Author' style={{ width: '30px' }} />
-          </Link>
-        )}
-
-        <label>
-          <input type='text' name='content' value={content} onChange={handleContent} placeholder='Write comment' style={{ width: '250px' }} />
-        </label>
-
-        <button type='submit'>Comment</button>
+        <table className='table w-full'>
+          <tbody>
+            <tr className='flex justify-center'>
+              <td className='border-none p-2'>
+                <div className='flex items-center space-x-2 '>
+                  {userImageUrl && (
+                    <Link to={`/profile/${post.userId._id}`} className='avatar self-center'>
+                      <div className='mask mask-squircle w-8 h-8'>
+                        <img src={userImageUrl} alt='Author' />
+                      </div>
+                    </Link>
+                  )}
+                  <label className='w-full flex'>
+                    <textarea type='textarea' name='content' value={content} onChange={handleContent} placeholder='Write comment' className='overflow-hidden h-12 p-1 self-end' />
+                  </label>
+                  <button className='btn btn-active btn-ghost text-gray-400 w-10 self-end' type='submit'>
+                    Add
+                  </button>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </form>
     </div>
   );

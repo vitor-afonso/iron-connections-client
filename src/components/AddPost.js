@@ -87,13 +87,13 @@ export const AddPost = ({ refreshPosts, refreshUser }) => {
   }, [user]);
 
   return (
-    <div className='AddPost fixed top-12 z-10 rounded-md px-4 w-full' style={{ maxWidth: '515px' }}>
+    <div className='AddPost fixed top-12 z-10 rounded-md px-4 w-full max-w-[515px]'>
       <form onSubmit={handleSubmit}>
         <div className='overflow-x-auto'>
           <table className='table w-full  '>
             <tbody>
               <tr>
-                <td className='border-none'>
+                <td className='border-none pb-0'>
                   <div className='flex items-center space-x-3'>
                     <div className='avatar'>
                       <div className='mask mask-squircle w-12 h-12'>{postImageUrl && <img src={postImageUrl} alt='Author' />}</div>
@@ -106,13 +106,13 @@ export const AddPost = ({ refreshPosts, refreshUser }) => {
               </tr>
               <tr>
                 <td>
-                  <div className='flex'>
+                  <div className='flex justify-between'>
                     <button onClick={() => inputFileUpload.current.click()} className='btn btn-active btn-ghost mr-4'>
                       Choose File
                     </button>
                     <input ref={inputFileUpload} className='hidden' type='file' onChange={(e) => handleFileUpload(e)} />
-                    <button type='submit' className='btn btn-outline btn-primary justify-self-end'>
-                      Create Post
+                    <button type='submit' className='btn btn-active btn-ghost justify-self-end'>
+                      Add Post
                     </button>
                   </div>
                 </td>

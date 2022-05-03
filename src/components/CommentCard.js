@@ -1,12 +1,11 @@
 //jshint esversion:9
 
-import { NavLink } from "react-router-dom";
+import { Link, NavLink } from 'react-router-dom';
 import { deleteComment } from './../api';
-import { useContext } from "react";
+import { useContext } from 'react';
 import { AuthContext } from '../context/auth.context';
 
-export const CommentCard = ({postId, comment, refreshAllPosts, refreshProfileUser}) => {
-
+export const CommentCard = ({ postId, comment, refreshAllPosts, refreshProfileUser }) => {
   const { user } = useContext(AuthContext);
 
   let date = new Date(comment.createdAt);
@@ -16,29 +15,51 @@ export const CommentCard = ({postId, comment, refreshAllPosts, refreshProfileUse
   let commentDate = `${dateDay}-${dateMonth}-${dateYear}`;
 
   const handleDelete = async () => {
-
     await deleteComment(postId, comment._id);
     refreshAllPosts();
     refreshProfileUser();
   };
-    
+
   return (
+    <div className='mx-auto max-w-[280px] p-2 rounded-md mb-4 shadow-md'>
+      {/* <!-- Card header --> */}
+      <div className='flex justify-start items-center mb-3  '>
+        {/* <!-- Icon --> */}
 
-    <div className="CommentCard">
-      <div className="comment-header">
-              
-        <small>
-        <NavLink to={`/profile/${comment.userId._id}`} style={{display: "inline-block"}}> <img src={comment.userId.imageUrl} alt="Author" style={{width: "30px"}}/> </NavLink>
-            <span> {comment.userId.username} </span>
-            <span> {commentDate} </span>
-        </small>
-
+        <div className='avatar mr-3'>
+          <div className='mask mask-squircle w-10 h-10'>
+            {comment.userId.imageUrl && (
+              <Link to={`/profile/${comment.userId._id}`}>
+                <img src={comment.userId.imageUrl} alt={comment.userId.username} />
+              </Link>
+            )}
+          </div>
+        </div>
+        {/* <!-- Name & Date --> */}
+        <div className='flex items-center w-full justify-between font-bold text-xs text-gray-50 truncate mb-1 sm:mb-0'>
+          {comment.userId.username.split(' ')[0]} <span className='mr-3'> {commentDate} </span>
+          {comment.userId._id === user._id && (
+            <Link to={`/post/${comment._id}/edit`}>
+              <button className='btn btn-active btn-ghost'>Edit</button>
+            </Link>
+          )}
+        </div>
       </div>
+      {/* <!-- Card body --> */}
+      <div className=''>
+        {/* <!-- Paragraph --> */}
+        <div className='text-indigo-100  mb-4 '>
+          <div className='flex justify-around '>
+            <p className='mb-2 '>{comment.content}</p>
 
-      <p>{comment.content}</p> {user._id === comment.userId._id && <button onClick={handleDelete} >Delete</button>}
-
-      {comment.imageUrl && <img src={comment.imageUrl} alt="Comment" style={{width: "300px"}}/>}
-
+            {user._id === comment.userId._id && (
+              <button className='btn btn-active btn-ghost justify-self-end self-end' onClick={handleDelete}>
+                Delete
+              </button>
+            )}
+          </div>
+        </div>
+      </div>
     </div>
-  )
-}
+  );
+};

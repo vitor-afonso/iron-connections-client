@@ -25,21 +25,3 @@
     @apply rounded border-gray-300 text-indigo-600 focus:ring-indigo-500;
   }
 }
-
-.postCard-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  margin: 20px;
-  margin-top: 50px;
-  overflow: hidden;
-  min-height: 200px;
-  max-height: 50vh;
-  border: 1px solid #000;
-  border-radius: 10px;
-}
-.postCards-container {
-  max-width: 50%;
-  margin: auto;
-}
