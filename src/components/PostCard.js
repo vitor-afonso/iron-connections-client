@@ -72,7 +72,7 @@ export const PostCard = ({ post, refreshPosts, refreshUser }) => {
     <div className='PostCard  sm:max-w-2xl px-4' data-aos='fade-up'>
       <section className='flex flex-col justify-center antialiased text-gray-600  '>
         {/* <!-- Card --> */}
-        <div className=' mx-auto bg-indigo-500 shadow-lg rounded-lg min-w-full'>
+        <div className=' mx-auto bg-slate-800 shadow-lg rounded-lg min-w-full'>
           <div className='px-4 py-5'>
             <div className='flex '>
               {/* <!-- Card content --> */}

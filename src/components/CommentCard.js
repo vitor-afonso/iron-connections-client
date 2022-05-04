@@ -1,6 +1,6 @@
 //jshint esversion:9
 
-import { Link, NavLink } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { deleteComment } from './../api';
 import { useContext } from 'react';
 import { AuthContext } from '../context/auth.context';
@@ -21,13 +21,13 @@ export const CommentCard = ({ postId, comment, refreshAllPosts, refreshProfileUs
   };
 
   return (
-    <div className='mx-auto max-w-[280px] p-2 rounded-md mb-4 shadow-md'>
+    <div className='mx-auto max-w-[280px] p-2 rounded-md mb-4 shadow-md bg-slate-500'>
       {/* <!-- Card header --> */}
-      <div className='flex justify-start items-center mb-3  '>
+      <div className='flex justify-start bg-slate-500 items-center mb-3  '>
         {/* <!-- Icon --> */}
 
         <div className='avatar mr-3'>
-          <div className='mask mask-squircle w-10 h-10'>
+          <div className='mask mask-squircle w-10 h-10 '>
             {comment.userId.imageUrl && (
               <Link to={`/profile/${comment.userId._id}`}>
                 <img src={comment.userId.imageUrl} alt={comment.userId.username} />

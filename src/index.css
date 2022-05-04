@@ -25,3 +25,14 @@
     @apply rounded border-gray-300 text-indigo-600 focus:ring-indigo-500;
   }
 }
+
+:root {
+  --my-color: #fff;
+  /* or any other variables/style */
+}
+[data-theme='dark'] {
+  --my-color: #000;
+}
+[data-theme='light'] {
+  --my-color: #e5e7eb;
+}

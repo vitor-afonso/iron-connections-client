@@ -7,28 +7,18 @@ import { AuthContext } from '../context/auth.context';
 export const AddPost = ({ refreshPosts, refreshUser }) => {
   const { user } = useContext(AuthContext);
   const [body, setBody] = useState('');
-  const [imageUrl, setImageUrl] = useState('');
-  const [postImageUrl, setPostImageUrl] = useState('');
+  const [tempImageUrl, setTempImageUrl] = useState('');
+  const [objImageToUpload, setObjImageToUpload] = useState(null);
+  const [currentUserImageUrl, setCurrentUserImageUrl] = useState('');
   const [userFollowers, setUserFollowers] = useState([]);
   const inputFileUpload = useRef(null);
 
   const handleFileUpload = async (e) => {
     try {
-      const uploadData = new FormData();
-
-      // imageUrl => this name has to be the same as in the model if we pass
-      // req.body to .create() method when creating a new post in '/api/posts' POST route
-
-      /* if (e.target.files.lenght !== 0) {
+      if (e.target.files.lenght !== 0) {
         setTempImageUrl(URL.createObjectURL(e.target.files[0]));
-      } */
-
-      uploadData.append('imageUrl', e.target.files[0]);
-
-      let response = await uploadImage(uploadData);
-
-      // response carries "fileUrl" which we can use to update the state
-      setImageUrl(response.fileUrl);
+        setObjImageToUpload(e.target.files[0]);
+      }
     } catch (error) {
       console.log('Error while uploading the file: ', error);
     }
@@ -38,15 +28,31 @@ export const AddPost = ({ refreshPosts, refreshUser }) => {
     e.preventDefault();
 
     try {
-      let requestBody = { body, userId: user._id, imageUrl };
-      let newPost = await addPost(requestBody);
+      if (objImageToUpload) {
+        // imageUrl => this name has to be the same as in the model if we pass
+        // req.body to .create() method when creating a new post in '/api/posts' POST route
+        const uploadData = new FormData();
+
+        uploadData.append('imageUrl', objImageToUpload);
+
+        let response = await uploadImage(uploadData);
+
+        // response carries "fileUrl" which we can use to update the state
+
+        let newPost = await addPost({ body, userId: user._id, imageUrl: response.fileUrl });
+        updateFollowersNotifications(newPost.data._id);
+        setObjImageToUpload(null);
+      } else {
+        let newPost = await addPost({ body, userId: user._id });
+        updateFollowersNotifications(newPost.data._id);
+      }
+
       if (refreshPosts) {
         refreshPosts();
       }
       refreshUser();
       setBody('');
-      setImageUrl('');
-      updateFollowersNotifications(newPost.data._id);
+      setTempImageUrl('');
     } catch (error) {
       console.log('Something went wrong while trying to add new post =>', error);
     }
@@ -79,7 +85,7 @@ export const AddPost = ({ refreshPosts, refreshUser }) => {
       if (user) {
         let response = await getUser(user._id);
 
-        setPostImageUrl(response.data.imageUrl);
+        setCurrentUserImageUrl(response.data.imageUrl);
 
         setUserFollowers(response.data.followers);
       }
@@ -96,7 +102,7 @@ export const AddPost = ({ refreshPosts, refreshUser }) => {
                 <td className='border-none pb-0'>
                   <div className='flex items-center space-x-3'>
                     <div className='avatar'>
-                      <div className='mask mask-squircle w-12 h-12'>{postImageUrl && <img src={postImageUrl} alt='Author' />}</div>
+                      <div className='mask mask-squircle w-12 h-12'>{currentUserImageUrl && <img src={currentUserImageUrl} alt='Author' />}</div>
                     </div>
                     <label className='w-full'>
                       <textarea type='textarea' name='body' value={body} onChange={(e) => setBody(e.target.value)} placeholder='Share your thoughts' />
@@ -104,10 +110,17 @@ export const AddPost = ({ refreshPosts, refreshUser }) => {
                   </div>
                 </td>
               </tr>
+              {tempImageUrl && (
+                <tr className='max-w-200px'>
+                  <td>
+                    <img src={`${tempImageUrl}`} alt='Uploaded file' />
+                  </td>
+                </tr>
+              )}
               <tr>
                 <td>
                   <div className='flex justify-between'>
-                    <button onClick={() => inputFileUpload.current.click()} className='btn btn-active btn-ghost mr-4'>
+                    <button type='button' onClick={() => inputFileUpload.current.click()} className='btn btn-active btn-ghost mr-4'>
                       Choose File
                     </button>
                     <input ref={inputFileUpload} className='hidden' type='file' onChange={(e) => handleFileUpload(e)} />
