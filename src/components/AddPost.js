@@ -3,6 +3,7 @@
 import { useContext, useState, useEffect, useRef } from 'react';
 import { addPost, uploadImage, getUser, updateUserNotification, createNotification } from './../api';
 import { AuthContext } from '../context/auth.context';
+import { useLocation } from 'react-router-dom';
 
 export const AddPost = ({ refreshPosts, refreshUser }) => {
   const { user } = useContext(AuthContext);
@@ -12,6 +13,19 @@ export const AddPost = ({ refreshPosts, refreshUser }) => {
   const [currentUserImageUrl, setCurrentUserImageUrl] = useState('');
   const [userFollowers, setUserFollowers] = useState([]);
   const inputFileUpload = useRef(null);
+  const location = useLocation();
+
+  let addPostTopDistance = '';
+  let addPostPosition = '';
+  let addPostPaddingX = ''; // <= Needed on feedPage
+
+  if (location.pathname.includes('feed')) {
+    addPostTopDistance = 'top-12';
+    addPostPaddingX = 'px-4';
+    addPostPosition = 'fixed';
+  } else {
+    addPostPosition = 'relative';
+  }
 
   const handleFileUpload = async (e) => {
     try {
@@ -82,6 +96,7 @@ export const AddPost = ({ refreshPosts, refreshUser }) => {
 
   useEffect(() => {
     (async () => {
+      console.log('first', location.pathname);
       if (user) {
         let response = await getUser(user._id);
 
@@ -93,7 +108,7 @@ export const AddPost = ({ refreshPosts, refreshUser }) => {
   }, [user]);
 
   return (
-    <div className='AddPost fixed top-12 z-10 rounded-md px-4 w-full max-w-[515px]'>
+    <div className={`AddPost z-10 ${addPostPosition} ${addPostTopDistance} ${addPostPaddingX} rounded-md  w-full max-w-[515px]`}>
       <form onSubmit={handleSubmit}>
         <div className='overflow-x-auto'>
           <table className='table w-full  '>

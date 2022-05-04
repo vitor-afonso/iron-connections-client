@@ -2,7 +2,7 @@
 
 import { useContext, useEffect, useRef } from 'react';
 import { AuthContext } from '../context/auth.context';
-import { NavLink, Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 
 import { AddComment } from './AddComment';
 import { CommentCard } from './CommentCard';
@@ -11,6 +11,7 @@ import { createNotification, updatePostLikesAdd, updatePostLikesRemove, updateUs
 export const PostCard = ({ post, refreshPosts, refreshUser }) => {
   const { user } = useContext(AuthContext);
   const toggleComments = useRef(null);
+  const location = useLocation();
 
   let date = new Date(post.createdAt);
   let dateYear = date.getFullYear();
@@ -19,6 +20,12 @@ export const PostCard = ({ post, refreshPosts, refreshUser }) => {
   let postDate = `${dateDay}-${dateMonth}-${dateYear}`;
 
   let likesNum = post.likes.length;
+
+  let postCardMarginX = ''; // <= Needed on feedPage only
+
+  if (location.pathname.includes('feed')) {
+    postCardMarginX = 'mx-4';
+  }
 
   const handleLike = async () => {
     try {
@@ -69,11 +76,11 @@ export const PostCard = ({ post, refreshPosts, refreshUser }) => {
     }
   };
   return (
-    <div className='PostCard  sm:max-w-2xl px-4' data-aos='fade-up'>
+    <div className={`PostCard  ${postCardMarginX}`} data-aos='fade-up'>
       <section className='flex flex-col justify-center antialiased text-gray-600  '>
         {/* <!-- Card --> */}
-        <div className=' mx-auto bg-slate-800 shadow-lg rounded-lg min-w-full'>
-          <div className='px-4 py-5'>
+        <div className=' mx-auto bg-slate-800 shadow-lg rounded-lg min-w-full max-w-[515px]'>
+          <div className='px-4 py-5 '>
             <div className='flex '>
               {/* <!-- Card content --> */}
               <div className='flex-grow '>
@@ -109,7 +116,7 @@ export const PostCard = ({ post, refreshPosts, refreshUser }) => {
                     {post.imageUrl && <img src={post.imageUrl} alt='Post' style={{ width: '300px' }} />}
                   </div>
                   {/* <!-- Like and comment buttons --> */}
-                  <div className='flex-shrink-0 flex items-center space-x-3 sm:ml-2'>
+                  <div className='flex-shrink-0 flex items-center space-x-3 '>
                     <button className='flex items-center text-left text-sm font-medium text-indigo-100 hover:text-white group focus:outline-none focus-visible:border-b focus-visible:border-indigo-100'>
                       <svg onClick={() => handleLike(post._id)} className='w-4 h-4 flex-shrink-0 mr-2 fill-current text-gray-300 group-hover:text-gray-200' viewBox='0 0 16 16'>
                         <path d='M14.682 2.318A4.485 4.485 0 0 0 11.5 1 4.377 4.377 0 0 0 8 2.707 4.383 4.383 0 0 0 4.5 1a4.5 4.5 0 0 0-3.182 7.682L8 15l6.682-6.318a4.5 4.5 0 0 0 0-6.364Zm-1.4 4.933L8 12.247l-5.285-5A2.5 2.5 0 0 1 4.5 3c1.437 0 2.312.681 3.5 2.625C9.187 3.681 10.062 3 11.5 3a2.5 2.5 0 0 1 1.785 4.251h-.003Z' />
