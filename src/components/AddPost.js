@@ -96,7 +96,6 @@ export const AddPost = ({ refreshPosts, refreshUser }) => {
 
   useEffect(() => {
     (async () => {
-      console.log('first', location.pathname);
       if (user) {
         let response = await getUser(user._id);
 
@@ -108,9 +107,9 @@ export const AddPost = ({ refreshPosts, refreshUser }) => {
   }, [user]);
 
   return (
-    <div className={`AddPost z-10 ${addPostPosition} ${addPostTopDistance} ${addPostPaddingX} rounded-md  w-full max-w-[515px]`}>
+    <div className={`AddPost z-10 ${addPostPosition} ${addPostTopDistance} ${addPostPaddingX} rounded-md  w-full max-w-[514px] `}>
       <form onSubmit={handleSubmit}>
-        <div className='overflow-x-auto'>
+        <div className='overflow-x-auto '>
           <table className='table w-full  '>
             <tbody>
               <tr>
@@ -135,7 +134,7 @@ export const AddPost = ({ refreshPosts, refreshUser }) => {
               <tr>
                 <td>
                   <div className='flex justify-between'>
-                    <button type='button' onClick={() => inputFileUpload.current.click()} className='btn btn-active btn-ghost mr-4'>
+                    <button type='button' onClick={() => inputFileUpload.current.click()} className='btn btn-active btn-ghost'>
                       Choose File
                     </button>
                     <input ref={inputFileUpload} className='hidden' type='file' onChange={(e) => handleFileUpload(e)} />

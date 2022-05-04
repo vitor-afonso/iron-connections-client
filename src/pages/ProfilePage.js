@@ -63,31 +63,35 @@ export const ProfilePage = () => {
   return (
     <>
       {userProfile ? (
-        <div className=' pt-16 flex flex-col justify-center items-center p-4 space-y-4'>
+        <div className=' pt-16 flex flex-col justify-center items-center p-4 space-y-4 '>
           {/* <!-- Card header --> */}
-          <div className='flex justify-start items-center mb-3 w-full bg-slate-500 p-4 rounded-md max-w-[480px]'>
+          <div className='flex justify-start items-center shadow-md w-full border-2 border-indigo-600 bg-white p-4 rounded-md max-w-[480px]'>
             {/* <!-- Icon --> */}
             <div className='avatar mr-3'>
               <div className='mask mask-squircle w-10 h-10'>{userProfile.imageUrl && <img src={userProfile.imageUrl} alt={userProfile.username} />}</div>
             </div>
             {/* <!-- Name & Button --> */}
-            <div className='flex items-center w-full justify-between font-v+base text-lg text-gray-50 truncate mb-1 sm:mb-0'>
+            <div className='flex items-center w-full justify-between text-lg text-gray-800  mb-1 sm:mb-0'>
               {userProfile.username}
               {userProfile._id === user._id && (
                 <Link to={`/profile/${userProfile._id}/edit`}>
-                  <button className='btn btn-active btn-ghost'>Edit</button>
+                  <button className='btn btn-active border-2 border-indigo-600 shadow-sm bg-white text-indigo-600 hover:text-gray-100 hover:bg-indigo-600'>Edit</button>
                 </Link>
               )}
             </div>
           </div>
 
           {userProfile.followers.length && (
-            <div className='flex flex-col '>
-              <h6 className='self-start'>Connects</h6>
-              <div className='flex'>
+            <div className='flex flex-col w-full max-w-[480px] shadow-md border-2 border-indigo-600 bg-white p-4 rounded-md text-indigo-600 font-base text-lg'>
+              <h6 className='self-start'>{userProfile.username.split(' ')[0]} connections</h6>
+              <div className='flex self-center py-4'>
                 {userProfile &&
                   userProfile.followers.slice(-3).map((user) => {
-                    return <img src={user.imageUrl} alt={user.username} style={{ width: '50px' }} key={user._id} />;
+                    return (
+                      <div className='avatar mr-3' key={user._id}>
+                        <div className='mask mask-squircle w-12 h-12'>{userProfile.imageUrl && <img src={user.imageUrl} alt={user.username} />}</div>
+                      </div>
+                    );
                   })}
               </div>
               <NavLink to={`/profile/${userId}/connects`} className='self-end'>
@@ -97,7 +101,7 @@ export const ProfilePage = () => {
           )}
 
           {user._id === userProfile._id && (
-            <div className='w-full max-w-[480px] flex '>
+            <div className='w-full max-w-[480px] flex z-0 '>
               <AddPost refreshUser={getOneUser} />
             </div>
           )}

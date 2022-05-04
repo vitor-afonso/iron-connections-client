@@ -21,9 +21,9 @@ export const CommentCard = ({ postId, comment, refreshAllPosts, refreshProfileUs
   };
 
   return (
-    <div className='mx-auto max-w-[280px] p-2 rounded-md mb-4 shadow-md bg-slate-500'>
+    <div className='w-full p-2 rounded-md mb-4 shadow-md bg-indigo-50'>
       {/* <!-- Card header --> */}
-      <div className='flex justify-start bg-slate-500 items-center mb-3  '>
+      <div className='flex justify-start items-center mb-3  '>
         {/* <!-- Icon --> */}
 
         <div className='avatar mr-3'>
@@ -36,8 +36,8 @@ export const CommentCard = ({ postId, comment, refreshAllPosts, refreshProfileUs
           </div>
         </div>
         {/* <!-- Name & Date --> */}
-        <div className='flex items-center w-full justify-between font-bold text-xs text-gray-50 truncate mb-1 sm:mb-0'>
-          {comment.userId.username.split(' ')[0]} <span className='mr-3'> {commentDate} </span>
+        <div className='flex items-center w-full justify-between font-bold text-xs text-gray-900 truncate mb-1 sm:mb-0'>
+          {comment.userId.username.split(' ')[0]} <span className='mr-3 text-gray-400'> {commentDate} </span>
           {comment.userId._id === user._id && (
             <Link to={`/post/${comment._id}/edit`}>
               <button className='btn btn-active btn-ghost'>Edit</button>
@@ -48,7 +48,7 @@ export const CommentCard = ({ postId, comment, refreshAllPosts, refreshProfileUs
       {/* <!-- Card body --> */}
       <div className=''>
         {/* <!-- Paragraph --> */}
-        <div className='text-indigo-100  mb-4 '>
+        <div className='text-slate-600 mb-4 '>
           <div className='flex justify-around '>
             <p className='mb-2 '>{comment.content}</p>
 
