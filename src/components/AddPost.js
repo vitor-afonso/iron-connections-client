@@ -58,6 +58,7 @@ export const AddPost = ({ refreshPosts, refreshUser }) => {
         setObjImageToUpload(null);
       } else {
         let newPost = await addPost({ body, userId: user._id });
+
         updateFollowersNotifications(newPost.data._id);
       }
 

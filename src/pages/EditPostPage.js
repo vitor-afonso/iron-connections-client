@@ -1,7 +1,7 @@
 //jshint esversion:9
 
 import { useContext, useState, useEffect } from 'react';
-import { getPost, uploadImage, updatePost, deletePost } from './../api';
+import { getPost, getNotifications, uploadImage, updatePost, deletePost, removeUserNotification, getUsers, deleteNotification } from './../api';
 import { AuthContext } from '../context/auth.context';
 import { useParams, useNavigate, NavLink } from 'react-router-dom';
 
@@ -31,9 +31,34 @@ export const EditPostPage = () => {
     try {
       let response = await deletePost(postId);
       console.log(response.data.message);
+
+      let res = await getNotifications();
+
+      let postNotification = res.data.find((notification) => notification.postId === postId);
+
+      let deleteMessage = await deleteNotification(postNotification._id);
+
+      console.log('Message from deleting notification =>', deleteMessage.data.message);
+      removeUsersNotification(postNotification._id);
+
       navigate(-1);
     } catch (error) {
       console.log('Something went wront while deleting post from API', error);
+    }
+  };
+
+  const removeUsersNotification = async (notificationId) => {
+    // call users and filter the array of notifications
+    try {
+      let response = await getUsers();
+      let allUsers = response.data;
+      allUsers.forEach((user) => {
+        if (user.notifications.includes(notificationId)) {
+          removeUserNotification({ notificationId: notificationId }, user._id);
+        }
+      });
+    } catch (error) {
+      console.log('Something went wront while deleting notification from users notifications', error);
     }
   };
 
@@ -56,11 +81,12 @@ export const EditPostPage = () => {
 
         setBody(postFromDB.data.body);
         setImageUrl(postFromDB.data.imageUrl);
+        console.log('postId of post to update/delete =>', postId);
       } catch (error) {
         console.log('error getting post to update from DB', error);
       }
     })();
-  }, [postId, user]);
+  }, [postId]);
   return (
     <div className='AddPost'>
       {body ? (
