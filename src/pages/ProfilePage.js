@@ -65,13 +65,13 @@ export const ProfilePage = () => {
       {userProfile ? (
         <div className=' pt-16 flex flex-col justify-center items-center p-4 space-y-4 '>
           {/* <!-- Card header --> */}
-          <div className='flex justify-start items-center shadow-md w-full border-2 border-indigo-600 bg-white p-4 rounded-md max-w-[480px]'>
+          <div className='flex justify-start items-center shadow-md w-full border-2 border-indigo-600 bg-white p-4 rounded-md max-w-lg'>
             {/* <!-- Icon --> */}
             <div className='avatar mr-3'>
               <div className='mask mask-squircle w-10 h-10'>{userProfile.imageUrl && <img src={userProfile.imageUrl} alt={userProfile.username} />}</div>
             </div>
             {/* <!-- Name & Button --> */}
-            <div className='flex items-center w-full justify-between text-lg text-gray-800  mb-1 sm:mb-0'>
+            <div className='flex items-center w-full justify-between text-lg text-gray-800 font-semibold mb-1 sm:mb-0'>
               {userProfile.username}
               {userProfile._id === user._id && (
                 <Link to={`/profile/${userProfile._id}/edit`}>
@@ -82,7 +82,7 @@ export const ProfilePage = () => {
           </div>
 
           {userProfile.followers.length && (
-            <div className='flex flex-col w-full max-w-[480px] shadow-md border-2 border-indigo-600 bg-white p-4 rounded-md text-indigo-600 font-base text-lg'>
+            <div className='flex flex-col w-full max-w-lg shadow-md border-2 border-indigo-600 bg-white p-4 rounded-md text-indigo-600 font-base text-lg'>
               <h6 className='self-start'>{userProfile.username.split(' ')[0]} connections</h6>
               <div className='flex self-center py-4'>
                 {userProfile &&
@@ -101,12 +101,12 @@ export const ProfilePage = () => {
           )}
 
           {user._id === userProfile._id && (
-            <div className='w-full max-w-[480px] flex z-0 '>
+            <div className='w-full max-w-lg flex z-0 '>
               <AddPost refreshUser={getOneUser} />
             </div>
           )}
 
-          <div className='postCards-container mt-4 space-y-4'>
+          <div className='postCards-container mt-4 space-y-4 w-full max-w-lg'>
             {userProfile &&
               sortedListOfPosts.map((onePost) => {
                 if (searchParams.get('postId') && searchParams.get('postId') === onePost._id) {

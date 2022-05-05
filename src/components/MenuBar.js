@@ -4,17 +4,10 @@ import { useContext, useEffect } from 'react';
 import { AuthContext } from '../context/auth.context';
 import { Link } from 'react-router-dom';
 
-/* import { themeChange } from 'theme-change'; */
-
 export const MenuBar = () => {
   // Subscribe to the AuthContext to gain access to
   // the values from AuthContext.Provider `value` prop
   const { isLoggedIn, user, logOutUser } = useContext(AuthContext);
-
-  /* useEffect(() => {
-    themeChange(false);
-    // 👆 false parameter is required for react project
-  }, []); */
 
   return (
     <nav className='fixed top-0 left-0 right-0 bg-white z-10'>

@@ -2,7 +2,6 @@
 import { useContext, useEffect, useState } from 'react';
 import { AuthContext } from '../context/auth.context';
 import { addFollower, createNotification, getUser, getUsers, removeFollower, updateUserNotification } from './../api';
-import { NavLink } from 'react-router-dom';
 import { FilterUsers } from '../components/FilterUsers';
 
 export const UsersPage = () => {
@@ -89,6 +88,8 @@ export const UsersPage = () => {
   }, [user]);
 
   return (
-    <div>{<FilterUsers usersList={allUsers} currentUser={currentUser} userFollowersIds={userFollowersId} handleAddFollower={handleAddFollower} handleRemoveFollower={handleRemoveFollower} />}</div>
+    <div className='max-w-lg mx-auto'>
+      {<FilterUsers usersList={allUsers} currentUser={currentUser} userFollowersIds={userFollowersId} handleAddFollower={handleAddFollower} handleRemoveFollower={handleRemoveFollower} />}
+    </div>
   );
 };

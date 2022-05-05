@@ -89,7 +89,7 @@ export const PostCard = ({ post, refreshPosts, refreshUser }) => {
   };
 
   const removeUsersNotification = async (notificationId) => {
-    // call users and filter the array of notifications
+    // call users and update the array of notifications
     try {
       let response = await getUsers();
       let allUsers = response.data;
@@ -118,7 +118,7 @@ export const PostCard = ({ post, refreshPosts, refreshUser }) => {
     <div className={`PostCard  ${postCardMarginX}`} data-aos='fade-up'>
       <section className='flex flex-col justify-center antialiased  '>
         {/* <!-- Card --> */}
-        <div className=' mx-auto shadow-md bg-white rounded-lg min-w-full max-w-[515px]'>
+        <div className=' mx-auto shadow-md bg-white rounded-lg min-w-full max-w-lg'>
           <div className='px-4 py-5 '>
             <div className='flex '>
               {/* <!-- Card content --> */}

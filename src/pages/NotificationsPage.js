@@ -32,6 +32,7 @@ export const NotificationsPage = () => {
     try {
       if (user) {
         let currentUser = await getUser(user._id);
+        console.log('data.notifications', currentUser.data);
         setNotifications(currentUser.data.notifications);
       }
     } catch (error) {
@@ -50,14 +51,25 @@ export const NotificationsPage = () => {
       <h2>Notifications</h2>
       {notifications.length !== 0 &&
         notifications.map((oneNotification) => {
-          return (
-            <div key={oneNotification._id}>
-              <Link to={`/profile/${oneNotification.postId.userId}?postId=${oneNotification.postId._id}`}>
-                {oneNotification.commentMessage ? <span>{oneNotification.commentMessage}</span> : <span>{oneNotification.content}</span>}
-              </Link>
-              <button onClick={() => removeNotification(oneNotification._id)}>x</button>
-            </div>
-          );
+          if (oneNotification.postId) {
+            return (
+              <div key={oneNotification._id} className='mt-28'>
+                <Link to={`/profile/${oneNotification.postId.userId}?postId=${oneNotification.postId._id}`}>
+                  {oneNotification.commentMessage ? <span>{oneNotification.commentMessage}</span> : <span>{oneNotification.content}</span>}
+                </Link>
+                <button onClick={() => removeNotification(oneNotification._id)}>x</button>
+              </div>
+            );
+          } else {
+            return (
+              <div key={oneNotification._id} className='mt-28'>
+                <Link to={`/profile/${oneNotification.userId}`}>
+                  <span>{oneNotification.content}</span>
+                </Link>
+                <button onClick={() => removeNotification(oneNotification._id)}>x</button>
+              </div>
+            );
+          }
         })}
     </div>
   );

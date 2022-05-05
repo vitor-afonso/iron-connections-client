@@ -108,46 +108,44 @@ export const AddPost = ({ refreshPosts, refreshUser }) => {
   }, [user]);
 
   return (
-    <div className={`AddPost z-10 ${addPostPosition} ${addPostTopDistance} ${addPostPaddingX} rounded-md  w-full max-w-[514px] `}>
+    <div className={`AddPost z-10 ${addPostPosition} ${addPostTopDistance} ${addPostPaddingX} w-full max-w-lg  text-indigo-600 border-2 border-indigo-600`}>
       <form onSubmit={handleSubmit}>
-        <div className='overflow-x-auto '>
-          <table className='table w-full  '>
-            <tbody>
-              <tr>
-                <td className='border-none pb-0'>
-                  <div className='flex items-center space-x-3'>
-                    <div className='avatar'>
-                      <div className='mask mask-squircle w-12 h-12'>{currentUserImageUrl && <img src={currentUserImageUrl} alt='Author' />}</div>
-                    </div>
-                    <label className='w-full'>
-                      <textarea type='textarea' name='body' value={body} onChange={(e) => setBody(e.target.value)} placeholder='Share your thoughts' />
-                    </label>
+        <table className='table w-full  shadow-md'>
+          <tbody className=''>
+            <tr>
+              <td className='border-none pb-0'>
+                <div className='flex items-center space-x-3'>
+                  <div className='avatar'>
+                    <div className='mask mask-squircle w-12 h-12'>{currentUserImageUrl && <img src={currentUserImageUrl} alt='Author' />}</div>
                   </div>
-                </td>
-              </tr>
-              {tempImageUrl && (
-                <tr className='max-w-200px'>
-                  <td>
-                    <img src={`${tempImageUrl}`} alt='Uploaded file' />
-                  </td>
-                </tr>
-              )}
-              <tr>
+                  <label className='w-full'>
+                    <textarea type='textarea' name='body' value={body} onChange={(e) => setBody(e.target.value)} placeholder='Share your thoughts' />
+                  </label>
+                </div>
+              </td>
+            </tr>
+            {tempImageUrl && (
+              <tr className='max-w-200px'>
                 <td>
-                  <div className='flex justify-between'>
-                    <button type='button' onClick={() => inputFileUpload.current.click()} className='btn btn-active btn-ghost'>
-                      Choose File
-                    </button>
-                    <input ref={inputFileUpload} className='hidden' type='file' onChange={(e) => handleFileUpload(e)} />
-                    <button type='submit' className='btn btn-active btn-ghost justify-self-end'>
-                      Add Post
-                    </button>
-                  </div>
+                  <img src={`${tempImageUrl}`} alt='Uploaded file' />
                 </td>
               </tr>
-            </tbody>
-          </table>
-        </div>
+            )}
+            <tr>
+              <td>
+                <div className='flex justify-between'>
+                  <button type='button' onClick={() => inputFileUpload.current.click()} className='btn btn-active btn-ghost'>
+                    Choose File
+                  </button>
+                  <input ref={inputFileUpload} className='hidden' type='file' onChange={(e) => handleFileUpload(e)} />
+                  <button type='submit' className='btn btn-active btn-ghost justify-self-end'>
+                    Add Post
+                  </button>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </form>
     </div>
   );
