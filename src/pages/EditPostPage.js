@@ -36,9 +36,8 @@ export const EditPostPage = () => {
 
       let postNotification = res.data.find((notification) => notification.postId === postId);
 
-      let deleteMessage = await deleteNotification(postNotification._id);
+      await deleteNotification(postNotification._id);
 
-      console.log('Message from deleting notification =>', deleteMessage.data.message);
       removeUsersNotification(postNotification._id);
 
       navigate(-1);

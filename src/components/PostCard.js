@@ -6,7 +6,18 @@ import { Link, useLocation } from 'react-router-dom';
 
 import { AddComment } from './AddComment';
 import { CommentCard } from './CommentCard';
-import { createNotification, updatePostLikesAdd, updatePostLikesRemove, updateUserLikesAdd, updateUserLikesRemove, updateUserNotification } from '../api';
+import {
+  createNotification,
+  deleteNotification,
+  getNotifications,
+  getUsers,
+  removeUserNotification,
+  updatePostLikesAdd,
+  updatePostLikesRemove,
+  updateUserLikesAdd,
+  updateUserLikesRemove,
+  updateUserNotification,
+} from '../api';
 
 export const PostCard = ({ post, refreshPosts, refreshUser }) => {
   const { user } = useContext(AuthContext);
@@ -54,6 +65,17 @@ export const PostCard = ({ post, refreshPosts, refreshUser }) => {
       } else {
         await updateUserLikesRemove({ postId: post._id }, user._id);
         await updatePostLikesRemove({ userId: user._id }, post._id);
+
+        let res = await getNotifications();
+
+        if (res.data.find((notification) => notification.postId === post._id)) {
+          let postNotification = res.data.find((notification) => notification.postId === post._id);
+
+          await deleteNotification(postNotification._id);
+
+          removeUsersNotification(postNotification._id);
+        }
+
         if (refreshPosts) {
           refreshPosts();
         }
@@ -63,6 +85,21 @@ export const PostCard = ({ post, refreshPosts, refreshUser }) => {
       }
     } catch (error) {
       console.log('Something went wrong while trying to update likes =>', error);
+    }
+  };
+
+  const removeUsersNotification = async (notificationId) => {
+    // call users and filter the array of notifications
+    try {
+      let response = await getUsers();
+      let allUsers = response.data;
+      allUsers.forEach((user) => {
+        if (user.notifications.includes(notificationId)) {
+          removeUserNotification({ notificationId: notificationId }, user._id);
+        }
+      });
+    } catch (error) {
+      console.log('Something went wront while deleting notification from users notifications', error);
     }
   };
 
