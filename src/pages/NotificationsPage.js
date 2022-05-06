@@ -52,7 +52,7 @@ export const NotificationsPage = () => {
         notifications.map((oneNotification) => {
           if (oneNotification.postId) {
             return (
-              <div key={oneNotification._id} className='mt-28'>
+              <div key={oneNotification._id}>
                 <Link to={`/profile/${oneNotification.postId.userId}?postId=${oneNotification.postId._id}`}>
                   {oneNotification.commentMessage ? <span>{oneNotification.commentMessage}</span> : <span>{oneNotification.content}</span>}
                 </Link>
@@ -61,7 +61,7 @@ export const NotificationsPage = () => {
             );
           } else {
             return (
-              <div key={oneNotification._id} className='mt-28'>
+              <div key={oneNotification._id}>
                 <Link to={`/profile/${oneNotification.userId}`}>
                   <span>{oneNotification.content}</span>
                 </Link>

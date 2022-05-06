@@ -97,7 +97,7 @@ export const AddComment = ({ post, refreshAllPosts, refreshProfileUser }) => {
                   <label className='w-full flex'>
                     <textarea type='textarea' name='content' value={content} onChange={handleContent} placeholder='Write comment' className='overflow-hidden h-12 p-1 self-end' />
                   </label>
-                  <button className='btn btn-active btn-ghost text-gray-400 w-10 self-end' type='submit'>
+                  <button className='btn btn-primary w-10 self-end' type='submit'>
                     Add
                   </button>
                 </div>

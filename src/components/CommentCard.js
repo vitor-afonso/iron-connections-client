@@ -38,10 +38,10 @@ export const CommentCard = ({ postId, comment, refreshAllPosts, refreshProfileUs
         {/* <!-- Name & Date --> */}
         <div className='flex items-center w-full justify-between font-bold text-xs text-gray-900 truncate mb-1 sm:mb-0'>
           {comment.userId.username.split(' ')[0]} <span className='mr-3 text-gray-400'> {commentDate} </span>
-          {comment.userId._id === user._id && (
-            <Link to={`/post/${comment._id}/edit`}>
-              <button className='btn btn-active btn-ghost'>Edit</button>
-            </Link>
+          {user._id === comment.userId._id && (
+            <button className='btn btn-active btn-ghost justify-self-end self-end' onClick={handleDelete}>
+              x
+            </button>
           )}
         </div>
       </div>
@@ -51,12 +51,6 @@ export const CommentCard = ({ postId, comment, refreshAllPosts, refreshProfileUs
         <div className='text-slate-600 mb-4 '>
           <div className='flex justify-around '>
             <p className='mb-2 '>{comment.content}</p>
-
-            {user._id === comment.userId._id && (
-              <button className='btn btn-active btn-ghost justify-self-end self-end' onClick={handleDelete}>
-                Delete
-              </button>
-            )}
           </div>
         </div>
       </div>
