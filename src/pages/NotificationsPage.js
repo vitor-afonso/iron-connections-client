@@ -32,7 +32,6 @@ export const NotificationsPage = () => {
     try {
       if (user) {
         let currentUser = await getUser(user._id);
-        console.log('data.notifications', currentUser.data);
         setNotifications(currentUser.data.notifications);
       }
     } catch (error) {

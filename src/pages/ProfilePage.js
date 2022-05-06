@@ -41,7 +41,7 @@ export const ProfilePage = () => {
   }, [userId]);
 
   useEffect(() => {
-    Aos.init({ duration: 1000 });
+    setTimeout(() => Aos.init({ duration: 1000 }), 500);
   }, []);
 
   useEffect(() => {
@@ -63,7 +63,7 @@ export const ProfilePage = () => {
   return (
     <>
       {userProfile ? (
-        <div className=' pt-16 flex flex-col justify-center items-center p-4 space-y-4 '>
+        <div className=' flex flex-col justify-start items-center p-4 space-y-4 '>
           {/* <!-- Card header --> */}
           <div className='flex justify-start items-center shadow-md w-full border-2 border-indigo-600 bg-white p-4 rounded-md max-w-lg'>
             {/* <!-- Icon --> */}
@@ -75,7 +75,7 @@ export const ProfilePage = () => {
               {userProfile.username}
               {userProfile._id === user._id && (
                 <Link to={`/profile/${userProfile._id}/edit`}>
-                  <button className='btn btn-active border-2 border-indigo-600 shadow-sm bg-white text-indigo-600 hover:text-gray-100 hover:bg-indigo-600'>Edit</button>
+                  <button className='btn border-2 btn-primary border-indigo-600 shadow-sm bg-white text-indigo-600 hover:text-gray-100 '>Edit</button>
                 </Link>
               )}
             </div>
@@ -111,13 +111,13 @@ export const ProfilePage = () => {
               sortedListOfPosts.map((onePost) => {
                 if (searchParams.get('postId') && searchParams.get('postId') === onePost._id) {
                   return (
-                    <div ref={postRef} key={onePost._id}>
+                    <div ref={postRef} key={onePost._id} data-aos='fade-up'>
                       <PostCard id={`#${onePost._id}`} post={onePost} refreshUser={getOneUser} />
                     </div>
                   );
                 }
                 return (
-                  <div key={onePost._id}>
+                  <div key={onePost._id} data-aos='fade-up'>
                     <PostCard className={onePost._id} post={onePost} refreshUser={getOneUser} />
                   </div>
                 );

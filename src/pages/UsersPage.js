@@ -88,7 +88,8 @@ export const UsersPage = () => {
   }, [user]);
 
   return (
-    <div className='max-w-lg mx-auto'>
+    <div className='max-w-lg mx-auto '>
+      <div className='fixed top-12 w-full z-10 h-3 bg-slate-200'></div>
       {<FilterUsers usersList={allUsers} currentUser={currentUser} userFollowersIds={userFollowersId} handleAddFollower={handleAddFollower} handleRemoveFollower={handleRemoveFollower} />}
     </div>
   );

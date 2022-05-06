@@ -38,20 +38,26 @@ export const FeedPage = () => {
   }, [user]);
 
   useEffect(() => {
-    Aos.init({ duration: 1000 });
+    setTimeout(() => Aos.init({ duration: 1000 }), 500);
   }, []);
 
   return (
-    <div className='FeedPage pt-28 flex justify-center'>
+    <div className='FeedPage pt-20 flex justify-center'>
+      <div className='fixed top-12 w-full z-10 h-3 bg-slate-200'></div>
       <AddPost refreshPosts={getPosts} refreshUser={getOneUser} />
+
       <div className='t-20 space-y-4 mb-4'>
         {allPostsIdsToDisplay &&
           posts &&
           posts.map((onePost) => {
             return (
-              <div key={onePost._id} className='first:mt-28 '>
-                {allPostsIdsToDisplay.includes(onePost._id) && <PostCard post={onePost} refreshPosts={getPosts} />}
-              </div>
+              <>
+                {allPostsIdsToDisplay.includes(onePost._id) && (
+                  <div key={onePost._id} className='first:mt-28' data-aos='fade-up'>
+                    <PostCard post={onePost} refreshPosts={getPosts} />
+                  </div>
+                )}
+              </>
             );
           })}
       </div>

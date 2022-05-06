@@ -9,70 +9,8 @@ export const MenuBar = () => {
   // the values from AuthContext.Provider `value` prop
   const { isLoggedIn, user, logOutUser } = useContext(AuthContext);
 
-  return (
-    <nav className='fixed top-0 left-0 right-0 bg-white z-10'>
-      <ul className='menu menu-horizontal rounded-box hidden sm:flex'>
-        <li className='flex-1'>
-          <Link to='/' className='font-semibold'>
-            <span className='text-indigo-500 inline'>IronConnections</span>
-          </Link>
-        </li>
-
-        {!isLoggedIn && (
-          <>
-            <li>
-              <Link to='/' className='hover:text-indigo-500'>
-                Home
-              </Link>
-            </li>
-            <li>
-              <Link to='/signup' className='hover:text-indigo-500'>
-                Sign Up
-              </Link>
-            </li>
-            <li>
-              <Link to='/login' className='hover:text-indigo-500'>
-                Login
-              </Link>
-            </li>
-          </>
-        )}
-
-        {isLoggedIn && user && (
-          <>
-            <li>
-              <Link to='/feed' className='hover:text-indigo-500'>
-                Feed
-              </Link>
-            </li>
-
-            <li>
-              <Link to={`/profile/${user._id}`} className='hover:text-indigo-500'>
-                Profile
-              </Link>
-            </li>
-
-            <li>
-              <Link to='/users' className='hover:text-indigo-500'>
-                Users
-              </Link>
-            </li>
-
-            <li>
-              <Link to='/notifications' className='hover:text-indigo-500'>
-                Notifications
-              </Link>
-            </li>
-
-            <li>
-              <span onClick={logOutUser} className='hover:text-indigo-500'>
-                Logout
-              </span>
-            </li>
-          </>
-        )}
-      </ul>
-
+  const MenuBarMobile = () => {
+    return (
       <ul className='menu menu-horizontal rounded-box sm:hidden'>
         {!isLoggedIn && (
           <>
@@ -125,13 +63,78 @@ export const MenuBar = () => {
                 <img src='./icons/logout_black_24dp.svg' alt='Logout' className='h-6 w-6' />
               </span>
             </li>
-
-            <li>
-              <button data-toggle-theme='dark,light' data-act-class='ACTIVECLASS'></button>
-            </li>
           </>
         )}
       </ul>
+    );
+  };
+
+  return (
+    <nav className='fixed top-0 left-0 right-0  z-20 bg-white '>
+      <ul className='menu menu-horizontal rounded-box hidden sm:flex justify-between'>
+        <li className=''>
+          <Link to='/' className='font-semibold'>
+            <span className='text-indigo-500 inline'>IronConnections</span>
+          </Link>
+        </li>
+        <div className='flex'>
+          {!isLoggedIn && (
+            <>
+              <li>
+                <Link to='/' className='hover:text-indigo-500'>
+                  Home
+                </Link>
+              </li>
+              <li>
+                <Link to='/signup' className='hover:text-indigo-500'>
+                  Sign Up
+                </Link>
+              </li>
+              <li>
+                <Link to='/login' className='hover:text-indigo-500'>
+                  Login
+                </Link>
+              </li>
+            </>
+          )}
+
+          {isLoggedIn && user && (
+            <>
+              <li>
+                <Link to='/feed' className='hover:text-indigo-500'>
+                  Feed
+                </Link>
+              </li>
+
+              <li>
+                <Link to={`/profile/${user._id}`} className='hover:text-indigo-500'>
+                  Profile
+                </Link>
+              </li>
+
+              <li>
+                <Link to='/users' className='hover:text-indigo-500'>
+                  Users
+                </Link>
+              </li>
+
+              <li>
+                <Link to='/notifications' className='hover:text-indigo-500'>
+                  Notifications
+                </Link>
+              </li>
+
+              <li>
+                <span onClick={logOutUser} className='hover:text-indigo-500'>
+                  Logout
+                </span>
+              </li>
+            </>
+          )}
+        </div>
+      </ul>
+
+      <MenuBarMobile />
     </nav>
   );
 };

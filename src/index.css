@@ -26,13 +26,8 @@
   }
 }
 
-:root {
-  --my-color: #fff;
-  /* or any other variables/style */
-}
-[data-theme='dark'] {
-  --my-color: #000;
-}
-[data-theme='light'] {
-  --my-color: #e5e7eb;
+@layer components {
+  .my-table-spacing {
+    border-spacing: theme('spacing.2');
+  }
 }

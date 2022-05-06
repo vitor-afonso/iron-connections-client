@@ -20,7 +20,7 @@ export const AddPost = ({ refreshPosts, refreshUser }) => {
   let addPostPaddingX = ''; // <= Needed on feedPage
 
   if (location.pathname.includes('feed')) {
-    addPostTopDistance = 'top-12';
+    addPostTopDistance = 'top-14';
     addPostPaddingX = 'px-4';
     addPostPosition = 'fixed';
   } else {
@@ -108,8 +108,8 @@ export const AddPost = ({ refreshPosts, refreshUser }) => {
   }, [user]);
 
   return (
-    <div className={`AddPost z-10 ${addPostPosition} ${addPostTopDistance} ${addPostPaddingX} w-full max-w-lg  text-indigo-600 border-2 border-indigo-600`}>
-      <form onSubmit={handleSubmit}>
+    <div className={`AddPost z-10 ${addPostPosition} ${addPostTopDistance} ${addPostPaddingX} w-full max-w-lg `}>
+      <form onSubmit={handleSubmit} className='border-2 border-indigo-600 rounded-lg'>
         <table className='table w-full  shadow-md'>
           <tbody className=''>
             <tr>
@@ -138,7 +138,7 @@ export const AddPost = ({ refreshPosts, refreshUser }) => {
                     Choose File
                   </button>
                   <input ref={inputFileUpload} className='hidden' type='file' onChange={(e) => handleFileUpload(e)} />
-                  <button type='submit' className='btn btn-active btn-ghost justify-self-end'>
+                  <button type='submit' className='btn btn-primary justify-self-end'>
                     Add Post
                   </button>
                 </div>

@@ -24,31 +24,32 @@ export const FilterUsers = ({ usersList, userFollowersIds, currentUser, handleAd
   }, [str, usersList, currentUser]);
 
   useEffect(() => {
-    Aos.init({ duration: 1000 });
+    setTimeout(() => Aos.init({ duration: 1000 }), 500);
   }, []);
 
   return (
-    <div className='mt-16 space-y-4 flex flex-col items-center max-w-md mx-auto '>
-      <label className='w-full'>
-        <input type='text' placeholder='Search people' name='search' value={str} onChange={(e) => setStr(e.target.value)} className={`input input-bordered input-primary w-full max-w-md`} />
+    <div className='space-y-4 flex flex-col items-center  max-w-md mx-auto '>
+      <label className='fixed top-[56px] z-20 w-full '>
+        <input type='text' placeholder='Search people' name='search' value={str} onChange={(e) => setStr(e.target.value)} className={`input  input-primary w-full max-w-md focus:outline-none `} />
       </label>
-      <table className='table w-full max-w-md'>
-        <tbody>
-          {users.length &&
+
+      <table className='table w-full max-w-md top-[46px] border-separate'>
+        <tbody className=''>
+          {users.length !== 0 ? (
             users.map((oneUser) => {
               if (oneUser._id !== user._id) {
                 return (
-                  <tr>
-                    <td className='border-b-2 border-indigo-600 '>
-                      <div class='flex items-center space-x-3 justify-between '>
+                  <tr data-aos='fade-up' key={oneUser._id}>
+                    <td className='rounded-lg'>
+                      <div className='flex items-center space-x-3 justify-between '>
                         <div className='flex items-center space-x-3'>
-                          <div class='avatar'>
+                          <div className='avatar'>
                             <Link to={`/profile/${oneUser._id}`} className='mask mask-squircle w-12 h-12'>
                               <img src={oneUser.imageUrl} alt={oneUser.username} />
                             </Link>
                           </div>
                           <div>
-                            <div class='font-bold'>{oneUser.username}</div>
+                            <div className='font-bold'>{oneUser.username}</div>
                           </div>
                         </div>
 
@@ -66,7 +67,14 @@ export const FilterUsers = ({ usersList, userFollowersIds, currentUser, handleAd
                   </tr>
                 );
               }
-            })}
+            })
+          ) : (
+            <tr>
+              <td>
+                <p>No users found.</p>
+              </td>
+            </tr>
+          )}
         </tbody>
       </table>
     </div>

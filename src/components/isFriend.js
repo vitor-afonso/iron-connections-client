@@ -1,13 +1,14 @@
 //jshint esversion:9
 import { useContext, useEffect, useState } from 'react';
 import { AuthContext } from '../context/auth.context';
-import { Navigate, useParams } from 'react-router-dom';
+import { Navigate, useNavigate, useParams } from 'react-router-dom';
 import { getUser } from '../api';
 
 export const IsFriend = ({ children }) => {
   const { user } = useContext(AuthContext);
   const [allowedIds, setAllowedIds] = useState([]);
   const { userId } = useParams();
+  const navigate = useNavigate();
 
   useEffect(() => {
     (async () => {
@@ -20,7 +21,7 @@ export const IsFriend = ({ children }) => {
 
   if (allowedIds.length && !allowedIds.includes(userId)) {
     // If the user is not part of the allowedId, navigate to feed page
-    return <Navigate to='/feed' />;
+    return navigate(-1);
   } else {
     // If the user id is part of the allowedId, allow to see the page
     return children;

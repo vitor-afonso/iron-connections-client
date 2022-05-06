@@ -17,7 +17,7 @@ export const HomePage = () => {
             <polygon points='50,0 100,0 50,100 0,100' />
           </svg>
 
-          <div className='hidden sm:block relative pt-16 px-4 sm:px-6 lg:px-8'></div>
+          <div className='hidden md:block relative pt-16 px-4 sm:px-6 lg:px-8'></div>
 
           <main className='mt-3 mx-auto max-w-7xl px-4 sm:mt-12 sm:px-6 md:mt-4 lg:mt-20 lg:px-8 xl:mt-28 '>
             <div className='sm:text-center lg:text-left'>

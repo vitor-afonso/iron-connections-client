@@ -1,11 +1,11 @@
 //jshint esversion:9
 
 import { useContext, useEffect, useState } from 'react';
-import { NavLink, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { AuthContext } from '../context/auth.context';
-import { addFollower, createNotification, getUser, removeFollower, updateUserNotification } from './../api';
 import Aos from 'aos';
-import 'aos/dist/aos.css';
+import { addFollower, createNotification, getUser, removeFollower, updateUserNotification } from './../api';
+import { FilterUsers } from '../components/FilterUsers';
 
 export const FriendsPage = () => {
   const { user } = useContext(AuthContext);
@@ -103,32 +103,9 @@ export const FriendsPage = () => {
   }, []);
 
   return (
-    <div>
-      <label>
-        <input type='text' name='search' value={str} onChange={(e) => setStr(e.target.value)} placeholder='Search user by name' />
-      </label>
-      {filteredFollowers.length &&
-        filteredFollowers.map((oneUser) => {
-          return (
-            <div key={oneUser._id} className='userCard-container' data-aos='fade-up'>
-              {oneUser._id !== user._id && (
-                <>
-                  <NavLink to={`/profile/${oneUser._id}`}>
-                    <img src={oneUser.imageUrl} alt={oneUser.username} style={{ width: '50px' }} />
-                  </NavLink>
-
-                  <span>{oneUser.username}</span>
-
-                  {user._id !== oneUser._id && !currentUserFollowersIds.includes(oneUser._id) ? (
-                    <button onClick={() => handleAddFollower(oneUser._id)}>Follow</button>
-                  ) : (
-                    <button onClick={() => handleRemoveFollower(oneUser._id)}>Unfollow</button>
-                  )}
-                </>
-              )}
-            </div>
-          );
-        })}
+    <div className='max-w-lg mx-auto '>
+      <div className='fixed top-12 w-full z-10 h-3 bg-slate-200'></div>
+      {<FilterUsers usersList={filteredFollowers} currentUser={user} userFollowersIds={currentUserFollowersIds} handleAddFollower={handleAddFollower} handleRemoveFollower={handleRemoveFollower} />}
     </div>
   );
 };
