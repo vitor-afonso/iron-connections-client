@@ -42,6 +42,10 @@ export const AddPost = ({ refreshPosts, refreshUser }) => {
     e.preventDefault();
 
     try {
+      if (!objImageToUpload && !body) {
+        return;
+      }
+
       if (objImageToUpload) {
         // imageUrl => this name has to be the same as in the model if we pass
         // req.body to .create() method when creating a new post in '/api/posts' POST route

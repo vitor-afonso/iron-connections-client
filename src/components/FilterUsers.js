@@ -30,7 +30,7 @@ export const FilterUsers = ({ usersList, userFollowersIds, currentUser, handleAd
   return (
     <div className='space-y-4 flex flex-col items-center  max-w-md mx-auto '>
       <label className='fixed top-[56px] z-20 w-full '>
-        <input type='text' placeholder='Search people' name='search' value={str} onChange={(e) => setStr(e.target.value)} className={`input  input-primary w-full max-w-md focus:outline-none `} />
+        <input type='text' placeholder='Search connects' name='search' value={str} onChange={(e) => setStr(e.target.value)} className={`input  input-primary w-full max-w-md focus:outline-none `} />
       </label>
 
       <table className='table w-full max-w-md top-[46px] border-separate'>

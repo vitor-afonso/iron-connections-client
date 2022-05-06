@@ -100,7 +100,7 @@ export const EditPostPage = () => {
               <div className='font-bold'>{user.username}</div>
             </div>
           </div>
-          {body ? (
+          {body || imageUrl ? (
             <form onSubmit={handleSubmit} className='space-y-2'>
               <label>
                 <textarea name='body' value={body} onChange={(e) => setBody(e.target.value)} placeholder='Share your thoughts' />
@@ -132,31 +132,4 @@ export const EditPostPage = () => {
       </div>
     </div>
   );
-  /* return (
-    <div className='AddPost'>
-      {body ? (
-        <form onSubmit={handleSubmit}>
-          {user && <img src={user.imageUrl} alt='Author' style={{ width: '30px' }} />}
-
-          <label>
-            <textarea name='body' value={body} onChange={(e) => setBody(e.target.value)} placeholder='Share your thoughts' style={{ minWidth: '300px' }} />
-          </label>
-
-          {imageUrl && <img src={imageUrl} alt='Post' style={{ width: '300px' }} />}
-
-          <label>
-            <input type='file' onChange={(e) => handleFileUpload(e)} />
-          </label>
-          <br />
-          <button type='submit'>Update Post</button>
-        </form>
-      ) : (
-        <p>Loading...</p>
-      )}
-      <NavLink to='/feed'>
-        <button onClick={() => navigate(-1)}>Back</button>
-      </NavLink>
-      <button onClick={removePost}>Delete</button>
-    </div>
-  ); */
 };
