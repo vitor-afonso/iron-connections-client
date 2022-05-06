@@ -103,7 +103,7 @@ export const FriendsPage = () => {
   }, []);
 
   return (
-    <div className='max-w-lg mx-auto '>
+    <div className='max-w-lg mx-auto min-h-screen '>
       <div className='fixed top-12 w-full z-10 h-3 bg-slate-200'></div>
       {<FilterUsers usersList={filteredFollowers} currentUser={user} userFollowersIds={currentUserFollowersIds} handleAddFollower={handleAddFollower} handleRemoveFollower={handleRemoveFollower} />}
     </div>

@@ -48,7 +48,7 @@ export const ProfilePage = () => {
     setTimeout(() => {
       if (postRef.current) {
         postRef.current.scrollIntoView({ behavior: 'smooth' });
-        postRef.current.style.border = '1px solid blue';
+        postRef.current.style.border = '5px solid #570DF8';
         postRef.current.style.borderRadius = '15px';
       }
     }, 1000);
@@ -63,7 +63,7 @@ export const ProfilePage = () => {
   return (
     <>
       {userProfile ? (
-        <div className=' flex flex-col justify-start items-center p-4 space-y-4 '>
+        <div className=' flex flex-col justify-start items-center py-2 px-4 space-y-4 '>
           {/* <!-- Card header --> */}
           <div className='flex justify-start items-center shadow-md w-full border-2 border-indigo-600 bg-white p-4 rounded-md max-w-lg'>
             {/* <!-- Icon --> */}
@@ -81,7 +81,7 @@ export const ProfilePage = () => {
             </div>
           </div>
 
-          {userProfile.followers.length && (
+          {userProfile.followers.length !== 0 && (
             <div className='flex flex-col w-full max-w-lg shadow-md border-2 border-indigo-600 bg-white p-4 rounded-md text-indigo-600 font-base text-lg'>
               <h6 className='self-start'>{userProfile.username.split(' ')[0]} connections</h6>
               <div className='flex self-center py-4'>

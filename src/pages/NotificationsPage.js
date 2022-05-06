@@ -46,7 +46,7 @@ export const NotificationsPage = () => {
   }, [user]);
 
   return (
-    <div>
+    <div className='h-screen'>
       <h2>Notifications</h2>
       {notifications.length !== 0 &&
         notifications.map((oneNotification) => {
