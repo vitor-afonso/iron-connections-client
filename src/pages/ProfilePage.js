@@ -63,7 +63,7 @@ export const ProfilePage = () => {
   return (
     <>
       {userProfile ? (
-        <div className=' flex flex-col justify-start items-center py-2 px-4 space-y-4 '>
+        <div className=' flex flex-col justify-start items-center py-2 px-4 space-y-4 min-h-screen'>
           {/* <!-- Card header --> */}
           <div className='flex justify-start items-center shadow-md w-full border-2 border-indigo-600 bg-white p-4 rounded-md max-w-lg'>
             {/* <!-- Icon --> */}
