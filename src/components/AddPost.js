@@ -87,7 +87,7 @@ export const AddPost = ({ refreshPosts, refreshUser }) => {
     let postDate = `${dateDay}-${dateMonth}-${dateYear}`;
 
     try {
-      let str = `${user.username} have a new post. ${postDate}`;
+      let str = `${user.username.split(' ')[0]} have a new post. ${postDate}`;
 
       let response = await createNotification({ content: str, userId: user._id, postId: newPostId });
 

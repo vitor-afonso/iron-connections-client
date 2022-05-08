@@ -40,8 +40,8 @@ export const AddComment = ({ post, refreshAllPosts, refreshProfileUser }) => {
     let postDate = `${dateDay}-${dateMonth}-${dateYear}`;
 
     try {
-      let str = `${user.username} commented your post. ${postDate}`;
-      let str2 = `${user.username} commented a post that you also commented. ${postDate}`;
+      let str = `${user.username.split(' ')[0]} commented your post. ${postDate}`;
+      let str2 = `${user.username.split(' ')[0]} commented a post that you also commented. ${postDate}`;
       let newlyCreatedNotificationId;
 
       if (post.comments.length !== 0) {

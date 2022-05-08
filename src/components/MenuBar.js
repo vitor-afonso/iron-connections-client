@@ -1,10 +1,10 @@
 //jshint esversion:8
 
-import { useContext, useEffect } from 'react';
+import { useContext } from 'react';
 import { AuthContext } from '../context/auth.context';
 import { Link } from 'react-router-dom';
 
-export const MenuBar = () => {
+export const MenuBar = ({ toggleNotifications }) => {
   // Subscribe to the AuthContext to gain access to
   // the values from AuthContext.Provider `value` prop
   const { isLoggedIn, user, logOutUser } = useContext(AuthContext);
@@ -53,9 +53,9 @@ export const MenuBar = () => {
             </li>
 
             <li>
-              <Link to='/notifications' className='hover:text-indigo-500 visited:bg-slate-400'>
-                <img src='./icons/notifications_black_24dp.svg' alt='Notifications' className='h-6 w-6' />
-              </Link>
+              <div className='hover:text-indigo-500 visited:bg-slate-400'>
+                <img src='./icons/notifications_black_24dp.svg' alt='Notifications' className='h-6 w-6 ' onClick={() => toggleNotifications.current.click()} />
+              </div>
             </li>
 
             <li>
@@ -119,9 +119,9 @@ export const MenuBar = () => {
               </li>
 
               <li>
-                <Link to='/notifications' className='hover:text-indigo-500 visited:bg-slate-400'>
+                <div className='hover:text-indigo-500 visited:bg-slate-400' onClick={() => toggleNotifications.current.click()}>
                   Notifications
-                </Link>
+                </div>
               </li>
 
               <li>

@@ -29,12 +29,12 @@ export const FilterUsers = ({ usersList, userFollowersIds, currentUser, handleAd
 
   return (
     <div className='space-y-4 flex flex-col items-center  max-w-md mx-auto '>
-      <label className='fixed top-[56px] z-20 w-full '>
+      <label className='fixed top-[56px] z-20 w-full px-4 '>
         <input type='text' placeholder='Search connects' name='search' value={str} onChange={(e) => setStr(e.target.value)} className={`input  input-primary w-full max-w-md focus:outline-none `} />
       </label>
 
       <table className='table w-full max-w-md top-[46px] border-separate'>
-        <tbody className=''>
+        <tbody>
           {users.length !== 0 ? (
             users.map((oneUser) => {
               if (oneUser._id !== user._id) {
@@ -42,16 +42,18 @@ export const FilterUsers = ({ usersList, userFollowersIds, currentUser, handleAd
                   <tr data-aos='fade-up' key={oneUser._id}>
                     <td className='rounded-lg'>
                       <div className='flex items-center space-x-3 justify-between '>
-                        <div className='flex items-center space-x-3'>
-                          <div className='avatar'>
-                            <Link to={`/profile/${oneUser._id}`} className='mask mask-squircle w-12 h-12'>
-                              <img src={oneUser.imageUrl} alt={oneUser.username} />
-                            </Link>
+                        <Link to={`/profile/${oneUser._id}`}>
+                          <div className='flex items-center space-x-3'>
+                            <div className='avatar'>
+                              <div className='mask mask-squircle w-12 h-12'>
+                                <img src={oneUser.imageUrl} alt={oneUser.username} />
+                              </div>
+                            </div>
+                            <div>
+                              <div className='font-bold'>{oneUser.username}</div>
+                            </div>
                           </div>
-                          <div>
-                            <div className='font-bold'>{oneUser.username}</div>
-                          </div>
-                        </div>
+                        </Link>
 
                         {currentUser._id !== oneUser._id && !userFollowersIds.includes(oneUser._id) ? (
                           <button className='btn justify-self-end' onClick={() => handleAddFollower(oneUser._id)}>

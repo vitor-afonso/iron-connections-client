@@ -51,7 +51,7 @@ export const PostCard = ({ post, refreshPosts, refreshUser }) => {
           let dateMonth = month[date.getMonth()];
           let dateDay = date.getDate();
           let postDate = `${dateDay}-${dateMonth}-${dateYear}`;
-          let str = `${user.username} liked your post. ${postDate}`;
+          let str = `${user.username.split(' ')[0]} liked your post. ${postDate}`;
 
           let notification = await createNotification({ content: str, userId: user._id, postId: post._id });
           updateUserNotification({ notificationId: notification.data._id }, post.userId._id);

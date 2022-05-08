@@ -63,9 +63,9 @@ export const ProfilePage = () => {
   return (
     <>
       {userProfile ? (
-        <div className=' flex flex-col justify-start items-center py-2 px-4 space-y-4 min-h-screen'>
+        <div className=' flex flex-col justify-start items-center py-2 px-4 space-y-4'>
           {/* <!-- Card header --> */}
-          <div className='flex justify-start items-center shadow-md w-full border-2 border-indigo-600 bg-white p-4 rounded-md max-w-lg'>
+          <div className='flex justify-start items-center shadow-md w-full border-2 border-indigo-600 bg-indigo-100 p-4 rounded-md max-w-lg'>
             {/* <!-- Icon --> */}
             <div className='avatar mr-3'>
               <div className='mask mask-squircle w-10 h-10'>{userProfile.imageUrl && <img src={userProfile.imageUrl} alt={userProfile.username} />}</div>
@@ -106,7 +106,7 @@ export const ProfilePage = () => {
             </div>
           )}
 
-          <div className='postCards-container mt-4 space-y-4 w-full max-w-lg'>
+          <div className='postCards-container mt-4 space-y-4 w-full max-w-lg mb-4'>
             {userProfile &&
               sortedListOfPosts.map((onePost) => {
                 if (searchParams.get('postId') && searchParams.get('postId') === onePost._id) {

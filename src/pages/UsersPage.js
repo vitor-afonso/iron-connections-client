@@ -39,7 +39,7 @@ export const UsersPage = () => {
     let postDate = `${dateDay}-${dateMonth}-${dateYear}`;
 
     try {
-      let str = `${user.username} started following you. ${postDate}`;
+      let str = `${user.username.split(' ')[0]} started following you. ${postDate}`;
 
       let response = await createNotification({ content: str, userId: user._id });
 
@@ -88,7 +88,7 @@ export const UsersPage = () => {
   }, [user]);
 
   return (
-    <div className='max-w-lg mx-auto min-h-screen '>
+    <div className='max-w-lg mx-auto'>
       <div className='fixed top-12 w-full z-10 h-3 bg-slate-200'></div>
       {<FilterUsers usersList={allUsers} currentUser={currentUser} userFollowersIds={userFollowersId} handleAddFollower={handleAddFollower} handleRemoveFollower={handleRemoveFollower} />}
     </div>

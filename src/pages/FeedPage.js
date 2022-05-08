@@ -42,7 +42,7 @@ export const FeedPage = () => {
   }, []);
 
   return (
-    <div className='FeedPage pt-20 flex justify-center min-h-screen'>
+    <div className='FeedPage pt-20 flex justify-center'>
       <div className='fixed top-12 w-full z-10 h-3 bg-slate-200'></div>
       <AddPost refreshPosts={getPosts} refreshUser={getOneUser} />
 

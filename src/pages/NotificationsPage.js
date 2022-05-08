@@ -46,26 +46,49 @@ export const NotificationsPage = () => {
   }, [user]);
 
   return (
-    <div className='h-screen'>
-      <h2>Notifications</h2>
+    <div className='max-w-md mx-auto p-2'>
       {notifications.length !== 0 &&
         notifications.map((oneNotification) => {
           if (oneNotification.postId) {
             return (
-              <div key={oneNotification._id}>
-                <Link to={`/profile/${oneNotification.postId.userId}?postId=${oneNotification.postId._id}`}>
-                  {oneNotification.commentMessage ? <span>{oneNotification.commentMessage}</span> : <span>{oneNotification.content}</span>}
-                </Link>
-                <button onClick={() => removeNotification(oneNotification._id)}>x</button>
+              <div class='overflow-x-auto' key={oneNotification._id}>
+                <table class='table table-zebra w-full border-separate'>
+                  <tbody>
+                    <tr>
+                      <td className='space-x-3 flex justify-between items-center'>
+                        <Link to={`/profile/${oneNotification.postId.userId}?postId=${oneNotification.postId._id}`}>
+                          {oneNotification.commentMessage ? (
+                            <span className='text-xs sm:text-sm'>{oneNotification.commentMessage}</span>
+                          ) : (
+                            <span className='text-xs sm:text-sm'>{oneNotification.content}</span>
+                          )}
+                        </Link>
+                        <button onClick={() => removeNotification(oneNotification._id)} className='btn btn-error'>
+                          x
+                        </button>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
               </div>
             );
           } else {
             return (
-              <div key={oneNotification._id}>
-                <Link to={`/profile/${oneNotification.userId}`}>
-                  <span>{oneNotification.content}</span>
-                </Link>
-                <button onClick={() => removeNotification(oneNotification._id)}>x</button>
+              <div className='overflow-x-auto ' key={oneNotification._id}>
+                <table class='table table-zebra w-full'>
+                  <tbody>
+                    <tr>
+                      <td className='space-x-3 flex justify-between items-center'>
+                        <Link to={`/profile/${oneNotification.userId}`}>
+                          <span className='text-xs sm:text-sm'>{oneNotification.content}</span>
+                        </Link>
+                        <button onClick={() => removeNotification(oneNotification._id)} className='btn btn-error'>
+                          x
+                        </button>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
               </div>
             );
           }
