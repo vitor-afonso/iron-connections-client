@@ -51,8 +51,8 @@ export const Notifications = ({ toggleNotifications }) => {
         notifications.map((oneNotification) => {
           if (oneNotification.postId) {
             return (
-              <div class='overflow-x-auto ' key={oneNotification._id}>
-                <table class='table table-zebra w-full border-separate '>
+              <div className='overflow-x-auto ' key={oneNotification._id}>
+                <table className='table table-zebra w-full border-separate '>
                   <tbody>
                     <tr className=''>
                       <td className='flex justify-between items-center pr-0 bg-indigo-100'>
@@ -75,7 +75,7 @@ export const Notifications = ({ toggleNotifications }) => {
           } else {
             return (
               <div className='overflow-x-auto ' key={oneNotification._id}>
-                <table class='table table-zebra w-full'>
+                <table className='table table-zebra w-full'>
                   <tbody>
                     <tr>
                       <td className='space-x-3 flex justify-between items-center pr-0'>
