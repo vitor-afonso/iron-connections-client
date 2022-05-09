@@ -21,12 +21,94 @@ import { useRef } from 'react';
 
 function App() {
   const toggleNotifications = useRef(null);
+
   return (
+    <div className='App bg-slate-200  min-w-screen mt-[48px] min-h-[calc(100vh_-_48px)]'>
+      <MenuBar toggleNotifications={toggleNotifications} />
+      <Routes>
+        <Route
+          path='/'
+          element={
+            <IsAnon>
+              <HomePage />
+            </IsAnon>
+          }
+        />
+        <Route
+          path='/feed'
+          element={
+            <IsPrivate>
+              <FeedPage />
+            </IsPrivate>
+          }
+        />
+        <Route
+          path='/profile/:userId'
+          element={
+            <IsPrivate>
+              <IsFriend>
+                <ProfilePage />
+              </IsFriend>
+            </IsPrivate>
+          }
+        />
+        <Route
+          path='/post/:postId/edit'
+          element={
+            <IsPrivate>
+              <EditPostPage />
+            </IsPrivate>
+          }
+        />
+        <Route
+          path='/profile/:userId/edit'
+          element={
+            <IsPrivate>
+              <EditProfilePage />
+            </IsPrivate>
+          }
+        />
+        <Route
+          path='/profile/:profileOwnerId/connects'
+          element={
+            <IsPrivate>
+              <FriendsPage />
+            </IsPrivate>
+          }
+        />
+        <Route
+          path='/users'
+          element={
+            <IsPrivate>
+              <UsersPage />
+            </IsPrivate>
+          }
+        />
+        <Route
+          path='/signup'
+          element={
+            <IsAnon>
+              <SignupPage />
+            </IsAnon>
+          }
+        />
+        <Route
+          path='/login'
+          element={
+            <IsAnon>
+              <LoginPage />
+            </IsAnon>
+          }
+        />
+      </Routes>
+    </div>
+  );
+  /* return (
     <div className='App bg-slate-200  min-w-screen mt-[48px] min-h-[calc(100vh_-_48px)]'>
       <MenuBar toggleNotifications={toggleNotifications} />
       <div className='drawer drawer-end'>
         <input id='my-drawer-4' type='checkbox' className='drawer-toggle' />
-        <div className='drawer-content'>
+        <div className='drawer-content mb-4'>
           <Routes>
             <Route
               path='/'
@@ -115,7 +197,7 @@ function App() {
         </div>
       </div>
     </div>
-  );
+  ); */
 }
 
 export default App;

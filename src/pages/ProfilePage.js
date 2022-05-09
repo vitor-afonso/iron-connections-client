@@ -106,7 +106,7 @@ export const ProfilePage = () => {
             </div>
           )}
 
-          <div className='postCards-container mt-4 space-y-4 w-full max-w-lg mb-4'>
+          <div className='postCards-container mt-4 space-y-4 w-full max-w-lg mb-32'>
             {userProfile &&
               sortedListOfPosts.map((onePost) => {
                 if (searchParams.get('postId') && searchParams.get('postId') === onePost._id) {
