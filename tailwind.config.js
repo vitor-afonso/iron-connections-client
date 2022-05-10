@@ -3,7 +3,7 @@ module.exports = {
   theme: {
     extend: {},
   },
-  plugins: [require('daisyui'), require('@tailwindcss/forms')],
+  plugins: [require('daisyui'), require('@tailwindcss/forms'), require('tailwind-scrollbar-hide')],
   daisyui: {
     themes: ['light'],
   },

@@ -5,8 +5,6 @@ import { getAllPosts, getUser } from '../api';
 import { PostCard } from '../components/PostCard';
 import { AddPost } from '../components/AddPost';
 import { AuthContext } from '../context/auth.context';
-import Aos from 'aos';
-import 'aos/dist/aos.css';
 
 export const FeedPage = () => {
   const [posts, setPosts] = useState([]);
@@ -37,27 +35,19 @@ export const FeedPage = () => {
     getOneUser();
   }, [user]);
 
-  useEffect(() => {
-    setTimeout(() => Aos.init({ duration: 1000 }), 500);
-  }, []);
-
   return (
-    <div className='FeedPage pt-20 flex justify-center'>
+    <div className='FeedPage pt-20 flex justify-center min-h-[calc(100vh_-_48px)] pb-4'>
       <div className='fixed top-12 w-full z-10 h-3 bg-slate-200'></div>
       <AddPost refreshPosts={getPosts} refreshUser={getOneUser} />
 
-      <div className='t-20 space-y-4 mb-4'>
+      <div className='pt-1 space-y-4 w-full max-w-lg'>
         {allPostsIdsToDisplay &&
           posts &&
           posts.map((onePost) => {
             return (
-              <>
-                {allPostsIdsToDisplay.includes(onePost._id) && (
-                  <div key={onePost._id} className='first:mt-28' data-aos='fade-up'>
-                    <PostCard post={onePost} refreshPosts={getPosts} />
-                  </div>
-                )}
-              </>
+              <div key={onePost._id} className='first:mt-28'>
+                {allPostsIdsToDisplay.includes(onePost._id) && <PostCard post={onePost} refreshPosts={getPosts} />}
+              </div>
             );
           })}
       </div>

@@ -6,8 +6,6 @@ import { Link, NavLink, useParams, useSearchParams } from 'react-router-dom';
 import { getUser } from './../api';
 import { AddPost } from '../components/AddPost';
 import { PostCard } from '../components/PostCard';
-import Aos from 'aos';
-import 'aos/dist/aos.css';
 
 export const ProfilePage = () => {
   const { user } = useContext(AuthContext);
@@ -41,10 +39,6 @@ export const ProfilePage = () => {
   }, [userId]);
 
   useEffect(() => {
-    setTimeout(() => Aos.init({ duration: 1000 }), 500);
-  }, []);
-
-  useEffect(() => {
     setTimeout(() => {
       if (postRef.current) {
         postRef.current.scrollIntoView({ behavior: 'smooth' });
@@ -61,9 +55,9 @@ export const ProfilePage = () => {
   }, [postRef]);
 
   return (
-    <>
+    <div className='ProfilePage min-h-[calc(100vh_-_48px)] pb-4'>
       {userProfile ? (
-        <div className=' flex flex-col justify-start items-center py-2 px-4 space-y-4'>
+        <div className=' flex flex-col justify-start items-center pt-4 px-4 space-y-4 '>
           {/* <!-- Card header --> */}
           <div className='flex justify-start items-center shadow-md w-full border-2 border-indigo-600 bg-indigo-100 p-4 rounded-md max-w-lg'>
             {/* <!-- Icon --> */}
@@ -80,7 +74,7 @@ export const ProfilePage = () => {
               )}
             </div>
           </div>
-
+          {/* <!-- Followers --> */}
           {userProfile.followers.length !== 0 && (
             <div className='flex flex-col w-full max-w-lg shadow-md border-2 border-indigo-600 bg-white p-4 rounded-md text-indigo-600 font-base text-lg'>
               <h6 className='self-start'>{userProfile.username.split(' ')[0]} connections</h6>
@@ -106,27 +100,28 @@ export const ProfilePage = () => {
             </div>
           )}
 
-          <div className='postCards-container mt-4 space-y-4 w-full max-w-lg '>
+          <div className='postCards-container mt-4 space-y-4 w-full max-w-lg mb-4'>
             {userProfile &&
               sortedListOfPosts.map((onePost) => {
                 if (searchParams.get('postId') && searchParams.get('postId') === onePost._id) {
                   return (
-                    <div ref={postRef} key={onePost._id} data-aos='fade-up'>
+                    <div ref={postRef} key={onePost._id}>
                       <PostCard id={`#${onePost._id}`} post={onePost} refreshUser={getOneUser} />
                     </div>
                   );
+                } else {
+                  return (
+                    <div key={onePost._id}>
+                      <PostCard className={onePost._id} post={onePost} refreshUser={getOneUser} />
+                    </div>
+                  );
                 }
-                return (
-                  <div key={onePost._id} data-aos='fade-up'>
-                    <PostCard className={onePost._id} post={onePost} refreshUser={getOneUser} />
-                  </div>
-                );
               })}
           </div>
         </div>
       ) : (
         <p>Loading...</p>
       )}
-    </>
+    </div>
   );
 };

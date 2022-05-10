@@ -9,7 +9,6 @@ import { SignupPage } from './pages/SignupPage';
 import { LoginPage } from './pages/LoginPage';
 import { IsAnon } from './components/IsAnon';
 import { ProfilePage } from './pages/ProfilePage';
-
 import { Notifications } from './components/Notifications';
 import { IsPrivate } from './components/isPrivate';
 import { EditPostPage } from './pages/EditPostPage';
@@ -21,10 +20,9 @@ import { useRef } from 'react';
 
 function App() {
   const toggleNotifications = useRef(null);
-
   return (
-    <div className='App bg-slate-200  min-w-screen mt-[48px] min-h-[calc(100vh_-_48px)]'>
-      <MenuBar toggleNotifications={toggleNotifications} />
+    <div className='App bg-slate-200 min-w-screen min-h-[calc(100vh_-_48px)] '>
+      <MenuBar />
       <Routes>
         <Route
           path='/'
@@ -104,11 +102,11 @@ function App() {
     </div>
   );
   /* return (
-    <div className='App bg-slate-200  min-w-screen mt-[48px] min-h-[calc(100vh_-_48px)]'>
+    <div className='App bg-slate-200 min-w-screen mt-[48px] min-h-[calc(100vh_-_48px)] '>
       <MenuBar toggleNotifications={toggleNotifications} />
-      <div className='drawer drawer-end'>
+      <div className='drawer drawer-end '>
         <input id='my-drawer-4' type='checkbox' className='drawer-toggle' />
-        <div className='drawer-content mb-4'>
+        <div className='drawer-content scrollbar-hide'>
           <Routes>
             <Route
               path='/'
@@ -189,9 +187,9 @@ function App() {
             Open drawer
           </label>
         </div>
-        <div className='drawer-side '>
+        <div className='drawer-side'>
           <label htmlFor='my-drawer-4' className='drawer-overlay'></label>
-          <div className='menu overflow-y-0 w-88 bg-base-100 text-base-content '>
+          <div className='menu overflow-y-0 min-w-88 bg-base-100 text-base-content max-h-[calc(100vh_-_48px)]'>
             <Notifications toggleNotifications={toggleNotifications} />
           </div>
         </div>

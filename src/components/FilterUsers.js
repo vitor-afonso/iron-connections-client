@@ -2,9 +2,6 @@
 
 import { useContext, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-
-import Aos from 'aos';
-import 'aos/dist/aos.css';
 import { AuthContext } from '../context/auth.context';
 
 export const FilterUsers = ({ usersList, userFollowersIds, currentUser, handleAddFollower, handleRemoveFollower }) => {
@@ -23,17 +20,13 @@ export const FilterUsers = ({ usersList, userFollowersIds, currentUser, handleAd
     }
   }, [str, usersList, currentUser]);
 
-  useEffect(() => {
-    setTimeout(() => Aos.init({ duration: 1000 }), 500);
-  }, []);
-
   return (
-    <div className='space-y-4 flex flex-col items-center  max-w-md mx-auto '>
-      <label className='fixed top-[56px] z-20 w-full px-4 '>
-        <input type='text' placeholder='Search connects' name='search' value={str} onChange={(e) => setStr(e.target.value)} className={`input  input-primary w-full max-w-md focus:outline-none `} />
+    <div className='space-y-4 flex flex-col items-center max-w-md mx-auto min-h-[calc(100vh_-_48px)]'>
+      <label className='sticky top-[56px] z-20 w-full px-4'>
+        <input type='text' placeholder='Search connects' name='search' value={str} onChange={(e) => setStr(e.target.value)} className={`input input-primary w-full max-w-md focus:outline-none`} />
       </label>
 
-      <table className='table w-full max-w-md top-[46px] border-separate'>
+      <table className='table w-full max-w-md border-separate '>
         <tbody>
           {users.length !== 0 ? (
             users.map((oneUser) => {
@@ -41,7 +34,7 @@ export const FilterUsers = ({ usersList, userFollowersIds, currentUser, handleAd
                 return (
                   <tr data-aos='fade-up' key={oneUser._id}>
                     <td className='rounded-lg'>
-                      <div className='flex items-center space-x-3 justify-between '>
+                      <div className='flex items-center space-x-3 justify-between'>
                         <Link to={`/profile/${oneUser._id}`}>
                           <div className='flex items-center space-x-3'>
                             <div className='avatar'>

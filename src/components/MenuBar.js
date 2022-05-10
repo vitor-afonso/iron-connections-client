@@ -70,7 +70,7 @@ export const MenuBar = ({ toggleNotifications }) => {
   };
 
   return (
-    <nav className='fixed top-0 left-0 right-0  z-20 bg-white '>
+    <nav className='sticky top-0 left-0 right-0  z-20 bg-white '>
       <ul className='menu menu-horizontal rounded-box hidden sm:flex justify-between'>
         <li className=''>
           <Link to='/' className='font-semibold visited:bg-slate-600'>

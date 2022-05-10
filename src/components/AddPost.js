@@ -20,7 +20,7 @@ export const AddPost = ({ refreshPosts, refreshUser }) => {
   let addPostPaddingX = ''; // <= Needed on feedPage
 
   if (location.pathname.includes('feed')) {
-    addPostTopDistance = 'top-14';
+    addPostTopDistance = 'top-[60px]';
     addPostPaddingX = 'px-4';
     addPostPosition = 'fixed';
   } else {

@@ -3,7 +3,6 @@
 import { useContext, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { AuthContext } from '../context/auth.context';
-import Aos from 'aos';
 import { addFollower, createNotification, getUser, removeFollower, updateUserNotification } from './../api';
 import { FilterUsers } from '../components/FilterUsers';
 
@@ -97,10 +96,6 @@ export const FriendsPage = () => {
   useEffect(() => {
     handleFilter();
   }, [str]);
-
-  useEffect(() => {
-    Aos.init({ duration: 1000 });
-  }, []);
 
   return (
     <div className='max-w-lg mx-auto'>
