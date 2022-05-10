@@ -3,6 +3,14 @@
 import { useContext } from 'react';
 import { AuthContext } from '../context/auth.context';
 import { Link } from 'react-router-dom';
+import homeImg from '../icons/home_black_24dp.svg';
+import signupImg from '../icons/app_registration_black_24dp.svg';
+import loginImg from '../icons/login_black_24dp.svg';
+import feedImg from '../icons/dynamic_feed_black_24dp.svg';
+import profileImg from '../icons/account_circle_black_24dp.svg';
+import allUsersImg from '../icons/people_black_24dp.svg';
+import notificationsImg from '../icons/notifications_black_24dp.svg';
+import logoutImg from '../icons/logout_black_24dp.svg';
 
 export const MenuBar = ({ toggleNotifications }) => {
   // Subscribe to the AuthContext to gain access to
@@ -16,17 +24,17 @@ export const MenuBar = ({ toggleNotifications }) => {
           <>
             <li>
               <Link to='/' className='hover:text-indigo-500 visited:bg-slate-400'>
-                <img src='./icons/home_black_24dp.svg' alt='Home' className='h-6 w-6' />
+                <img src={homeImg} alt='Home' className='h-6 w-6' />
               </Link>
             </li>
             <li>
               <Link to='/signup' className='hover:text-indigo-500 visited:bg-slate-400'>
-                <img src='./icons/app_registration_black_24dp.svg' alt='Signup' className='h-6 w-6' />
+                <img src={signupImg} alt='Signup' className='h-6 w-6' />
               </Link>
             </li>
             <li>
               <Link to='/login' className='hover:text-indigo-500 visited:bg-slate-400'>
-                <img src='./icons/login_black_24dp.svg' alt='Login' className='h-6 w-6' />
+                <img src={loginImg} alt='Login' className='h-6 w-6' />
               </Link>
             </li>
           </>
@@ -36,31 +44,31 @@ export const MenuBar = ({ toggleNotifications }) => {
           <>
             <li>
               <Link to='/feed' className='hover:text-indigo-500 visited:bg-slate-400'>
-                <img src='./icons/dynamic_feed_black_24dp.svg' alt='Feed' className='h-6 w-6' />
+                <img src={feedImg} alt='Feed' className='h-6 w-6' />
               </Link>
             </li>
 
             <li>
               <Link to={`/profile/${user._id}`} className='hover:text-indigo-500 visited:bg-slate-400'>
-                <img src='./icons/account_circle_black_24dp.svg' alt='Profile' className='h-6 w-6' />
+                <img src={profileImg} alt='Profile' className='h-6 w-6' />
               </Link>
             </li>
 
             <li>
               <Link to='/users' className='hover:text-indigo-500 visited:bg-slate-400'>
-                <img src='./icons/people_black_24dp.svg' alt='Friends' className='h-6 w-6' />
+                <img src={allUsersImg} alt='Friends' className='h-6 w-6' />
               </Link>
             </li>
 
             <li>
               <div className='hover:text-indigo-500 visited:bg-slate-400'>
-                <img src='./icons/notifications_black_24dp.svg' alt='Notifications' className='h-6 w-6 ' onClick={() => toggleNotifications()} />
+                <img src={notificationsImg} alt='Notifications' className='h-6 w-6 ' onClick={() => toggleNotifications()} />
               </div>
             </li>
 
             <li>
               <span onClick={logOutUser} className='hover:text-indigo-500 visited:bg-slate-400'>
-                <img src='./icons/logout_black_24dp.svg' alt='Logout' className='h-6 w-6' />
+                <img src={logoutImg} alt='Logout' className='h-6 w-6' />
               </span>
             </li>
           </>

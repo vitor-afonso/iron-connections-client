@@ -3,8 +3,9 @@ import { useContext, useEffect, useState } from 'react';
 import { AuthContext } from '../context/auth.context';
 import { deleteNotification, getUser, getUsers, removeUserNotification } from '../api';
 import { Link } from 'react-router-dom';
+import socketIOClient from 'socket.io-client';
 
-export const Notifications = ({ toggleNotifications }) => {
+export const Notifications = ({ toggleNotifications, isShowing }) => {
   const [notifications, setNotifications] = useState([]);
   const { user } = useContext(AuthContext);
 
@@ -44,6 +45,15 @@ export const Notifications = ({ toggleNotifications }) => {
       getUpdatedUser();
     }
   }, [user]);
+
+  useEffect(() => {
+    const socket = socketIOClient(process.env.REACT_APP_PROJECT_API);
+    socket.on('newNotification', (newNotification) => {
+      setNotifications((notifications) => {
+        return notifications.concat(newNotification);
+      });
+    });
+  }, []);
 
   return (
     <div className='max-w-md mx-auto '>

@@ -1,6 +1,6 @@
 //jshint esversion:9
 
-import { useContext, useEffect, useRef } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
 import { AuthContext } from '../context/auth.context';
 import { Link, useLocation } from 'react-router-dom';
 
@@ -23,6 +23,7 @@ export const PostCard = ({ post, refreshPosts, refreshUser }) => {
   const { user } = useContext(AuthContext);
   const toggleComments = useRef(null);
   const location = useLocation();
+  const [disableLike, setDisableLike] = useState(false);
 
   let date = new Date(post.createdAt);
   let dateYear = date.getFullYear();
@@ -38,8 +39,9 @@ export const PostCard = ({ post, refreshPosts, refreshUser }) => {
     postCardMarginX = 'mx-4';
   }
 
-  const handleLike = async () => {
+  const handleLike = async (e) => {
     try {
+      setDisableLike(true);
       if (!post.likes.includes(user._id)) {
         await updateUserLikesAdd({ postId: post._id }, user._id);
         await updatePostLikesAdd({ userId: user._id }, post._id);
@@ -83,6 +85,8 @@ export const PostCard = ({ post, refreshPosts, refreshUser }) => {
           refreshUser();
         }
       }
+
+      setDisableLike(false);
     } catch (error) {
       console.log('Something went wrong while trying to update likes =>', error);
     }
@@ -118,8 +122,12 @@ export const PostCard = ({ post, refreshPosts, refreshUser }) => {
   const LikeComentBtns = () => {
     return (
       <div className='flex-shrink-0 flex items-center space-x-3 '>
-        <button className='flex items-center text-left text-sm font-medium text-indigo-500 hover:text-indigo-400 group focus:outline-none focus-visible:border-b focus-visible:border-indigo-600'>
-          <svg onClick={() => handleLike(post._id)} className='w-4 h-4 flex-shrink-0 mr-2 fill-current text-indigo-600 group-hover:text-indigo-400' viewBox='0 0 16 16'>
+        <button
+          onClick={() => handleLike(post._id)}
+          disabled={disableLike}
+          className='likeBtn flex items-center text-left text-sm font-medium text-indigo-500 hover:text-indigo-400 group focus:outline-none focus-visible:border-b focus-visible:border-indigo-600'
+        >
+          <svg className='w-4 h-4 flex-shrink-0 mr-2 fill-current text-indigo-600 group-hover:text-indigo-400' viewBox='0 0 16 16'>
             <path d='M14.682 2.318A4.485 4.485 0 0 0 11.5 1 4.377 4.377 0 0 0 8 2.707 4.383 4.383 0 0 0 4.5 1a4.5 4.5 0 0 0-3.182 7.682L8 15l6.682-6.318a4.5 4.5 0 0 0 0-6.364Zm-1.4 4.933L8 12.247l-5.285-5A2.5 2.5 0 0 1 4.5 3c1.437 0 2.312.681 3.5 2.625C9.187 3.681 10.062 3 11.5 3a2.5 2.5 0 0 1 1.785 4.251h-.003Z' />
           </svg>
           <span>
