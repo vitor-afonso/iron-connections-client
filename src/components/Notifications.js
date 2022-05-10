@@ -56,7 +56,7 @@ export const Notifications = ({ toggleNotifications }) => {
                   <tbody>
                     <tr className=''>
                       <td className='flex justify-between items-center pr-0 bg-indigo-100'>
-                        <Link to={`/profile/${oneNotification.postId.userId}?postId=${oneNotification.postId._id}`} onClick={() => toggleNotifications.current.click()}>
+                        <Link to={`/profile/${oneNotification.postId.userId}?postId=${oneNotification.postId._id}`} onClick={() => toggleNotifications()}>
                           {oneNotification.commentMessage ? (
                             <span className='text-xs sm:text-sm'>{oneNotification.commentMessage}</span>
                           ) : (
@@ -78,11 +78,11 @@ export const Notifications = ({ toggleNotifications }) => {
                 <table className='table table-zebra w-full'>
                   <tbody>
                     <tr>
-                      <td className='space-x-3 flex justify-between items-center pr-0'>
-                        <Link to={`/profile/${oneNotification.userId}`} onClick={() => toggleNotifications.current.click()}>
+                      <td className='space-x-3 flex justify-between items-center pr-0 bg-indigo-100'>
+                        <Link to={`/profile/${oneNotification.userId}`} onClick={() => toggleNotifications()}>
                           <span className='text-xs sm:text-sm'>{oneNotification.content}</span>
                         </Link>
-                        <button onClick={() => removeNotification(oneNotification._id)} className='btn btn-error'>
+                        <button onClick={() => removeNotification(oneNotification._id)} className='h-full text-red-600 w-10'>
                           x
                         </button>
                       </td>

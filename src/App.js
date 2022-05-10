@@ -2,7 +2,7 @@
 
 import './App.css';
 import { MenuBar } from './components/MenuBar';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, useLocation } from 'react-router-dom';
 import { FeedPage } from './pages/FeedPage';
 import { HomePage } from './pages/HomePage';
 import { SignupPage } from './pages/SignupPage';
@@ -16,186 +16,114 @@ import { EditProfilePage } from './pages/EditProfilePage';
 import { UsersPage } from './pages/UsersPage';
 import { FriendsPage } from './pages/FriendsPage';
 import { IsFriend } from './components/isFriend';
-import { useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 function App() {
-  const toggleNotifications = useRef(null);
+  let [rightPosition, setRightPosition] = useState('right-[-400px]');
+  let [overlay, setOverlay] = useState('hidden');
+  /* let location = useLocation(); */
+
+  const toggleNotifications = () => {
+    if (rightPosition === 'right-[-400px]') {
+      setRightPosition('right-0');
+      setOverlay('fixed');
+    } else {
+      setRightPosition('right-[-400px]');
+      setOverlay('hidden');
+    }
+  };
+
+  /* useEffect(() => {
+    toggleNotifications();
+  }, [location.pathname]); */
+
   return (
-    <div className='App bg-slate-200 min-w-screen min-h-[calc(100vh_-_48px)] '>
-      <MenuBar />
-      <Routes>
-        <Route
-          path='/'
-          element={
-            <IsAnon>
-              <HomePage />
-            </IsAnon>
-          }
-        />
-        <Route
-          path='/feed'
-          element={
-            <IsPrivate>
-              <FeedPage />
-            </IsPrivate>
-          }
-        />
-        <Route
-          path='/profile/:userId'
-          element={
-            <IsPrivate>
-              <IsFriend>
-                <ProfilePage />
-              </IsFriend>
-            </IsPrivate>
-          }
-        />
-        <Route
-          path='/post/:postId/edit'
-          element={
-            <IsPrivate>
-              <EditPostPage />
-            </IsPrivate>
-          }
-        />
-        <Route
-          path='/profile/:userId/edit'
-          element={
-            <IsPrivate>
-              <EditProfilePage />
-            </IsPrivate>
-          }
-        />
-        <Route
-          path='/profile/:profileOwnerId/connects'
-          element={
-            <IsPrivate>
-              <FriendsPage />
-            </IsPrivate>
-          }
-        />
-        <Route
-          path='/users'
-          element={
-            <IsPrivate>
-              <UsersPage />
-            </IsPrivate>
-          }
-        />
-        <Route
-          path='/signup'
-          element={
-            <IsAnon>
-              <SignupPage />
-            </IsAnon>
-          }
-        />
-        <Route
-          path='/login'
-          element={
-            <IsAnon>
-              <LoginPage />
-            </IsAnon>
-          }
-        />
-      </Routes>
-    </div>
-  );
-  /* return (
-    <div className='App bg-slate-200 min-w-screen mt-[48px] min-h-[calc(100vh_-_48px)] '>
+    <div className='App bg-slate-200 min-w-screen min-h-[calc(100vh_-_48px)] relative '>
       <MenuBar toggleNotifications={toggleNotifications} />
-      <div className='drawer drawer-end '>
-        <input id='my-drawer-4' type='checkbox' className='drawer-toggle' />
-        <div className='drawer-content scrollbar-hide'>
-          <Routes>
-            <Route
-              path='/'
-              element={
-                <IsAnon>
-                  <HomePage />
-                </IsAnon>
-              }
-            />
-            <Route
-              path='/feed'
-              element={
-                <IsPrivate>
-                  <FeedPage />
-                </IsPrivate>
-              }
-            />
-            <Route
-              path='/profile/:userId'
-              element={
-                <IsPrivate>
-                  <IsFriend>
-                    <ProfilePage />
-                  </IsFriend>
-                </IsPrivate>
-              }
-            />
-            <Route
-              path='/post/:postId/edit'
-              element={
-                <IsPrivate>
-                  <EditPostPage />
-                </IsPrivate>
-              }
-            />
-            <Route
-              path='/profile/:userId/edit'
-              element={
-                <IsPrivate>
-                  <EditProfilePage />
-                </IsPrivate>
-              }
-            />
-            <Route
-              path='/profile/:profileOwnerId/connects'
-              element={
-                <IsPrivate>
-                  <FriendsPage />
-                </IsPrivate>
-              }
-            />
-            <Route
-              path='/users'
-              element={
-                <IsPrivate>
-                  <UsersPage />
-                </IsPrivate>
-              }
-            />
-            <Route
-              path='/signup'
-              element={
-                <IsAnon>
-                  <SignupPage />
-                </IsAnon>
-              }
-            />
-            <Route
-              path='/login'
-              element={
-                <IsAnon>
-                  <LoginPage />
-                </IsAnon>
-              }
-            />
-          </Routes>
-          <label htmlFor='my-drawer-4' className='drawer-button btn btn-primary hidden' ref={toggleNotifications}>
-            Open drawer
-          </label>
-        </div>
-        <div className='drawer-side'>
-          <label htmlFor='my-drawer-4' className='drawer-overlay'></label>
-          <div className='menu overflow-y-0 min-w-88 bg-base-100 text-base-content max-h-[calc(100vh_-_48px)]'>
-            <Notifications toggleNotifications={toggleNotifications} />
-          </div>
-        </div>
+      <>
+        <Routes>
+          <Route
+            path='/'
+            element={
+              <IsAnon>
+                <HomePage />
+              </IsAnon>
+            }
+          />
+          <Route
+            path='/feed'
+            element={
+              <IsPrivate>
+                <FeedPage />
+              </IsPrivate>
+            }
+          />
+          <Route
+            path='/profile/:userId'
+            element={
+              <IsPrivate>
+                <IsFriend>
+                  <ProfilePage />
+                </IsFriend>
+              </IsPrivate>
+            }
+          />
+          <Route
+            path='/post/:postId/edit'
+            element={
+              <IsPrivate>
+                <EditPostPage />
+              </IsPrivate>
+            }
+          />
+          <Route
+            path='/profile/:userId/edit'
+            element={
+              <IsPrivate>
+                <EditProfilePage />
+              </IsPrivate>
+            }
+          />
+          <Route
+            path='/profile/:profileOwnerId/connects'
+            element={
+              <IsPrivate>
+                <FriendsPage />
+              </IsPrivate>
+            }
+          />
+          <Route
+            path='/users'
+            element={
+              <IsPrivate>
+                <UsersPage />
+              </IsPrivate>
+            }
+          />
+          <Route
+            path='/signup'
+            element={
+              <IsAnon>
+                <SignupPage />
+              </IsAnon>
+            }
+          />
+          <Route
+            path='/login'
+            element={
+              <IsAnon>
+                <LoginPage />
+              </IsAnon>
+            }
+          />
+        </Routes>
+      </>
+      <div className={`${overlay} top-[48px] left-0 z-40 h-full w-full bg-black opacity-50 `} onClick={toggleNotifications}></div>
+      <div className={`fixed top-[48px] ${rightPosition} bg-white h-[calc(100vh_-_48px)] z-50`}>
+        <Notifications toggleNotifications={toggleNotifications} />
       </div>
     </div>
-  ); */
+  );
 }
 
 export default App;

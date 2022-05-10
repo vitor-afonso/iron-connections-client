@@ -21,8 +21,8 @@ export const FilterUsers = ({ usersList, userFollowersIds, currentUser, handleAd
   }, [str, usersList, currentUser]);
 
   return (
-    <div className='space-y-4 flex flex-col items-center max-w-md mx-auto min-h-[calc(100vh_-_48px)]'>
-      <label className='sticky top-[56px] z-20 w-full px-4'>
+    <div className='space-y-4 flex flex-col items-center max-w-md mx-auto min-h-[calc(100vh_-_48px)] pb-4'>
+      <label className='sticky top-[60px] z-20 w-full px-4 sm:px-0 pb-2'>
         <input type='text' placeholder='Search connects' name='search' value={str} onChange={(e) => setStr(e.target.value)} className={`input input-primary w-full max-w-md focus:outline-none`} />
       </label>
 

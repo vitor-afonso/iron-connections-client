@@ -54,7 +54,7 @@ export const MenuBar = ({ toggleNotifications }) => {
 
             <li>
               <div className='hover:text-indigo-500 visited:bg-slate-400'>
-                <img src='./icons/notifications_black_24dp.svg' alt='Notifications' className='h-6 w-6 ' onClick={() => toggleNotifications.current.click()} />
+                <img src='./icons/notifications_black_24dp.svg' alt='Notifications' className='h-6 w-6 ' onClick={() => toggleNotifications()} />
               </div>
             </li>
 
@@ -119,7 +119,7 @@ export const MenuBar = ({ toggleNotifications }) => {
               </li>
 
               <li>
-                <div className='hover:text-indigo-500 visited:bg-slate-400' onClick={() => toggleNotifications.current.click()}>
+                <div className='hover:text-indigo-500 visited:bg-slate-400' onClick={() => toggleNotifications()}>
                   Notifications
                 </div>
               </li>
