@@ -16,12 +16,12 @@ import { EditProfilePage } from './pages/EditProfilePage';
 import { UsersPage } from './pages/UsersPage';
 import { FriendsPage } from './pages/FriendsPage';
 import { IsFriend } from './components/isFriend';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 function App() {
   let [rightPosition, setRightPosition] = useState('right-[-400px]');
   let [overlay, setOverlay] = useState('hidden');
-  /* let location = useLocation(); */
+  let location = useLocation();
 
   const toggleNotifications = () => {
     if (rightPosition === 'right-[-400px]') {
@@ -33,9 +33,11 @@ function App() {
     }
   };
 
-  /* useEffect(() => {
-    toggleNotifications();
-  }, [location.pathname]); */
+  useEffect(() => {
+    if (rightPosition === 'right-0') {
+      toggleNotifications();
+    }
+  }, [location.pathname]);
 
   return (
     <div className='App bg-slate-200 min-w-screen min-h-[calc(100vh_-_48px)] relative '>
