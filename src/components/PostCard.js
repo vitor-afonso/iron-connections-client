@@ -127,9 +127,15 @@ export const PostCard = ({ post, refreshPosts, refreshUser }) => {
           disabled={disableLike}
           className='likeBtn flex items-center text-left text-sm font-medium text-indigo-500 hover:text-indigo-400 group focus:outline-none focus-visible:border-b focus-visible:border-indigo-600'
         >
-          <svg className='w-4 h-4 flex-shrink-0 mr-2 fill-current text-indigo-600 group-hover:text-indigo-400' viewBox='0 0 16 16'>
-            <path d='M14.682 2.318A4.485 4.485 0 0 0 11.5 1 4.377 4.377 0 0 0 8 2.707 4.383 4.383 0 0 0 4.5 1a4.5 4.5 0 0 0-3.182 7.682L8 15l6.682-6.318a4.5 4.5 0 0 0 0-6.364Zm-1.4 4.933L8 12.247l-5.285-5A2.5 2.5 0 0 1 4.5 3c1.437 0 2.312.681 3.5 2.625C9.187 3.681 10.062 3 11.5 3a2.5 2.5 0 0 1 1.785 4.251h-.003Z' />
-          </svg>
+          {post.likes.includes(user._id) ? (
+            <svg xmlns='http://www.w3.org/2000/svg' className='h-4 w-4' viewBox='0 0 20 20' fill='currentColor'>
+              <path fillRule='evenodd' d='M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z' clipRule='evenodd' />
+            </svg>
+          ) : (
+            <svg className='w-4 h-4 flex-shrink-0 mr-2 fill-current text-indigo-600 group-hover:text-indigo-400' viewBox='0 0 16 16'>
+              <path d='M14.682 2.318A4.485 4.485 0 0 0 11.5 1 4.377 4.377 0 0 0 8 2.707 4.383 4.383 0 0 0 4.5 1a4.5 4.5 0 0 0-3.182 7.682L8 15l6.682-6.318a4.5 4.5 0 0 0 0-6.364Zm-1.4 4.933L8 12.247l-5.285-5A2.5 2.5 0 0 1 4.5 3c1.437 0 2.312.681 3.5 2.625C9.187 3.681 10.062 3 11.5 3a2.5 2.5 0 0 1 1.785 4.251h-.003Z' />
+            </svg>
+          )}
           <span>
             {likesNum} <span className='sr-only'>likes</span>
           </span>
