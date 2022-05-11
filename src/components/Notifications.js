@@ -5,7 +5,7 @@ import { deleteNotification, getUser, getUsers, removeUserNotification } from '.
 import { Link } from 'react-router-dom';
 import socketIOClient from 'socket.io-client';
 
-export const Notifications = ({ toggleNotifications, isShowing }) => {
+export const Notifications = ({ toggleNotifications, notificationToast }) => {
   const [notifications, setNotifications] = useState([]);
   const { user } = useContext(AuthContext);
 
@@ -16,7 +16,7 @@ export const Notifications = ({ toggleNotifications, isShowing }) => {
 
     if (!allUsers.find((oneUser) => oneUser.notifications.includes(notificationId))) {
       let response = await deleteNotification(notificationId);
-      console.log(response);
+      console.log(response.data.message);
     }
 
     updateUserNotifications({ notificationId: notificationId }); //<= updates user notifications array
@@ -49,9 +49,13 @@ export const Notifications = ({ toggleNotifications, isShowing }) => {
   useEffect(() => {
     const socket = socketIOClient(process.env.REACT_APP_PROJECT_API);
     socket.on('newNotification', (newNotification) => {
+      /* console.log('newNotification =>', newNotification); */
       setNotifications((notifications) => {
         return notifications.concat(newNotification);
       });
+      if (newNotification.userId !== user._id) {
+        notificationToast();
+      }
     });
   }, []);
 

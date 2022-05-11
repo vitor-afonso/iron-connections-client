@@ -18,12 +18,20 @@ import { FriendsPage } from './pages/FriendsPage';
 import { IsFriend } from './components/isFriend';
 import { useEffect, useState } from 'react';
 import { Transition } from '@headlessui/react';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
   let [rightPosition, setRightPosition] = useState('right-[-400px]');
   let [overlay, setOverlay] = useState('hidden');
   let location = useLocation();
   const [isShowing, setIsShowing] = useState(false);
+
+  const notificationToast = () => toast('You have a new notification!');
+  const deletedPost = () => toast.info('Post successfully deleted!');
+  const deletedCommentToast = () => toast.info('Comment successfully deleted!');
+  const toastUpdated = () => toast.success('Post successfully updated!');
+  const toastProfileUpdated = () => toast.success('Profile successfully updated!');
 
   const toggleNotifications = () => {
     if (rightPosition === 'right-[-400px]') {
@@ -45,6 +53,7 @@ function App() {
 
   return (
     <div className='App bg-slate-200 min-w-screen min-h-[calc(100vh_-_48px)] relative '>
+      <ToastContainer />
       <MenuBar toggleNotifications={toggleNotifications} />
       <>
         <Routes>
@@ -78,7 +87,7 @@ function App() {
             path='/post/:postId/edit'
             element={
               <IsPrivate>
-                <EditPostPage />
+                <EditPostPage toastDeleted={deletedPost} toastUpdated={toastUpdated} />
               </IsPrivate>
             }
           />
@@ -86,7 +95,7 @@ function App() {
             path='/profile/:userId/edit'
             element={
               <IsPrivate>
-                <EditProfilePage />
+                <EditProfilePage toastProfileUpdated={toastProfileUpdated} />
               </IsPrivate>
             }
           />
@@ -144,7 +153,7 @@ function App() {
           leaveTo='-translate-x-[-400px]'
           className={`fixed top-[48px] ${rightPosition} bg-white h-[calc(100vh_-_48px)] z-50`}
         >
-          <Notifications toggleNotifications={toggleNotifications} isShowing={isShowing} />
+          <Notifications toggleNotifications={toggleNotifications} notificationToast={notificationToast} />
         </Transition.Child>
       </Transition>
     </div>

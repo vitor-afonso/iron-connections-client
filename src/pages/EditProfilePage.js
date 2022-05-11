@@ -5,7 +5,7 @@ import { getUser, uploadImage, updateUser, deleteUser } from './../api';
 import { AuthContext } from '../context/auth.context';
 import { useParams, useNavigate, NavLink } from 'react-router-dom';
 
-export const EditProfilePage = () => {
+export const EditProfilePage = ({ toastProfileUpdated }) => {
   const { user } = useContext(AuthContext);
   const [email, setEmail] = useState('');
   const [username, setUsername] = useState('');
@@ -54,7 +54,7 @@ export const EditProfilePage = () => {
         let requestBody = { username, email };
         await updateUser(requestBody, userId);
       }
-
+      toastProfileUpdated();
       navigate(`/profile/${userId}`);
     } catch (error) {
       console.log('Something went wront while updating User', error);
@@ -75,7 +75,7 @@ export const EditProfilePage = () => {
   }, [userId]);
 
   return (
-    <div>
+    <div className='EditProfilePage min-h-[calc(100vh_-_48px)]'>
       <div class='card card-compact w-96 bg-base-100 shadow-xl mx-auto top-10 p-2 space-y-4'>
         <div class='card-body'>
           {username ? (

@@ -1,14 +1,15 @@
 //jshint esversion:9
 
 import { useContext, useState, useEffect, useRef } from 'react';
-import { getPost, getNotifications, uploadImage, updatePost, deletePost, removeUserNotification, getUsers, deleteNotification } from './../api';
+import { getPost, getNotifications, uploadImage, updatePost, deletePost, removeUserNotification, getUsers, deleteNotification, deleteComment } from './../api';
 import { AuthContext } from '../context/auth.context';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 
-export const EditPostPage = () => {
+export const EditPostPage = ({ toastDeleted, toastUpdated }) => {
   const { user } = useContext(AuthContext);
   const [body, setBody] = useState('');
   const [imageUrl, setImageUrl] = useState('');
+  const [postComments, setPostComments] = useState([]);
   let navigate = useNavigate();
   const inputFileUpload = useRef(null);
   const { postId } = useParams();
@@ -29,17 +30,23 @@ export const EditPostPage = () => {
 
   const removePost = async () => {
     try {
-      let response = await deletePost(postId);
-      console.log(response.data.message);
+      //comment needs to have a post to be deleted
+      // that way comments must be removed before post deletion
 
-      let res = await getNotifications();
+      if (postComments.length !== 0) {
+        postComments.forEach(async (commentId) => await deleteComment(commentId._id));
+      }
+      await deletePost(postId);
 
-      let postNotification = res.data.find((notification) => notification.postId === postId);
+      let response = await getNotifications();
 
-      await deleteNotification(postNotification._id);
+      let postNotification = response.data.find((notification) => notification.postId === postId);
+      if (postNotification) {
+        await deleteNotification(postNotification._id);
 
-      removeUsersNotification(postNotification._id);
-
+        removeUsersNotification(postNotification._id);
+      }
+      toastDeleted();
       navigate(-1);
     } catch (error) {
       console.log('Something went wront while deleting post from API', error);
@@ -67,6 +74,7 @@ export const EditPostPage = () => {
     try {
       let requestBody = { body, imageUrl };
       await updatePost(requestBody, postId);
+      toastUpdated();
       navigate(-1);
     } catch (error) {
       console.log('Something went wront while updating project in API', error);
@@ -77,19 +85,19 @@ export const EditPostPage = () => {
     (async () => {
       try {
         let postFromDB = await getPost(postId);
-
+        /* console.log('post to edit =>', postFromDB.data); */
         setBody(postFromDB.data.body);
         setImageUrl(postFromDB.data.imageUrl);
-        console.log('postId of post to update/delete =>', postId);
+        setPostComments(postFromDB.data.comments);
       } catch (error) {
         console.log('error getting post to update from DB', error);
       }
     })();
   }, [postId]);
   return (
-    <div className='EditPost '>
-      <div class='card card-compact w-96 bg-base-100 shadow-xl mx-auto top-10 p-2 space-y-4'>
-        <div class='card-body'>
+    <div className='EditPost min-h-[calc(100vh_-_48px)]'>
+      <div className='card card-compact w-96 bg-base-100 shadow-xl mx-auto top-10 p-2 space-y-4'>
+        <div className='card-body'>
           <div className='flex items-center space-x-3 '>
             <div className='avatar'>
               <Link to={`/profile/${user._id}`} className='mask mask-squircle w-10 h-10'>
@@ -106,7 +114,7 @@ export const EditPostPage = () => {
                 <textarea name='body' value={body} onChange={(e) => setBody(e.target.value)} placeholder='Share your thoughts' />
               </label>
               <figure>{imageUrl && <img src={imageUrl} alt='Post' />}</figure>
-              <div class='card-actions flex justify-between'>
+              <div className='card-actions flex justify-between'>
                 <button type='button' className='btn btn-error' onClick={removePost}>
                   Delete
                 </button>
@@ -119,7 +127,7 @@ export const EditPostPage = () => {
           ) : (
             <p>Loading...</p>
           )}
-          <div class='card-actions flex justify-between'>
+          <div className='card-actions flex justify-between'>
             <input ref={inputFileUpload} className='hidden' type='file' onChange={(e) => handleFileUpload(e)} />
             <button type='button' className='btn btn-active btn-ghost' onClick={() => navigate(-1)}>
               Back

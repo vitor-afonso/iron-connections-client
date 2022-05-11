@@ -16,11 +16,14 @@ export const AddComment = ({ post, refreshAllPosts, refreshProfileUser }) => {
     try {
       let requestBody = { content, userId: user._id };
       await addNewComment(post._id, requestBody);
-      refreshAllPosts();
-      setContent('');
+
+      if (refreshAllPosts) {
+        refreshAllPosts();
+      }
       if (refreshProfileUser) {
         refreshProfileUser();
       }
+      setContent('');
       updateFollowersNotifications();
     } catch (error) {
       console.log('Error while adding comment to post =>', error);
@@ -48,16 +51,16 @@ export const AddComment = ({ post, refreshAllPosts, refreshProfileUser }) => {
         if (post.userId._id !== user._id) {
           let response = await createNotification({ commentMessage: str2, userId: user._id, postId: post._id });
           newlyCreatedNotificationId = response.data._id;
+
+          post.comments.forEach((oneComment) => {
+            if (post.userId._id !== oneComment.userId._id) {
+              updateUserNotification({ notificationId: newlyCreatedNotificationId }, oneComment.userId._id);
+            }
+          });
         }
 
-        post.comments.forEach((oneComment) => {
-          if (post.userId._id !== oneComment.userId._id) {
-            updateUserNotification({ notificationId: newlyCreatedNotificationId }, oneComment.userId._id);
-          }
-        });
-
-        let response = await createNotification({ content: str, userId: user._id, postId: post._id });
-        await updateUserNotification({ notificationId: response.data._id }, post.userId._id);
+        /* let response = await createNotification({ content: str, userId: user._id, postId: post._id });
+        await updateUserNotification({ notificationId: response.data._id }, post.userId._id); */
       } else {
         if (post.userId._id !== user._id) {
           let response = await createNotification({ content: str, userId: user._id, postId: post._id });

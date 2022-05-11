@@ -1,7 +1,7 @@
 //jshint esversion:9
 
 import { Link } from 'react-router-dom';
-import { deleteComment } from './../api';
+import { deletePostComment, getUsers, removeUserNotification } from './../api';
 import { useContext } from 'react';
 import { AuthContext } from '../context/auth.context';
 
@@ -15,9 +15,35 @@ export const CommentCard = ({ postId, comment, refreshAllPosts, refreshProfileUs
   let commentDate = `${dateDay}-${dateMonth}-${dateYear}`;
 
   const handleDelete = async () => {
-    await deleteComment(postId, comment._id);
-    refreshAllPosts();
-    refreshProfileUser();
+    try {
+      await deletePostComment(postId, comment._id);
+
+      if (refreshAllPosts) {
+        refreshAllPosts();
+      }
+
+      if (refreshProfileUser) {
+        refreshProfileUser();
+      }
+      removeUsersNotification(comment._id);
+    } catch (error) {
+      console.log('Something went wrong while trying to delete comment =>', error);
+    }
+  };
+
+  const removeUsersNotification = async (notificationId) => {
+    // call users and filter the array of notifications
+    try {
+      let response = await getUsers();
+      let allUsers = response.data;
+      allUsers.forEach((user) => {
+        if (user.notifications.includes(notificationId)) {
+          removeUserNotification({ notificationId: notificationId }, user._id);
+        }
+      });
+    } catch (error) {
+      console.log('Something went wront while deleting notification from users notifications', error);
+    }
   };
 
   return (
