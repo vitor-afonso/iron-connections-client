@@ -6,7 +6,7 @@ import { AuthContext } from '../context/auth.context';
 import { useParams, useNavigate } from 'react-router-dom';
 
 export const EditProfilePage = ({ toastProfileUpdated }) => {
-  const { user } = useContext(AuthContext);
+  const { user, logOutUser } = useContext(AuthContext);
   const [email, setEmail] = useState('');
   const [username, setUsername] = useState('');
   const [tempImageUrl, setTempImageUrl] = useState('');
@@ -29,8 +29,7 @@ export const EditProfilePage = ({ toastProfileUpdated }) => {
   const removeUser = async () => {
     try {
       await deleteUser(userId);
-
-      navigate(`/profile/${userId}`);
+      logOutUser();
     } catch (error) {
       console.log('Something went wront while deleting user from API', error);
     }
