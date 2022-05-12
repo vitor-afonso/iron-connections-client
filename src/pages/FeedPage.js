@@ -15,7 +15,7 @@ export const FeedPage = () => {
     try {
       let response = await getAllPosts();
       setPosts(response.data);
-      /* console.log('all posts =>', response.data); */
+      console.log('all posts =>', response.data);
     } catch (error) {
       console.log('Something went wrong while trying to get posts from DB =>', error);
     }

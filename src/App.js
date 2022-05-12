@@ -20,6 +20,7 @@ import { useEffect, useState } from 'react';
 import { Transition } from '@headlessui/react';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import socketIOClient from 'socket.io-client';
 
 function App() {
   let [rightPosition, setRightPosition] = useState('right-[-400px]');
@@ -50,6 +51,14 @@ function App() {
       toggleNotifications();
     }
   }, [location.pathname]);
+
+  useEffect(() => {
+    const socket = socketIOClient(process.env.REACT_APP_PROJECT_API);
+    socket.on('newNotification', (newNotification) => {
+      /* console.log('newNotification =>', newNotification); */
+      toast.info('You have a new notification!');
+    });
+  }, []);
 
   return (
     <div className='App bg-slate-200 min-w-screen min-h-[calc(100vh_-_48px)] relative '>
@@ -154,7 +163,7 @@ function App() {
           className={`fixed top-[48px] ${rightPosition}  h-[calc(100vh_-_48px)] z-50`}
         >
           <div className={`fixed  ${rightPosition} bg-white h-[calc(100vh_-_48px)] `}>
-            <Notifications toggleNotifications={toggleNotifications} notificationToast={notificationToast} />
+            <Notifications toggleNotifications={toggleNotifications} />
           </div>
         </Transition.Child>
       </Transition>

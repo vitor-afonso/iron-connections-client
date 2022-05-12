@@ -119,7 +119,7 @@ export const AddPost = ({ refreshPosts, refreshUser }) => {
             <tr>
               <td className='border-none pb-0'>
                 <div className='flex items-center space-x-3'>
-                  <div className='avatar'>
+                  <div className='avatar animate-bounce'>
                     <div className='mask mask-squircle w-12 h-12'>{currentUserImageUrl && <img src={currentUserImageUrl} alt='Author' />}</div>
                   </div>
                   <label className='w-full'>

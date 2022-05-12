@@ -5,7 +5,7 @@ import { deleteNotification, getUser, getUsers, removeUserNotification } from '.
 import { Link } from 'react-router-dom';
 import socketIOClient from 'socket.io-client';
 
-export const Notifications = ({ toggleNotifications, notificationToast }) => {
+export const Notifications = ({ toggleNotifications }) => {
   const [notifications, setNotifications] = useState([]);
   const { user } = useContext(AuthContext);
 
@@ -53,8 +53,6 @@ export const Notifications = ({ toggleNotifications, notificationToast }) => {
       setNotifications((notifications) => {
         return notifications.concat(newNotification);
       });
-
-      notificationToast();
     });
   }, []);
 
