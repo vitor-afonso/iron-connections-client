@@ -6,7 +6,7 @@ import { PostCard } from '../components/PostCard';
 import { AddPost } from '../components/AddPost';
 import { AuthContext } from '../context/auth.context';
 
-export const FeedPage = () => {
+export const FeedPage = ({ deletedCommentToast }) => {
   const [posts, setPosts] = useState([]);
   const [allPostsIdsToDisplay, setAllPostsIdsToDisplay] = useState([]);
   const { user } = useContext(AuthContext);
@@ -46,7 +46,7 @@ export const FeedPage = () => {
           posts.map((onePost) => {
             return (
               <div key={onePost._id} className='first:mt-28'>
-                {allPostsIdsToDisplay.includes(onePost._id) && <PostCard post={onePost} refreshPosts={getPosts} />}
+                {allPostsIdsToDisplay.includes(onePost._id) && <PostCard post={onePost} refreshPosts={getPosts} deletedCommentToast={deletedCommentToast} />}
               </div>
             );
           })}

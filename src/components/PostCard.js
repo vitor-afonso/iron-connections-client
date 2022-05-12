@@ -18,8 +18,12 @@ import {
   updateUserLikesRemove,
   updateUserNotification,
 } from '../api';
+import useOnScreen from '../hooks/useOnScreen';
 
-export const PostCard = ({ post, refreshPosts, refreshUser }) => {
+export const PostCard = ({ post, refreshPosts, refreshUser, deletedCommentToast }) => {
+  const ref = useRef();
+  const isVisible = useOnScreen(ref);
+
   const { user } = useContext(AuthContext);
   const toggleComments = useRef(null);
   const location = useLocation();
@@ -152,7 +156,7 @@ export const PostCard = ({ post, refreshPosts, refreshUser }) => {
     );
   };
   return (
-    <div className={`PostCard  ${postCardMarginX}`}>
+    <div className={`PostCard  ${postCardMarginX} slideIn ${isVisible && 'open'}`} ref={ref}>
       <section className='flex flex-col justify-center antialiased '>
         {/* <!-- Card --> */}
         <div className=' mx-auto shadow-md bg-white rounded-lg min-w-full max-w-lg'>
@@ -199,7 +203,16 @@ export const PostCard = ({ post, refreshPosts, refreshUser }) => {
                     <AddComment post={post} refreshAllPosts={refreshPosts} refreshProfileUser={refreshUser} />
 
                     {post.comments.map((oneComment) => {
-                      return <CommentCard postId={post._id} comment={oneComment} key={oneComment._id} refreshAllPosts={refreshPosts} refreshProfileUser={refreshUser} />;
+                      return (
+                        <CommentCard
+                          postId={post._id}
+                          comment={oneComment}
+                          key={oneComment._id}
+                          refreshAllPosts={refreshPosts}
+                          refreshProfileUser={refreshUser}
+                          deletedCommentToast={deletedCommentToast}
+                        />
+                      );
                     })}
                   </div>
                 </div>

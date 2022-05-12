@@ -7,7 +7,7 @@ import { getUser } from './../api';
 import { AddPost } from '../components/AddPost';
 import { PostCard } from '../components/PostCard';
 
-export const ProfilePage = () => {
+export const ProfilePage = ({ deletedCommentToast }) => {
   const { user } = useContext(AuthContext);
   const [userProfile, setUserProfile] = useState(null);
   const [sortedListOfPosts, setSortedListOfPosts] = useState([]);
@@ -106,13 +106,13 @@ export const ProfilePage = () => {
                 if (searchParams.get('postId') && searchParams.get('postId') === onePost._id) {
                   return (
                     <div ref={postRef} key={onePost._id}>
-                      <PostCard id={`#${onePost._id}`} post={onePost} refreshUser={getOneUser} />
+                      <PostCard id={`#${onePost._id}`} post={onePost} refreshUser={getOneUser} deletedCommentToast={deletedCommentToast} />
                     </div>
                   );
                 } else {
                   return (
                     <div key={onePost._id}>
-                      <PostCard className={onePost._id} post={onePost} refreshUser={getOneUser} />
+                      <PostCard className={onePost._id} post={onePost} refreshUser={getOneUser} deletedCommentToast={deletedCommentToast} />
                     </div>
                   );
                 }

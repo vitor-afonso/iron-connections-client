@@ -28,7 +28,6 @@ function App() {
   let location = useLocation();
   const [isShowing, setIsShowing] = useState(false);
 
-  const notificationToast = () => toast('You have a new notification!');
   const deletedPost = () => toast.info('Post successfully deleted!');
   const deletedCommentToast = () => toast.info('Comment successfully deleted!');
   const toastUpdated = () => toast.success('Post successfully updated!');
@@ -78,7 +77,7 @@ function App() {
             path='/feed'
             element={
               <IsPrivate>
-                <FeedPage />
+                <FeedPage deletedCommentToast={deletedCommentToast} />
               </IsPrivate>
             }
           />
@@ -87,7 +86,7 @@ function App() {
             element={
               <IsPrivate>
                 <IsFriend>
-                  <ProfilePage />
+                  <ProfilePage deletedCommentToast={deletedCommentToast} />
                 </IsFriend>
               </IsPrivate>
             }
