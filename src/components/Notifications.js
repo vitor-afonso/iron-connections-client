@@ -53,9 +53,8 @@ export const Notifications = ({ toggleNotifications, notificationToast }) => {
       setNotifications((notifications) => {
         return notifications.concat(newNotification);
       });
-      if (newNotification.userId !== user._id) {
-        notificationToast();
-      }
+
+      notificationToast();
     });
   }, []);
 

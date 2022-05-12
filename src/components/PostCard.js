@@ -68,14 +68,14 @@ export const PostCard = ({ post, refreshPosts, refreshUser }) => {
         await updateUserLikesRemove({ postId: post._id }, user._id);
         await updatePostLikesRemove({ userId: user._id }, post._id);
 
-        let res = await getNotifications();
+        let response = await getNotifications();
 
-        if (res.data.find((notification) => notification.postId === post._id)) {
-          let postNotification = res.data.find((notification) => notification.postId === post._id);
+        if (response.data.find((notification) => notification.postId === post._id)) {
+          let postNotification = response.data.find((notification) => notification.postId === post._id);
 
           await deleteNotification(postNotification._id);
 
-          removeUsersNotification(postNotification._id);
+          await removeUsersNotification(postNotification._id);
         }
 
         if (refreshPosts) {
