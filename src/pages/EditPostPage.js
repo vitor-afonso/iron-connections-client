@@ -44,6 +44,7 @@ export const EditPostPage = ({ toastDeleted, toastUpdated }) => {
       if (postNotifications) {
         postNotifications.forEach(async (onePostNotification) => {
           await deleteNotification(onePostNotification._id);
+
           await removeUsersNotification(onePostNotification._id);
         });
       }
