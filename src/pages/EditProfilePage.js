@@ -3,7 +3,7 @@
 import { useContext, useState, useEffect, useRef } from 'react';
 import { getUser, uploadImage, updateUser, deleteUser } from './../api';
 import { AuthContext } from '../context/auth.context';
-import { useParams, useNavigate, NavLink } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 
 export const EditProfilePage = ({ toastProfileUpdated }) => {
   const { user } = useContext(AuthContext);
@@ -28,7 +28,7 @@ export const EditProfilePage = ({ toastProfileUpdated }) => {
 
   const removeUser = async () => {
     try {
-      let response = await deleteUser(userId);
+      await deleteUser(userId);
 
       navigate(`/profile/${userId}`);
     } catch (error) {
@@ -76,8 +76,8 @@ export const EditProfilePage = ({ toastProfileUpdated }) => {
 
   return (
     <div className='EditProfilePage min-h-[calc(100vh_-_48px)]'>
-      <div class='card card-compact w-96 bg-base-100 shadow-xl mx-auto top-10 p-2 space-y-4'>
-        <div class='card-body'>
+      <div className='card card-compact w-96 bg-base-100 shadow-xl mx-auto top-10 p-2 space-y-4'>
+        <div className='card-body'>
           {username ? (
             <form onSubmit={handleSubmit} className='space-y-2'>
               <figure className='w-20 h-20 mask mask-squircle'>{tempImageUrl && <img src={tempImageUrl} alt='Post' />}</figure>
@@ -89,7 +89,7 @@ export const EditProfilePage = ({ toastProfileUpdated }) => {
                 Email
                 <input type='email' name='email' value={email} onChange={(e) => setEmail(e.target.value)} className={`input  input-primary w-full max-w-md focus:outline-none `} />
               </label>
-              <div class='card-actions flex justify-between'>
+              <div className='card-actions flex justify-between'>
                 <button type='button' className='btn btn-error' onClick={removeUser}>
                   Delete
                 </button>
@@ -102,7 +102,7 @@ export const EditProfilePage = ({ toastProfileUpdated }) => {
           ) : (
             <p>Loading...</p>
           )}
-          <div class='card-actions flex justify-between'>
+          <div className='card-actions flex justify-between'>
             <input ref={inputFileUpload} className='hidden' type='file' onChange={(e) => handleFileUpload(e)} />
             <button type='button' className='btn btn-active btn-ghost' onClick={() => navigate(-1)}>
               Back

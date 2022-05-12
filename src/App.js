@@ -151,9 +151,11 @@ function App() {
           leave='transition ease-in-out duration-1000 transform'
           leaveFrom='translate-x-0'
           leaveTo='-translate-x-[-400px]'
-          className={`fixed top-[48px] ${rightPosition} bg-white h-[calc(100vh_-_48px)] z-50`}
+          className={`fixed top-[48px] ${rightPosition}  h-[calc(100vh_-_48px)] z-50`}
         >
-          <Notifications toggleNotifications={toggleNotifications} notificationToast={notificationToast} />
+          <div className={`fixed  ${rightPosition} bg-white h-[calc(100vh_-_48px)] `}>
+            <Notifications toggleNotifications={toggleNotifications} notificationToast={notificationToast} />
+          </div>
         </Transition.Child>
       </Transition>
     </div>

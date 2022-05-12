@@ -40,11 +40,12 @@ export const EditPostPage = ({ toastDeleted, toastUpdated }) => {
 
       let response = await getNotifications();
 
-      let postNotification = response.data.find((notification) => notification.postId === postId);
-      if (postNotification) {
-        await deleteNotification(postNotification._id);
-
-        removeUsersNotification(postNotification._id);
+      let postNotifications = response.data.filter((notification) => notification.postId === postId);
+      if (postNotifications) {
+        postNotifications.forEach(async (onePostNotification) => {
+          await deleteNotification(onePostNotification._id);
+          await removeUsersNotification(onePostNotification._id);
+        });
       }
       toastDeleted();
       navigate(-1);
@@ -58,13 +59,17 @@ export const EditPostPage = ({ toastDeleted, toastUpdated }) => {
     try {
       let response = await getUsers();
       let allUsers = response.data;
-      allUsers.forEach((user) => {
+      allUsers.forEach(async (user) => {
         if (user.notifications.includes(notificationId)) {
-          removeUserNotification({ notificationId: notificationId }, user._id);
+          try {
+            await removeUserNotification({ notificationId: notificationId }, user._id);
+          } catch (error) {
+            console.log('Unable to remove notification from user notifications array =>', error);
+          }
         }
       });
     } catch (error) {
-      console.log('Something went wront while deleting notification from users notifications', error);
+      console.log('Something went wrong while deleting notification from users notifications', error);
     }
   };
 

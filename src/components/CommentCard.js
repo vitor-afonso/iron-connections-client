@@ -1,7 +1,7 @@
 //jshint esversion:9
 
 import { Link } from 'react-router-dom';
-import { deletePostComment, getUsers, removeUserNotification } from './../api';
+import { deleteComment, deletePostComment, getUsers, removeUserNotification } from './../api';
 import { useContext } from 'react';
 import { AuthContext } from '../context/auth.context';
 
@@ -16,6 +16,8 @@ export const CommentCard = ({ postId, comment, refreshAllPosts, refreshProfileUs
 
   const handleDelete = async () => {
     try {
+      await deleteComment(comment._id);
+
       await deletePostComment(postId, comment._id);
 
       if (refreshAllPosts) {

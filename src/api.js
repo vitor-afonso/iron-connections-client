@@ -65,9 +65,13 @@ export const addNewComment = (postId, comment) => {
 };
 
 export const deletePostComment = (postId, commentId) => {
-  return axios.delete(`${API_URL}/posts/${postId}/comment/delete?commentId=${commentId}`, {
-    headers: { Authorization: `Bearer ${localStorage.getItem('authToken')}` },
-  });
+  return axios.put(
+    `${API_URL}/posts/${postId}/comment/delete?commentId=${commentId}`,
+    {},
+    {
+      headers: { Authorization: `Bearer ${localStorage.getItem('authToken')}` },
+    }
+  );
 };
 
 export const deleteComment = (commentId) => {
