@@ -17,7 +17,7 @@ export const MenuBar = ({ toggleNotifications }) => {
 
   const MenuBarMobile = () => {
     return (
-      <ul className='menu menu-horizontal rounded-box sm:hidden'>
+      <ul className='menu menu-horizontal rounded-box flex justify-center sm:hidden'>
         {!isLoggedIn && (
           <>
             <li>
