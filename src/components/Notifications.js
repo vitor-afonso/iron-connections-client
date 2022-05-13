@@ -57,21 +57,21 @@ export const Notifications = ({ toggleNotifications }) => {
   }, []);
 
   return (
-    <div className='max-w-md mx-auto '>
+    <div className='sm:max-w-md mx-auto max-w-[300px] '>
       {notifications.length !== 0 &&
         notifications.map((oneNotification) => {
           if (oneNotification.postId) {
             return (
-              <div className='overflow-x-auto ' key={oneNotification._id}>
-                <table className='table table-zebra w-full border-separate '>
+              <div className=' overflow-auto' key={oneNotification._id}>
+                <table className='table table-zebra w-full border-separate overflow-x-scroll '>
                   <tbody>
                     <tr className=''>
-                      <td className='flex justify-between items-center pr-0 bg-indigo-100'>
+                      <td className='flex justify-between items-center pr-0 bg-indigo-100 '>
                         <Link to={`/profile/${oneNotification.postId.userId}?postId=${oneNotification.postId._id}`} onClick={() => toggleNotifications()}>
                           {oneNotification.commentMessage ? (
-                            <span className='text-xs sm:text-sm'>{oneNotification.commentMessage}</span>
+                            <span className='text-xs sm:text-sm  '>{oneNotification.commentMessage}</span>
                           ) : (
-                            <span className='text-xs sm:text-sm'>{oneNotification.content}</span>
+                            <span className='text-xs sm:text-sm '>{oneNotification.content}</span>
                           )}
                         </Link>
                         <button onClick={() => removeNotification(oneNotification._id)} className='h-full text-red-600 w-10'>
@@ -85,11 +85,11 @@ export const Notifications = ({ toggleNotifications }) => {
             );
           } else {
             return (
-              <div className='overflow-x-0 ' key={oneNotification._id}>
+              <div className=' overflow-auto' key={oneNotification._id}>
                 <table className='table table-zebra w-full'>
                   <tbody>
                     <tr>
-                      <td className='space-x-3 flex justify-between items-center pr-0 bg-indigo-100'>
+                      <td className='space-x-3 flex justify-between items-center pr-0 bg-indigo-100 '>
                         <Link to={`/profile/${oneNotification.userId}`} onClick={() => toggleNotifications()}>
                           <span className='text-xs sm:text-sm'>{oneNotification.content}</span>
                         </Link>

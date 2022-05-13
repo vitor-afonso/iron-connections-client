@@ -166,7 +166,7 @@ function App() {
           leaveTo='-translate-x-[-400px]'
           className={`fixed top-[48px] ${rightPosition}  h-[calc(100vh_-_48px)] z-50`}
         >
-          <div className={`fixed  ${rightPosition} bg-white h-[calc(100vh_-_48px)] `}>
+          <div className={`fixed  ${rightPosition} bg-white h-[calc(100vh_-_48px)]`}>
             <Notifications toggleNotifications={toggleNotifications} />
           </div>
         </Transition.Child>
