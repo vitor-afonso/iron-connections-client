@@ -1,6 +1,6 @@
 //jshint esversion:8
 
-import { useContext, useEffect, useState } from 'react';
+import { useContext } from 'react';
 import { AuthContext } from '../context/auth.context';
 import { Link } from 'react-router-dom';
 import homeImg from '../icons/home_black_24dp.svg';
@@ -11,7 +11,6 @@ import profileImg from '../icons/account_circle_black_24dp.svg';
 import allUsersImg from '../icons/people_black_24dp.svg';
 import notificationsImg from '../icons/notifications_black_24dp.svg';
 import logoutImg from '../icons/logout_black_24dp.svg';
-import { getUser } from '../api';
 
 export const MenuBar = ({ toggleNotifications }) => {
   const { isLoggedIn, user, logOutUser } = useContext(AuthContext);
@@ -77,7 +76,7 @@ export const MenuBar = ({ toggleNotifications }) => {
   };
 
   return (
-    <nav className='sticky top-0 left-0 right-0  z-20 bg-white '>
+    <nav className='sticky top-0 left-0 right-0 z-20 bg-white '>
       <ul className='menu menu-horizontal rounded-box hidden sm:flex justify-between'>
         <li className=''>
           <Link to='/' className='font-semibold visited:bg-slate-600'>

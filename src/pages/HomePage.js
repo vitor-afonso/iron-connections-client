@@ -38,4 +38,38 @@ export const HomePage = () => {
       </div>
     </div>
   );
+
+  /* return (
+    <div className='relative bg-white overflow-hidden min-h-[calc(100vh_-_52px)] xs:flex-col xs:justify-center flex'>
+      <div className='hero bg-white flex flex-col sm:justify-start xs:justify-center'>
+        <div className='hero-content flex-col-reverse lg:flex-row-reverse'>
+          <img className='max-w-xl h-full w-full lg:object-cover sm:h-full ' src='./images/landing-page.jpg' alt='Main' />
+          <div className='sm:px-4 '>
+            <h1 className='text-4xl font-bold sm:font-extrabold'>
+              <span className='block '>IronConnections the place where</span> <span className='block text-indigo-600 xl:inline'>all your connections come true</span>
+            </h1>
+            <p className='py-3 text-gray-500'>IronConnections helps you connect and share with those who are part of your life.</p>
+            <div className='mt-5 sm:mt-8 sm:flex sm:justify-center lg:justify-start'>
+              <div className='rounded-md shadow'>
+                <Link
+                  to='/signup'
+                  className='w-full flex items-center justify-center   border border-transparent  font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 py-4 text-lg px-10'
+                >
+                  Sign up
+                </Link>
+              </div>
+              <div className='mt-3 sm:mt-0 sm:ml-3'>
+                <Link
+                  to='/login'
+                  className='w-full flex items-center justify-center   border border-transparent  font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 py-4 text-lg px-10'
+                >
+                  Login
+                </Link>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  ); */
 };
