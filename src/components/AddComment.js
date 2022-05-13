@@ -53,7 +53,7 @@ export const AddComment = ({ post, refreshAllPosts, refreshProfileUser }) => {
           newlyCreatedNotificationId = response.data._id;
 
           post.comments.forEach((oneComment) => {
-            if (post.userId._id !== oneComment.userId._id) {
+            if (post.userId._id !== oneComment.userId._id && oneComment.userId._id !== user._id) {
               updateUserNotification({ notificationId: newlyCreatedNotificationId }, oneComment.userId._id);
             }
           });

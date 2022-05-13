@@ -59,8 +59,8 @@ export const MenuBar = ({ toggleNotifications }) => {
             </li>
 
             <li>
-              <div className='hover:text-indigo-500 visited:bg-slate-400'>
-                <img src={notificationsImg} alt='Notifications' className='h-6 w-6 ' onClick={() => toggleNotifications()} />
+              <div className={`hover:text-indigo-500 visited:bg-slate-400 `}>
+                <img src={notificationsImg} alt='Notifications' className={`h-6 w-6`} onClick={() => toggleNotifications()} />
               </div>
             </li>
 

@@ -24,7 +24,7 @@ import socketIOClient from 'socket.io-client';
 import { AuthContext } from './context/auth.context';
 
 function App() {
-  /* const { user } = useContext(AuthContext); */
+  const { user } = useContext(AuthContext);
   let [rightPosition, setRightPosition] = useState('right-[-400px]');
   let [overlay, setOverlay] = useState('hidden');
   let location = useLocation();
@@ -57,17 +57,17 @@ function App() {
     const socket = socketIOClient(process.env.REACT_APP_PROJECT_API);
     socket.on('newNotification', (newNotification) => {
       /* console.log('newNotification =>', newNotification); */
-      /*  toast.info('You have a new notification!'); */
-      /* if (newNotification.userId._id !== user._id) {
+
+      if (user && newNotification.userId._id !== user._id) {
         toast.info('You have a new notification!');
-      } */
+      }
     });
   }, []);
 
   return (
     <div className='App bg-slate-200 min-w-screen min-h-[calc(100vh_-_48px)] relative '>
       <MenuBar toggleNotifications={toggleNotifications} />
-      <ToastContainer autoClose={3000} />
+      <ToastContainer autoClose={2500} />
       <>
         <Routes>
           <Route

@@ -42,11 +42,11 @@ export const ProfilePage = ({ deletedCommentToast }) => {
   useEffect(() => {
     setTimeout(() => {
       if (postRef.current) {
-        postRef.current.scrollIntoView({ behavior: 'smooth' });
+        postRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
         postRef.current.style.border = '5px solid #570DF8';
         postRef.current.style.borderRadius = '15px';
       }
-    }, 1000);
+    }, 1500);
 
     setTimeout(() => {
       if (postRef.current) {
