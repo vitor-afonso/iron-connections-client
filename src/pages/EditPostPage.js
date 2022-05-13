@@ -4,9 +4,11 @@ import { useContext, useState, useEffect, useRef } from 'react';
 import { getPost, getNotifications, uploadImage, updatePost, deletePost, removeUserNotification, getUsers, deleteNotification, deleteComment } from './../api';
 import { AuthContext } from '../context/auth.context';
 import { useParams, useNavigate, Link } from 'react-router-dom';
+import { SpinnerCircular } from 'spinners-react';
 
 export const EditPostPage = ({ toastDeleted, toastUpdated }) => {
   const { user } = useContext(AuthContext);
+  const [postLoaded, setPostLoaded] = useState(false);
   const [body, setBody] = useState('');
   const [imageUrl, setImageUrl] = useState('');
   const [postComments, setPostComments] = useState([]);
@@ -95,6 +97,7 @@ export const EditPostPage = ({ toastDeleted, toastUpdated }) => {
         setBody(postFromDB.data.body);
         setImageUrl(postFromDB.data.imageUrl);
         setPostComments(postFromDB.data.comments);
+        setPostLoaded(true);
       } catch (error) {
         console.log('error getting post to update from DB', error);
       }
@@ -102,19 +105,20 @@ export const EditPostPage = ({ toastDeleted, toastUpdated }) => {
   }, [postId]);
   return (
     <div className='EditPost min-h-[calc(100vh_-_48px)]'>
-      <div className='card card-compact w-96 bg-base-100 shadow-xl mx-auto top-10 p-2 space-y-4'>
-        <div className='card-body'>
-          <div className='flex items-center space-x-3 '>
-            <div className='avatar'>
-              <Link to={`/profile/${user._id}`} className='mask mask-squircle w-10 h-10'>
-                <img src={user.imageUrl} alt={user.username} />
-              </Link>
+      {postLoaded ? (
+        <div className='card card-compact w-96 bg-base-100 shadow-xl mx-auto top-10 p-2 space-y-4'>
+          <div className='card-body'>
+            <div className='flex items-center space-x-3 '>
+              <div className='avatar'>
+                <Link to={`/profile/${user._id}`} className='mask mask-squircle w-10 h-10'>
+                  <img src={user.imageUrl} alt={user.username} />
+                </Link>
+              </div>
+              <div>
+                <div className='font-bold'>{user.username}</div>
+              </div>
             </div>
-            <div>
-              <div className='font-bold'>{user.username}</div>
-            </div>
-          </div>
-          {body || imageUrl ? (
+
             <form onSubmit={handleSubmit} className='space-y-2'>
               <label>
                 <textarea name='body' value={body} onChange={(e) => setBody(e.target.value)} placeholder='Share your thoughts' />
@@ -130,20 +134,21 @@ export const EditPostPage = ({ toastDeleted, toastUpdated }) => {
                 </button>
               </div>
             </form>
-          ) : (
-            <p>Loading...</p>
-          )}
-          <div className='card-actions flex justify-between'>
-            <input ref={inputFileUpload} className='hidden' type='file' onChange={(e) => handleFileUpload(e)} />
-            <button type='button' className='btn btn-active btn-ghost' onClick={() => navigate(-1)}>
-              Back
-            </button>
-            <button type='button' onClick={() => inputFileUpload.current.click()} className='btn btn-active btn-ghost'>
-              Choose File
-            </button>
+
+            <div className='card-actions flex justify-between'>
+              <input ref={inputFileUpload} className='hidden' type='file' onChange={(e) => handleFileUpload(e)} />
+              <button type='button' className='btn btn-active btn-ghost' onClick={() => navigate(-1)}>
+                Back
+              </button>
+              <button type='button' onClick={() => inputFileUpload.current.click()} className='btn btn-active btn-ghost'>
+                Choose File
+              </button>
+            </div>
           </div>
         </div>
-      </div>
+      ) : (
+        <SpinnerCircular size={90} thickness={115} speed={100} color='rgb(86,13,248)' secondaryColor='rgba(57, 146, 172, 0.48)' className='mx-auto mt-20' />
+      )}
     </div>
   );
 };

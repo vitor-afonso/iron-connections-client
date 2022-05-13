@@ -4,9 +4,10 @@ import { useContext, useState, useEffect, useRef } from 'react';
 import { getUser, uploadImage, updateUser, deleteUser } from './../api';
 import { AuthContext } from '../context/auth.context';
 import { useParams, useNavigate } from 'react-router-dom';
+import { SpinnerCircular } from 'spinners-react';
 
 export const EditProfilePage = ({ toastProfileUpdated }) => {
-  const { user, logOutUser } = useContext(AuthContext);
+  const { logOutUser } = useContext(AuthContext);
   const [email, setEmail] = useState('');
   const [username, setUsername] = useState('');
   const [tempImageUrl, setTempImageUrl] = useState('');
@@ -28,7 +29,7 @@ export const EditProfilePage = ({ toastProfileUpdated }) => {
 
   const removeUser = async () => {
     try {
-      await deleteUser(userId);
+      /* await deleteUser(userId); */
       logOutUser();
     } catch (error) {
       console.log('Something went wront while deleting user from API', error);
@@ -75,9 +76,9 @@ export const EditProfilePage = ({ toastProfileUpdated }) => {
 
   return (
     <div className='EditProfilePage min-h-[calc(100vh_-_48px)]'>
-      <div className='card card-compact w-96 bg-base-100 shadow-xl mx-auto top-10 p-2 space-y-4'>
-        <div className='card-body'>
-          {username ? (
+      {username ? (
+        <div className='card card-compact w-96 bg-base-100 shadow-xl mx-auto top-10 p-2 space-y-4'>
+          <div className='card-body'>
             <form onSubmit={handleSubmit} className='space-y-2'>
               <figure className='w-20 h-20 mask mask-squircle'>{tempImageUrl && <img src={tempImageUrl} alt='Post' />}</figure>
               <label>
@@ -98,49 +99,21 @@ export const EditProfilePage = ({ toastProfileUpdated }) => {
                 </button>
               </div>
             </form>
-          ) : (
-            <p>Loading...</p>
-          )}
-          <div className='card-actions flex justify-between'>
-            <input ref={inputFileUpload} className='hidden' type='file' onChange={(e) => handleFileUpload(e)} />
-            <button type='button' className='btn btn-active btn-ghost' onClick={() => navigate(-1)}>
-              Back
-            </button>
-            <button type='button' onClick={() => inputFileUpload.current.click()} className='btn btn-active btn-ghost'>
-              Choose File
-            </button>
+
+            <div className='card-actions flex justify-between'>
+              <input ref={inputFileUpload} className='hidden' type='file' onChange={(e) => handleFileUpload(e)} />
+              <button type='button' className='btn btn-active btn-ghost' onClick={() => navigate(-1)}>
+                Back
+              </button>
+              <button type='button' onClick={() => inputFileUpload.current.click()} className='btn btn-active btn-ghost'>
+                Choose File
+              </button>
+            </div>
           </div>
         </div>
-      </div>
+      ) : (
+        <SpinnerCircular size={90} thickness={115} speed={100} color='rgb(86,13,248)' secondaryColor='rgba(57, 146, 172, 0.48)' className='mx-auto mt-20' />
+      )}
     </div>
   );
-  /* return (
-    <div className='EditProfilePage'>
-      {username ? (
-        <form onSubmit={handleSubmit}>
-          <label>
-            Username:
-            <input type='text' name='username' value={username} onChange={(e) => setUsername(e.target.value)} />
-          </label>
-
-          <label>
-            <input type='file' onChange={(e) => handleFileUpload(e)} />
-          </label>
-
-          {tempImageUrl && <img src={tempImageUrl} alt='User' style={{ width: '100px' }} />}
-
-          <br />
-          <button type='submit'>Update User</button>
-        </form>
-      ) : (
-        <p>Loading...</p>
-      )}
-
-      <NavLink to={`/profile/${userId}`}>
-        <button>Back</button>
-      </NavLink>
-
-      <button onClick={removeUser}>Delete</button>
-    </div>
-  ); */
 };
