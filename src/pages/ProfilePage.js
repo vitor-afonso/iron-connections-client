@@ -6,6 +6,7 @@ import { Link, NavLink, useParams, useSearchParams } from 'react-router-dom';
 import { getUser } from './../api';
 import { AddPost } from '../components/AddPost';
 import { PostCard } from '../components/PostCard';
+import { SpinnerCircular } from 'spinners-react';
 
 export const ProfilePage = ({ deletedCommentToast }) => {
   const { user } = useContext(AuthContext);
@@ -120,7 +121,7 @@ export const ProfilePage = ({ deletedCommentToast }) => {
           </div>
         </div>
       ) : (
-        <p>Loading...</p>
+        <SpinnerCircular size={90} thickness={115} speed={100} color='rgb(86,13,248)' secondaryColor='rgba(57, 146, 172, 0.48)' className='mx-auto mt-20' />
       )}
     </div>
   );

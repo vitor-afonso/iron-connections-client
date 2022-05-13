@@ -16,13 +16,15 @@ import { EditProfilePage } from './pages/EditProfilePage';
 import { UsersPage } from './pages/UsersPage';
 import { FriendsPage } from './pages/FriendsPage';
 import { IsFriend } from './components/isFriend';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { Transition } from '@headlessui/react';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import socketIOClient from 'socket.io-client';
+import { AuthContext } from './context/auth.context';
 
 function App() {
+  const { user } = useContext(AuthContext);
   let [rightPosition, setRightPosition] = useState('right-[-400px]');
   let [overlay, setOverlay] = useState('hidden');
   let location = useLocation();
@@ -55,7 +57,10 @@ function App() {
     const socket = socketIOClient(process.env.REACT_APP_PROJECT_API);
     socket.on('newNotification', (newNotification) => {
       /* console.log('newNotification =>', newNotification); */
-      toast.info('You have a new notification!');
+      /*  toast.info('You have a new notification!'); */
+      if (newNotification.userId._id !== user._id) {
+        toast.info('You have a new notification!');
+      }
     });
   }, []);
 
@@ -143,10 +148,10 @@ function App() {
       </>
       <Transition show={isShowing}>
         <Transition.Child
-          enter='transition-opacity ease-linear duration-1000'
+          enter='transition-opacity ease-linear duration-500 transform'
           enterFrom='opacity-0'
           enterTo='opacity-100'
-          leave='transition-opacity ease-linear duration-1000'
+          leave='transition-opacity ease-linear duration-500 transform'
           leaveFrom='opacity-100'
           leaveTo='opacity-0'
         >

@@ -1,6 +1,6 @@
 //jshint esversion:8
 
-import { useContext } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { AuthContext } from '../context/auth.context';
 import { Link } from 'react-router-dom';
 import homeImg from '../icons/home_black_24dp.svg';
@@ -11,10 +11,9 @@ import profileImg from '../icons/account_circle_black_24dp.svg';
 import allUsersImg from '../icons/people_black_24dp.svg';
 import notificationsImg from '../icons/notifications_black_24dp.svg';
 import logoutImg from '../icons/logout_black_24dp.svg';
+import { getUser } from '../api';
 
 export const MenuBar = ({ toggleNotifications }) => {
-  // Subscribe to the AuthContext to gain access to
-  // the values from AuthContext.Provider `value` prop
   const { isLoggedIn, user, logOutUser } = useContext(AuthContext);
 
   const MenuBarMobile = () => {
@@ -127,7 +126,7 @@ export const MenuBar = ({ toggleNotifications }) => {
               </li>
 
               <li>
-                <div className='hover:text-indigo-500 visited:bg-slate-400' onClick={() => toggleNotifications()}>
+                <div className='hover:text-indigo-500 visited:bg-slate-400 gap-2' onClick={() => toggleNotifications()}>
                   Notifications
                 </div>
               </li>

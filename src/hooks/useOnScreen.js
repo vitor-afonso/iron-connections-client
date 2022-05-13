@@ -1,3 +1,4 @@
+//jshint esversion:9
 import { useEffect, useState } from 'react';
 
 export default function useOnScreen(ref) {

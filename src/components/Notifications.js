@@ -85,7 +85,7 @@ export const Notifications = ({ toggleNotifications }) => {
             );
           } else {
             return (
-              <div className='overflow-x-auto ' key={oneNotification._id}>
+              <div className='overflow-x-0 ' key={oneNotification._id}>
                 <table className='table table-zebra w-full'>
                   <tbody>
                     <tr>

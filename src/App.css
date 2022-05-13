@@ -36,12 +36,25 @@
     transform: rotate(360deg);
   }
 }
+
+/* to load animation for a specific spinner */
+@import '~spinners-react/lib/SpinnerCircular.css';
+
+/* to load animations for all spinners at once */
+@import '~spinners-react/lib/index.css';
+
 /* Postcard animation */
 .slideIn {
   opacity: 0;
   transition: all 1.5s;
   transition-timing-function: cubic-bezier(0, 0.65, 0.24, 1.01);
   transform: translateY(200px);
+}
+.slideTd {
+  opacity: 0;
+  transition: all 1.5s;
+  transition-timing-function: cubic-bezier(0, 0.65, 0.24, 1.01);
+  transform: translateY(100px);
 }
 .slideIn.open {
   opacity: 1;
