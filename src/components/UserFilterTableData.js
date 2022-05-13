@@ -1,15 +1,10 @@
 //jshint esversion:9
 
-import { useRef } from 'react';
 import { Link } from 'react-router-dom';
-import useOnScreen from '../hooks/useOnScreen';
 
 export const UserFilterTableData = ({ currentUser, oneUser, userFollowersIds, handleAddFollower, handleRemoveFollower }) => {
-  const ref = useRef();
-  const isVisible = useOnScreen(ref);
-
   return (
-    <td className={`rounded-lg slideIn ${isVisible && 'open'}`} ref={ref}>
+    <td className={`rounded-lg `}>
       <div className='flex items-center space-x-3 justify-between'>
         <Link to={`/profile/${oneUser._id}`}>
           <div className='flex items-center space-x-3'>
