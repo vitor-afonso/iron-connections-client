@@ -7,12 +7,15 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { AuthProviderWrapper } from './context/auth.context';
+import { SocketIoProviderWrapper } from './context/socket.context';
 
 ReactDOM.render(
   <React.StrictMode>
     <Router>
       <AuthProviderWrapper>
-        <App />
+        <SocketIoProviderWrapper>
+          <App />
+        </SocketIoProviderWrapper>
       </AuthProviderWrapper>
     </Router>
   </React.StrictMode>,

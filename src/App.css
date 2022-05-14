@@ -1,6 +1,5 @@
 :root {
-  --toastify-color-info: #570df8;
-  --toastify-color-progress-info: var(--toastify-color-info);
+  --toastify-icon-color-info: #570df8 !important;
 }
 /* to load animation for a specific spinner */
 @import '~spinners-react/lib/SpinnerCircular.css';
@@ -20,6 +19,6 @@
   transform: translateY(0px);
 }
 
-.Toastify__progress-bar--info {
-  background-color: #570df8;
+.Toastify__progress-bar {
+  background-color: #570df8 !important;
 }

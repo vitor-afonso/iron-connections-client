@@ -32,8 +32,8 @@ function App() {
 
   const deletedPost = () => toast.info('Post successfully deleted!');
   const deletedCommentToast = () => toast.info('Comment successfully deleted!');
-  const toastUpdated = () => toast.success('Post successfully updated!');
-  const toastProfileUpdated = () => toast.success('Profile successfully updated!');
+  const toastUpdated = () => toast.info('Post successfully updated!');
+  const toastProfileUpdated = () => toast.info('Profile successfully updated!');
 
   const toggleNotifications = () => {
     if (rightPosition === 'right-[-400px]') {
@@ -56,13 +56,13 @@ function App() {
   useEffect(() => {
     const socket = socketIOClient(process.env.REACT_APP_PROJECT_API);
     socket.on('newNotification', (newNotification) => {
-      /* console.log('newNotification =>', newNotification); */
-
-      if (user && newNotification.userId._id !== user._id) {
-        toast.info('You have a new notification!');
+      if (user) {
+        if (newNotification.userId !== user._id) {
+          toast.info('You have a new notification!');
+        }
       }
     });
-  }, []);
+  }, [user]);
 
   return (
     <div className='App bg-slate-200 min-w-screen min-h-[calc(100vh_-_48px)] relative '>
@@ -166,7 +166,7 @@ function App() {
           leaveTo='-translate-x-[-400px]'
           className={`fixed top-[48px] ${rightPosition}  h-[calc(100vh_-_48px)] z-50`}
         >
-          <div className={`fixed  ${rightPosition} bg-white h-[calc(100vh_-_48px)]`}>
+          <div className={`fixed  ${rightPosition} bg-white h-[calc(100vh_-_48px)] overflow-y-auto`}>
             <Notifications toggleNotifications={toggleNotifications} />
           </div>
         </Transition.Child>
