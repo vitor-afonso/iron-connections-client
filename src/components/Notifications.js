@@ -47,14 +47,14 @@ export const Notifications = ({ toggleNotifications }) => {
 
   return (
     <div className='sm:max-w-md mx-auto max-w-[300px] '>
-      {notifications.length !== 0 &&
-        notifications.map((oneNotification) => {
-          if (oneNotification.postId) {
-            return (
-              <div className=' overflow-auto' key={oneNotification._id}>
-                <table className='table table-zebra w-full border-separate overflow-x-scroll '>
-                  <tbody>
-                    <tr className=''>
+      <div className=' overflow-auto'>
+        <table className='table table-zebra w-full border-separate overflow-x-scroll '>
+          <tbody>
+            {notifications.length !== 0 ? (
+              notifications.map((oneNotification) => {
+                if (oneNotification.postId) {
+                  return (
+                    <tr className='' key={oneNotification._id}>
                       <td className='flex justify-between items-center pr-0 bg-indigo-100 '>
                         <Link to={`/profile/${oneNotification.postId.userId}?postId=${oneNotification.postId._id}`} onClick={() => toggleNotifications()}>
                           {oneNotification.commentMessage ? (
@@ -68,16 +68,10 @@ export const Notifications = ({ toggleNotifications }) => {
                         </button>
                       </td>
                     </tr>
-                  </tbody>
-                </table>
-              </div>
-            );
-          } else {
-            return (
-              <div className=' overflow-auto' key={oneNotification._id}>
-                <table className='table table-zebra w-full'>
-                  <tbody>
-                    <tr>
+                  );
+                } else {
+                  return (
+                    <tr key={oneNotification._id}>
                       <td className='space-x-3 flex justify-between items-center pr-0 bg-indigo-100 '>
                         <Link to={`/profile/${oneNotification.userId}`} onClick={() => toggleNotifications()}>
                           <span className='text-xs sm:text-sm'>{oneNotification.content}</span>
@@ -87,12 +81,19 @@ export const Notifications = ({ toggleNotifications }) => {
                         </button>
                       </td>
                     </tr>
-                  </tbody>
-                </table>
-              </div>
-            );
-          }
-        })}
+                  );
+                }
+              })
+            ) : (
+              <tr>
+                <td className='space-x-3 flex justify-between items-center pr-0 bg-indigo-100 min-w-[250px]'>
+                  <p className='mx-auto'>No new notifications.</p>
+                </td>
+              </tr>
+            )}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 };

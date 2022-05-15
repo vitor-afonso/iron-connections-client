@@ -1,7 +1,7 @@
 // jshint esversion:9
 
-import React, { useState, useEffect } from "react";
-import { verify } from "./../api";
+import React, { useState, useEffect } from 'react';
+import { verify } from './../api';
 
 const AuthContext = React.createContext();
 
@@ -11,13 +11,13 @@ function AuthProviderWrapper(props) {
   const [user, setUser] = useState(null);
   const storeToken = (token) => {
     //  <==  ADD
-    localStorage.setItem("authToken", token);
+    localStorage.setItem('authToken', token);
   };
 
   const authenticateUser = async () => {
     // Get the stored token from the localStorage
 
-    const storedToken = localStorage.getItem("authToken");
+    const storedToken = localStorage.getItem('authToken');
     if (storedToken) {
       try {
         // We must send the JWT token in the request's "Authorization" Headers
@@ -46,7 +46,7 @@ function AuthProviderWrapper(props) {
 
   const removeToken = () => {
     // Upon logout, remove the token from the localStorage
-    localStorage.removeItem("authToken");
+    localStorage.removeItem('authToken');
   };
 
   const logOutUser = () => {
