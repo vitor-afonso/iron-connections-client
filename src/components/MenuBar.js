@@ -1,6 +1,6 @@
 //jshint esversion:8
 
-import { useContext } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { AuthContext } from '../context/auth.context';
 import { Link } from 'react-router-dom';
 import homeImg from '../icons/home_black_24dp.svg';
@@ -11,9 +11,43 @@ import profileImg from '../icons/account_circle_black_24dp.svg';
 import allUsersImg from '../icons/people_black_24dp.svg';
 import notificationsImg from '../icons/notifications_black_24dp.svg';
 import logoutImg from '../icons/logout_black_24dp.svg';
+import { getUser } from '../api';
+import { SocketIoContext } from '../context/socket.context';
 
 export const MenuBar = ({ toggleNotifications }) => {
   const { isLoggedIn, user, logOutUser } = useContext(AuthContext);
+
+  const [notifications, setNotifications] = useState([]);
+  const [haveNotification, setHaveNotification] = useState('');
+  const { socket } = useContext(SocketIoContext);
+
+  useEffect(() => {
+    (async () => {
+      if (user) {
+        try {
+          let response = await getUser(user._id);
+          if (response.data.notifications.length !== 0) {
+            setNotifications(response.data.notifications);
+            setHaveNotification('bg-pink-500');
+          } else {
+            setHaveNotification('');
+          }
+        } catch (error) {
+          console.log('Something went wrong while getting current user notifications =>', error);
+        }
+      }
+    })();
+  }, [user, notifications]);
+
+  useEffect(() => {
+    if (socket) {
+      socket.on('newNotification', (newNotification) => {
+        if (newNotification.userId !== user._id) {
+          setHaveNotification('bg-pink-500');
+        }
+      });
+    }
+  }, [socket]);
 
   const MenuBarMobile = () => {
     return (
@@ -60,7 +94,7 @@ export const MenuBar = ({ toggleNotifications }) => {
 
             <li>
               <div className={`hover:text-indigo-500 visited:bg-slate-400 `}>
-                <img src={notificationsImg} alt='Notifications' className={`h-6 w-6`} onClick={() => toggleNotifications()} />
+                <img src={notificationsImg} alt='Notifications' className={`h-6 w-6 ${haveNotification} rounded-3xl`} onClick={() => toggleNotifications()} />
               </div>
             </li>
 

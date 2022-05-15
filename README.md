@@ -1,70 +1,60 @@
-# Getting Started with Create React App
+# IronConnections
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+IronConnections is my third Ironhack Web Dev bootcamp project. With this project i am supposed to build a SPA using ReactJS NodeJS, Express & MoongoDB.
 
-## Available Scripts
+## About the project :crystal_ball:
 
-In the project directory, you can run:
+IronConnections is a social media app :busts_in_silhouette: that once logged in you can follow other users, see your connections posts, create posts, like and comment posts.
+My goal was to implement the basic features of a social media. I took advantage of the best that React has to offer, making use of states, props, context, components etc...
 
-### `npm start`
+### Node version: 14.17.5
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+### Technology :wrench:
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+- Javascript
+- Tailwind
+- ReactJS
+- NodeJS
+- ExpressJS
+- MongoDB
 
-### `npm test`
+### Component Library :sparkles:
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+- DaisyUi
+- HeadlessUi
 
-### `npm run build`
+### Development Steps :clipboard:
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+- Create flow chart
+- Build some wireframes
+- Create models
+- Create routes
+- Test routes
+- Create components
+- Fix bugs
+- Style
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+### Usage Client-side
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+- npm install - To instal the dependencies
+- npm start - To run the app at localhost:3000
 
-### `npm run eject`
+### Usage Server-side
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+- npm install - To instal the dependencies
+- npm run dev - To run the app at localhost:5005
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+### Unsolved or not implemented :x:
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+- Chatbot
+- Share
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+### Share the knowledge
 
-## Learn More
+If there are things you would implement in a different way or if you found something useful in here let me know!
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+Thanks for reading!! :v:
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+---
 
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Check it [here](https://ironconnections.netlify.app). :rocket:

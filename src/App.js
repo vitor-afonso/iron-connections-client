@@ -20,11 +20,12 @@ import { useContext, useEffect, useState } from 'react';
 import { Transition } from '@headlessui/react';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import socketIOClient from 'socket.io-client';
 import { AuthContext } from './context/auth.context';
+import { SocketIoContext } from './context/socket.context';
 
 function App() {
   const { user } = useContext(AuthContext);
+  const { socket } = useContext(SocketIoContext);
   let [rightPosition, setRightPosition] = useState('right-[-400px]');
   let [overlay, setOverlay] = useState('hidden');
   let location = useLocation();
@@ -54,15 +55,14 @@ function App() {
   }, [location.pathname]);
 
   useEffect(() => {
-    const socket = socketIOClient(process.env.REACT_APP_PROJECT_API);
-    socket.on('newNotification', (newNotification) => {
-      if (user) {
+    if (user && socket) {
+      socket.on('newNotification', (newNotification) => {
         if (newNotification.userId !== user._id) {
           toast.info('You have a new notification!');
         }
-      }
-    });
-  }, [user]);
+      });
+    }
+  }, [user, socket]);
 
   return (
     <div className='App bg-slate-200 min-w-screen min-h-[calc(100vh_-_48px)] relative '>
