@@ -91,7 +91,7 @@ function App() {
             element={
               <IsPrivate>
                 <IsFriend>
-                  <ProfilePage deletedCommentToast={deletedCommentToast} />
+                  <ProfilePage deletedCommentToast={deletedCommentToast} key={Date.now()} />
                 </IsFriend>
               </IsPrivate>
             }

@@ -11,12 +11,11 @@ import profileImg from '../icons/account_circle_black_24dp.svg';
 import allUsersImg from '../icons/people_black_24dp.svg';
 import notificationsImg from '../icons/notifications_black_24dp.svg';
 import logoutImg from '../icons/logout_black_24dp.svg';
-import { getUser } from '../api';
 import { SocketIoContext } from '../context/socket.context';
+import { getUser } from '../api';
 
 export const MenuBar = ({ toggleNotifications }) => {
-  const { isLoggedIn, user, logOutUser } = useContext(AuthContext);
-
+  const { isLoggedIn, user, logOutUser, authenticateUser } = useContext(AuthContext);
   const [notifications, setNotifications] = useState([]);
   const [haveNotification, setHaveNotification] = useState('');
   const { socket } = useContext(SocketIoContext);
@@ -25,10 +24,9 @@ export const MenuBar = ({ toggleNotifications }) => {
     (async () => {
       if (user) {
         try {
-          let response = await getUser(user._id);
-          if (response.data.notifications.length !== 0) {
-            setNotifications(response.data.notifications);
-            setHaveNotification('bg-pink-500');
+          if (user.notifications.length > 0) {
+            setNotifications(user.notifications);
+            setHaveNotification('bg-indigo-500');
           } else {
             setHaveNotification('');
           }
@@ -37,17 +35,45 @@ export const MenuBar = ({ toggleNotifications }) => {
         }
       }
     })();
-  }, [user, notifications]);
+  }, [notifications, user]);
 
   useEffect(() => {
-    if (socket) {
+    if (socket && user) {
       socket.on('newNotification', (newNotification) => {
         if (newNotification.userId !== user._id) {
-          setHaveNotification('bg-pink-500');
+          setHaveNotification('bg-indigo-500');
         }
       });
     }
-  }, [socket]);
+  }, [socket, user]);
+
+  useEffect(() => {
+    if (socket && user) {
+      socket.on('postRemoved', async (postRemoved) => {
+        /* console.log('a post was removed!!'); */
+
+        let filteredNotifications = notifications.filter((oneId) => oneId !== postRemoved);
+        setNotifications(filteredNotifications);
+        if (filteredNotifications.length === 0) {
+          setHaveNotification('');
+        }
+      });
+    }
+  }, [socket, user]);
+
+  useEffect(() => {
+    if (socket && user) {
+      socket.on('commentRemoved', async (commentRemoved) => {
+        /* console.log('a comment was removed!!'); */
+
+        const response = await getUser(user._id);
+        setNotifications(response.data.notifications);
+        if (response.data.notifications.length === 0) {
+          setHaveNotification('');
+        }
+      });
+    }
+  }, [socket, user]);
 
   const MenuBarMobile = () => {
     return (
@@ -93,8 +119,9 @@ export const MenuBar = ({ toggleNotifications }) => {
             </li>
 
             <li>
-              <div className={`hover:text-indigo-500 visited:bg-slate-400 `}>
-                <img src={notificationsImg} alt='Notifications' className={`h-6 w-6 ${haveNotification} rounded-3xl`} onClick={() => toggleNotifications()} />
+              <div className={`hover:text-indigo-500 visited:bg-slate-400 relative`}>
+                <span className={`absolute top-2 right-4 ${haveNotification} w-[8px] h-[8px] rounded-md`}></span>
+                <img src={notificationsImg} alt='Notifications' className={`h-6 w-6 rounded-3xl`} onClick={() => toggleNotifications()} />
               </div>
             </li>
 
@@ -158,8 +185,9 @@ export const MenuBar = ({ toggleNotifications }) => {
                 </Link>
               </li>
 
-              <li>
+              <li className='relative'>
                 <div className='hover:text-indigo-500 visited:bg-slate-400 gap-2' onClick={() => toggleNotifications()}>
+                  <span className={`absolute top-2 right-4 ${haveNotification} w-2 h-2 rounded-[50%]`}></span>
                   Notifications
                 </div>
               </li>

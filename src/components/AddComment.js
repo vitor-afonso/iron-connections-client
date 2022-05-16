@@ -47,20 +47,20 @@ export const AddComment = ({ post, refreshAllPosts, refreshProfileUser }) => {
       let str2 = `${user.username.split(' ')[0]} commented a post that you also commented. ${postDate}`;
       let newlyCreatedNotificationId;
 
-      if (post.comments.length !== 0) {
-        if (post.userId._id !== user._id) {
+      if (post.comments.length > 0) {
+        let postFilteredCommentIds = post.comments.map((comment) => comment.userId._id);
+
+        //then fix color of background not being removed when notification is deleted
+        if (!postFilteredCommentIds.every((id) => id === user._id)) {
           let response = await createNotification({ commentMessage: str2, userId: user._id, postId: post._id });
           newlyCreatedNotificationId = response.data._id;
-
-          post.comments.forEach((oneComment) => {
-            if (post.userId._id !== oneComment.userId._id && oneComment.userId._id !== user._id) {
-              updateUserNotification({ notificationId: newlyCreatedNotificationId }, oneComment.userId._id);
-            }
-          });
         }
 
-        /* let response = await createNotification({ content: str, userId: user._id, postId: post._id });
-        await updateUserNotification({ notificationId: response.data._id }, post.userId._id); */
+        post.comments.forEach((oneComment) => {
+          if (oneComment.userId._id !== user._id) {
+            updateUserNotification({ notificationId: newlyCreatedNotificationId }, oneComment.userId._id);
+          }
+        });
       } else {
         if (post.userId._id !== user._id) {
           let response = await createNotification({ content: str, userId: user._id, postId: post._id });
@@ -77,6 +77,7 @@ export const AddComment = ({ post, refreshAllPosts, refreshProfileUser }) => {
     (async () => {
       if (user) {
         let response = await getUser(user._id);
+
         setUserImageUrl(response.data.imageUrl);
       }
     })();

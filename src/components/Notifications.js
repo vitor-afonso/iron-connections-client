@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 
 export const Notifications = ({ toggleNotifications }) => {
   const [notifications, setNotifications] = useState([]);
-  const { user } = useContext(AuthContext);
+  const { user, authenticateUser } = useContext(AuthContext);
 
   const removeNotification = async (notificationId) => {
     let allUsers = await getUsers();
@@ -25,14 +25,19 @@ export const Notifications = ({ toggleNotifications }) => {
     // call users and filter the array of notifications
     await removeUserNotification(requestBody, user._id);
 
-    getUpdatedUser();
+    getUpdatedUser('authenticate');
   };
 
-  const getUpdatedUser = async () => {
+  const getUpdatedUser = async (auth) => {
     try {
       if (user) {
         let currentUser = await getUser(user._id);
+
         setNotifications(currentUser.data.notifications);
+        if (currentUser.data.notifications.length === 0 && auth) {
+          await authenticateUser();
+          toggleNotifications();
+        }
       }
     } catch (error) {
       console.log('Something went wrong while trying to get user and set notifications =>', error);
@@ -86,9 +91,7 @@ export const Notifications = ({ toggleNotifications }) => {
               })
             ) : (
               <tr>
-                <td className='space-x-3 flex justify-between items-center pr-0 bg-indigo-100 min-w-[250px]'>
-                  <p className='mx-auto'>No new notifications.</p>
-                </td>
+                <td className='space-x-3 flex justify-between items-center pr-0  min-w-[250px]'></td>
               </tr>
             )}
           </tbody>
