@@ -58,17 +58,8 @@ function App() {
 
   useEffect(() => {
     if (socket) {
-      socket.on('newNotification', async (newNotification) => {
-        let response = await getUser(user._id);
-        if (newNotification.userId !== user._id && user.notifications.length < response.data.notifications.length) {
-          toast.info('You have a new notification!');
-          authenticateUser();
-          if (haveNotification !== 'bg-indigo-500') setHaveNotification('');
-        }
-        if (response.data.notifications.length === 0) {
-          authenticateUser();
-          setHaveNotification('');
-        }
+      socket.on('newNotification', (newNotification) => {
+        if (haveNotification !== 'bg-indigo-500') setHaveNotification('bg-indigo-500');
       });
     }
   }, [socket, user]);
