@@ -3,10 +3,12 @@ import { useContext, useEffect, useState } from 'react';
 import { AuthContext } from '../context/auth.context';
 import { deleteNotification, getUser, getUsers, removeUserNotification } from '../api';
 import { Link } from 'react-router-dom';
+import { SocketIoContext } from '../context/socket.context';
 
-export const Notifications = ({ toggleNotifications }) => {
+export const Notifications = ({ toggleNotifications, setHaveNotification }) => {
   const [notifications, setNotifications] = useState([]);
-  const { user, authenticateUser } = useContext(AuthContext);
+  const { user } = useContext(AuthContext);
+  const { socket } = useContext(SocketIoContext);
 
   const removeNotification = async (notificationId) => {
     let allUsers = await getUsers();
@@ -28,21 +30,30 @@ export const Notifications = ({ toggleNotifications }) => {
     getUpdatedUser('authenticate');
   };
 
-  const getUpdatedUser = async (auth) => {
+  const getUpdatedUser = async () => {
     try {
       if (user) {
         let currentUser = await getUser(user._id);
 
         setNotifications(currentUser.data.notifications);
-        if (currentUser.data.notifications.length === 0 && auth) {
-          await authenticateUser();
+
+        if (currentUser.data.notifications.length === 0) {
           toggleNotifications();
+          setHaveNotification('');
         }
       }
     } catch (error) {
       console.log('Something went wrong while trying to get user and set notifications =>', error);
     }
   };
+
+  useEffect(() => {
+    if (socket) {
+      socket.on('newNotification', (newNotification) => {
+        getUpdatedUser();
+      });
+    }
+  }, [socket]);
 
   useEffect(() => {
     if (user) {

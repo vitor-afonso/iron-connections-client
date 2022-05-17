@@ -30,6 +30,7 @@ function App() {
   let [overlay, setOverlay] = useState('hidden');
   let location = useLocation();
   const [isShowing, setIsShowing] = useState(false);
+  const [haveNotification, setHaveNotification] = useState('');
 
   const deletedPost = () => toast.info('Post successfully deleted!');
   const deletedCommentToast = () => toast.info('Comment successfully deleted!');
@@ -55,18 +56,18 @@ function App() {
   }, [location.pathname]);
 
   useEffect(() => {
-    if (user && socket) {
+    if (socket) {
       socket.on('newNotification', (newNotification) => {
         if (newNotification.userId !== user._id) {
           toast.info('You have a new notification!');
         }
       });
     }
-  }, [user, socket]);
+  }, [socket]);
 
   return (
     <div className='App bg-slate-200 min-w-screen min-h-[calc(100vh_-_48px)] relative '>
-      <MenuBar toggleNotifications={toggleNotifications} />
+      <MenuBar toggleNotifications={toggleNotifications} setHaveNotification={setHaveNotification} haveNotification={haveNotification} />
       <ToastContainer autoClose={2500} />
       <>
         <Routes>
@@ -167,7 +168,7 @@ function App() {
           className={`fixed top-[48px] ${rightPosition}  h-[calc(100vh_-_48px)] z-50`}
         >
           <div className={`fixed  ${rightPosition} bg-white h-[calc(100vh_-_48px)] overflow-y-auto`}>
-            <Notifications toggleNotifications={toggleNotifications} />
+            <Notifications toggleNotifications={toggleNotifications} setHaveNotification={setHaveNotification} />
           </div>
         </Transition.Child>
       </Transition>

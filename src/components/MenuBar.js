@@ -14,33 +14,48 @@ import logoutImg from '../icons/logout_black_24dp.svg';
 import { SocketIoContext } from '../context/socket.context';
 import { getUser } from '../api';
 
-export const MenuBar = ({ toggleNotifications }) => {
-  const { isLoggedIn, user, logOutUser, authenticateUser } = useContext(AuthContext);
+export const MenuBar = ({ toggleNotifications, setHaveNotification, haveNotification }) => {
+  const { isLoggedIn, user, logOutUser } = useContext(AuthContext);
   const [notifications, setNotifications] = useState([]);
-  const [haveNotification, setHaveNotification] = useState('');
   const { socket } = useContext(SocketIoContext);
 
-  useEffect(() => {
-    (async () => {
+  /* useEffect(() => {
+    if (user) {
+      try {
+        if (user.notifications.length > 0) {
+          setNotifications(user.notifications);
+          setHaveNotification('bg-indigo-500');
+        } else {
+          setHaveNotification('');
+        }
+      } catch (error) {
+        console.log('Something went wrong while getting current user notifications =>', error);
+      }
+    }
+  }, []); */
+
+  const getUserSetNotifications = async () => {
+    try {
       if (user) {
-        try {
-          if (user.notifications.length > 0) {
-            setNotifications(user.notifications);
-            setHaveNotification('bg-indigo-500');
-          } else {
-            setHaveNotification('');
-          }
-        } catch (error) {
-          console.log('Something went wrong while getting current user notifications =>', error);
+        let currentUser = await getUser(user._id);
+        console.log('currentUser.data in menu =>', currentUser.data);
+
+        if (currentUser.data.notifications.length > 0) {
+          setNotifications(currentUser.data.notifications);
+          setHaveNotification('bg-indigo-500');
+        } else {
+          setHaveNotification('');
         }
       }
-    })();
-  }, [notifications, user]);
+    } catch (error) {
+      console.log('Something went wrong while trying to get user and set notifications on menuBar =>', error);
+    }
+  };
 
   useEffect(() => {
     if (socket && user) {
       socket.on('newNotification', (newNotification) => {
-        if (newNotification.userId !== user._id) {
+        if (newNotification.userId !== user._id && haveNotification === '') {
           setHaveNotification('bg-indigo-500');
         }
       });
@@ -51,8 +66,7 @@ export const MenuBar = ({ toggleNotifications }) => {
     if (socket && user) {
       socket.on('postRemoved', async (postRemoved) => {
         /* console.log('a post was removed!!'); */
-
-        let filteredNotifications = notifications.filter((oneId) => oneId !== postRemoved);
+        let filteredNotifications = notifications.filter((oneNoti) => oneNoti._id !== postRemoved);
         setNotifications(filteredNotifications);
         if (filteredNotifications.length === 0) {
           setHaveNotification('');
@@ -74,6 +88,12 @@ export const MenuBar = ({ toggleNotifications }) => {
       });
     }
   }, [socket, user]);
+
+  useEffect(() => {
+    if (user) {
+      getUserSetNotifications();
+    }
+  }, [user]);
 
   const MenuBarMobile = () => {
     return (
