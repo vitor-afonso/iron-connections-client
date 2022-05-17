@@ -19,26 +19,10 @@ export const MenuBar = ({ toggleNotifications, setHaveNotification, haveNotifica
   const [notifications, setNotifications] = useState([]);
   const { socket } = useContext(SocketIoContext);
 
-  /* useEffect(() => {
-    if (user) {
-      try {
-        if (user.notifications.length > 0) {
-          setNotifications(user.notifications);
-          setHaveNotification('bg-indigo-500');
-        } else {
-          setHaveNotification('');
-        }
-      } catch (error) {
-        console.log('Something went wrong while getting current user notifications =>', error);
-      }
-    }
-  }, []); */
-
   const getUserSetNotifications = async () => {
     try {
       if (user) {
         let currentUser = await getUser(user._id);
-        console.log('currentUser.data in menu =>', currentUser.data);
 
         if (currentUser.data.notifications.length > 0) {
           setNotifications(currentUser.data.notifications);
@@ -66,9 +50,9 @@ export const MenuBar = ({ toggleNotifications, setHaveNotification, haveNotifica
     if (socket && user) {
       socket.on('postRemoved', async (postRemoved) => {
         /* console.log('a post was removed!!'); */
-        let filteredNotifications = notifications.filter((oneNoti) => oneNoti._id !== postRemoved);
-        setNotifications(filteredNotifications);
-        if (filteredNotifications.length === 0) {
+        let response = await getUser(user._id);
+        setNotifications(response.data.notifications);
+        if (response.data.notifications.length === 0) {
           setHaveNotification('');
         }
       });

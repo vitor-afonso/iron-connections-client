@@ -5,7 +5,7 @@ import { deleteNotification, getUser, getUsers, removeUserNotification } from '.
 import { Link } from 'react-router-dom';
 import { SocketIoContext } from '../context/socket.context';
 
-export const Notifications = ({ toggleNotifications, setHaveNotification }) => {
+export const Notifications = ({ rightPosition, toggleNotifications, setHaveNotification }) => {
   const [notifications, setNotifications] = useState([]);
   const { user } = useContext(AuthContext);
   const { socket } = useContext(SocketIoContext);
@@ -27,10 +27,10 @@ export const Notifications = ({ toggleNotifications, setHaveNotification }) => {
     // call users and filter the array of notifications
     await removeUserNotification(requestBody, user._id);
 
-    getUpdatedUser('authenticate');
+    getUserSetNotifications();
   };
 
-  const getUpdatedUser = async () => {
+  const getUserSetNotifications = async () => {
     try {
       if (user) {
         let currentUser = await getUser(user._id);
@@ -38,7 +38,9 @@ export const Notifications = ({ toggleNotifications, setHaveNotification }) => {
         setNotifications(currentUser.data.notifications);
 
         if (currentUser.data.notifications.length === 0) {
-          toggleNotifications();
+          if (rightPosition === 'right-0') {
+            toggleNotifications();
+          }
           setHaveNotification('');
         }
       }
@@ -50,21 +52,21 @@ export const Notifications = ({ toggleNotifications, setHaveNotification }) => {
   useEffect(() => {
     if (socket) {
       socket.on('newNotification', (newNotification) => {
-        getUpdatedUser();
+        getUserSetNotifications();
       });
     }
   }, [socket]);
 
   useEffect(() => {
     if (user) {
-      getUpdatedUser();
+      getUserSetNotifications();
     }
   }, [user]);
 
   return (
     <div className='sm:max-w-md mx-auto max-w-[300px] '>
       <div className=' overflow-auto'>
-        <table className='table table-zebra w-full border-separate overflow-x-scroll '>
+        <table className='table  w-full border-separate overflow-x-scroll '>
           <tbody>
             {notifications.length !== 0 ? (
               notifications.map((oneNotification) => {

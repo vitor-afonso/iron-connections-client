@@ -22,9 +22,10 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { AuthContext } from './context/auth.context';
 import { SocketIoContext } from './context/socket.context';
+import { getUser } from './api';
 
 function App() {
-  const { user } = useContext(AuthContext);
+  const { user, authenticateUser } = useContext(AuthContext);
   const { socket } = useContext(SocketIoContext);
   let [rightPosition, setRightPosition] = useState('right-[-400px]');
   let [overlay, setOverlay] = useState('hidden');
@@ -57,13 +58,20 @@ function App() {
 
   useEffect(() => {
     if (socket) {
-      socket.on('newNotification', (newNotification) => {
-        if (newNotification.userId !== user._id) {
+      socket.on('newNotification', async (newNotification) => {
+        let response = await getUser(user._id);
+        if (newNotification.userId !== user._id && user.notifications.length < response.data.notifications.length) {
           toast.info('You have a new notification!');
+          authenticateUser();
+          if (haveNotification !== 'bg-indigo-500') setHaveNotification('');
+        }
+        if (response.data.notifications.length === 0) {
+          authenticateUser();
+          setHaveNotification('');
         }
       });
     }
-  }, [socket]);
+  }, [socket, user]);
 
   return (
     <div className='App bg-slate-200 min-w-screen min-h-[calc(100vh_-_48px)] relative '>
@@ -168,7 +176,7 @@ function App() {
           className={`fixed top-[48px] ${rightPosition}  h-[calc(100vh_-_48px)] z-50`}
         >
           <div className={`fixed  ${rightPosition} bg-white h-[calc(100vh_-_48px)] overflow-y-auto`}>
-            <Notifications toggleNotifications={toggleNotifications} setHaveNotification={setHaveNotification} />
+            <Notifications rightPosition={rightPosition} toggleNotifications={toggleNotifications} setHaveNotification={setHaveNotification} />
           </div>
         </Transition.Child>
       </Transition>
