@@ -84,7 +84,9 @@ export const AddPost = ({ refreshPosts, refreshUser }) => {
     let dateYear = date.getFullYear();
     let dateMonth = month[date.getMonth()];
     let dateDay = date.getDate();
-    let postDate = `${dateDay}-${dateMonth}-${dateYear}`;
+    let dateHour = date.getHours();
+    let dateMinutes = date.getMinutes();
+    let postDate = `${dateDay}-${dateMonth}-${dateYear}  ${dateHour}:${dateMinutes}`;
 
     try {
       let str = `${user.username.split(' ')[0]} have a new post. ${postDate}`;

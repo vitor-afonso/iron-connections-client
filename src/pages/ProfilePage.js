@@ -76,7 +76,7 @@ export const ProfilePage = ({ deletedCommentToast }) => {
             </div>
           </div>
           {/* <!-- Followers --> */}
-          {userProfile.followers.length !== 0 && (
+          {userProfile.followers.length !== 0 ? (
             <div className='flex flex-col w-full max-w-lg shadow-md border-2 border-indigo-600 bg-white p-4 rounded-md text-indigo-600 font-base text-lg'>
               <h6 className='self-start'>{userProfile.username.split(' ')[0]} connections</h6>
               <div className='flex self-center py-4'>
@@ -93,6 +93,8 @@ export const ProfilePage = ({ deletedCommentToast }) => {
                 See All
               </NavLink>
             </div>
+          ) : (
+            <p className='flex flex-col w-full max-w-lg shadow-md border-2 border-indigo-600 bg-white p-4 rounded-md text-indigo-600 font-base text-lg'>No connections to show</p>
           )}
 
           {user._id === userProfile._id && (

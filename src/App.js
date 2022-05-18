@@ -22,10 +22,9 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { AuthContext } from './context/auth.context';
 import { SocketIoContext } from './context/socket.context';
-import { getUser } from './api';
 
 function App() {
-  const { user, authenticateUser } = useContext(AuthContext);
+  const { user } = useContext(AuthContext);
   const { socket } = useContext(SocketIoContext);
   let [rightPosition, setRightPosition] = useState('right-[-400px]');
   let [overlay, setOverlay] = useState('hidden');
@@ -59,7 +58,9 @@ function App() {
   useEffect(() => {
     if (socket) {
       socket.on('newNotification', (newNotification) => {
-        if (haveNotification !== 'bg-indigo-500') setHaveNotification('bg-indigo-500');
+        if (newNotification.userId !== user._id && haveNotification !== 'bg-indigo-500') {
+          setHaveNotification('bg-indigo-500');
+        }
       });
     }
   }, [socket, user]);

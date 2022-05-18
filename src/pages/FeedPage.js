@@ -6,11 +6,13 @@ import { PostCard } from '../components/PostCard';
 import { AddPost } from '../components/AddPost';
 import { AuthContext } from '../context/auth.context';
 import { SpinnerCircular } from 'spinners-react';
+import { useNavigate } from 'react-router-dom';
 
 export const FeedPage = ({ deletedCommentToast }) => {
   const [posts, setPosts] = useState([]);
   const [allPostsIdsToDisplay, setAllPostsIdsToDisplay] = useState([]);
   const { user } = useContext(AuthContext);
+  const navigate = useNavigate();
 
   const getPosts = async () => {
     try {
@@ -28,6 +30,9 @@ export const FeedPage = ({ deletedCommentToast }) => {
       let followersPosts = [...response.data.followers.map((oneUser) => oneUser.posts)];
 
       setAllPostsIdsToDisplay([...currentUserPostsIds, ...followersPosts.flat(Infinity)]);
+      if (response.data.followers.length === 0 && response.data.posts.length === 0) {
+        navigate('/users');
+      }
     }
   };
 
