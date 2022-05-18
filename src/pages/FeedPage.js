@@ -10,6 +10,7 @@ import { useNavigate } from 'react-router-dom';
 
 export const FeedPage = ({ deletedCommentToast }) => {
   const [posts, setPosts] = useState([]);
+  const [isNewUser, setIsNewUser] = useState(true);
   const [allPostsIdsToDisplay, setAllPostsIdsToDisplay] = useState([]);
   const { user } = useContext(AuthContext);
   const navigate = useNavigate();
@@ -28,10 +29,14 @@ export const FeedPage = ({ deletedCommentToast }) => {
       let response = await getUser(user._id);
       let currentUserPostsIds = response.data.posts.map((onePost) => onePost._id);
       let followersPosts = [...response.data.followers.map((oneUser) => oneUser.posts)];
-
       setAllPostsIdsToDisplay([...currentUserPostsIds, ...followersPosts.flat(Infinity)]);
+
       if (response.data.followers.length === 0 && response.data.posts.length === 0) {
-        navigate('/users');
+        setIsNewUser(true);
+        setTimeout(() => navigate('/users'), 700000000);
+      }
+      if (response.data.followers.length !== 0 || response.data.posts.length !== 0) {
+        setIsNewUser(false);
       }
     }
   };
@@ -45,6 +50,11 @@ export const FeedPage = ({ deletedCommentToast }) => {
     <div className='FeedPage pt-20 flex justify-center min-h-[calc(100vh_-_48px)] pb-4'>
       <div className='fixed top-12 w-full z-10 h-3 bg-slate-200'></div>
       <AddPost refreshPosts={getPosts} refreshUser={getOneUser} />
+      {isNewUser && (
+        <p className='flex flex-col w-full max-w-lg shadow-md border-2 border-indigo-600 bg-white p-4 rounded-md text-indigo-600 font-base text-lg mt-28 max-h-56'>
+          New to IronConnections?! Please consider starting by following any of the existing users for a better user experience.
+        </p>
+      )}
       {posts.length !== 0 ? (
         <div className='pt-1 space-y-4 w-full max-w-lg'>
           {allPostsIdsToDisplay &&
