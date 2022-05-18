@@ -40,7 +40,9 @@ export const AddComment = ({ post, refreshAllPosts, refreshProfileUser }) => {
     let dateYear = date.getFullYear();
     let dateMonth = month[date.getMonth()];
     let dateDay = date.getDate();
-    let postDate = `${dateDay}-${dateMonth}-${dateYear}`;
+    let dateHour = date.getHours();
+    let dateMinutes = date.getMinutes();
+    let postDate = `${dateDay}-${dateMonth}-${dateYear}  ${dateHour}:${dateMinutes}`;
 
     try {
       let str = `${user.username.split(' ')[0]} commented your post. ${postDate}`;
@@ -48,19 +50,17 @@ export const AddComment = ({ post, refreshAllPosts, refreshProfileUser }) => {
       let newlyCreatedNotificationId;
 
       if (post.comments.length > 0) {
-        let postFilteredCommentIds = post.comments.map((comment) => comment.userId._id);
+        let postFilteredCommentUsersIds = [...new Set(post.comments.map((comment) => comment.userId._id))];
 
-        //then fix color of background not being removed when notification is deleted
-        if (!postFilteredCommentIds.every((id) => id === user._id)) {
+        if (!postFilteredCommentUsersIds.every((id) => id === user._id)) {
           let response = await createNotification({ commentMessage: str2, userId: user._id, postId: post._id });
-          newlyCreatedNotificationId = response.data._id;
-        }
 
-        post.comments.forEach((oneComment) => {
-          if (oneComment.userId._id !== user._id) {
-            updateUserNotification({ notificationId: newlyCreatedNotificationId }, oneComment.userId._id);
-          }
-        });
+          postFilteredCommentUsersIds.forEach((oneUserId) => {
+            if (oneUserId !== user._id) {
+              updateUserNotification({ notificationId: response.data._id }, oneUserId);
+            }
+          });
+        }
       } else {
         if (post.userId._id !== user._id) {
           let response = await createNotification({ content: str, userId: user._id, postId: post._id });
