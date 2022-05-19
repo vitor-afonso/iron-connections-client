@@ -24,6 +24,7 @@ export const FeedPage = ({ deletedCommentToast }) => {
       console.log('Something went wrong while trying to get posts from DB =>', error);
     }
   };
+
   const getOneUser = async () => {
     if (user) {
       let response = await getUser(user._id);
@@ -33,7 +34,7 @@ export const FeedPage = ({ deletedCommentToast }) => {
 
       if (response.data.followers.length === 0 && response.data.posts.length === 0) {
         setIsNewUser(true);
-        setTimeout(() => navigate('/users'), 700000000);
+        setTimeout(() => navigate('/users'), 10000);
       }
       if (response.data.followers.length !== 0 || response.data.posts.length !== 0) {
         setIsNewUser(false);
@@ -48,11 +49,12 @@ export const FeedPage = ({ deletedCommentToast }) => {
 
   return (
     <div className='FeedPage pt-20 flex justify-center min-h-[calc(100vh_-_48px)] pb-4'>
-      <div className='fixed top-12 w-full z-10 h-3 bg-slate-200'></div>
+      <div className='fixed top-12 w-full z-10 h-3 bg-slate-200 '></div>
       <AddPost refreshPosts={getPosts} refreshUser={getOneUser} />
       {isNewUser && (
-        <p className='flex flex-col w-full max-w-lg shadow-md border-2 border-indigo-600 bg-white p-4 rounded-md text-indigo-600 font-base text-lg mt-28 max-h-56'>
+        <p className='fixed mx-4 max-w-[480px] shadow-md border-2 border-indigo-600 bg-white p-4 rounded-md text-indigo-600 font-base text-lg mt-28'>
           New to IronConnections?! Please consider starting by following any of the existing users for a better user experience.
+          <br /> <small className='text-gray-500'>You will soon be redirected.</small>
         </p>
       )}
       {posts.length !== 0 ? (
