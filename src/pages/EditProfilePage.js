@@ -1,7 +1,22 @@
 //jshint esversion:9
 
 import { useContext, useState, useEffect, useRef } from 'react';
-import { getUser, uploadImage, updateUser, deleteUser } from './../api';
+import {
+  getUser,
+  uploadImage,
+  updateUser,
+  deleteUser,
+  getAllPosts,
+  updatePost,
+  getNotifications,
+  getUsers,
+  deleteNotification,
+  getAllComments,
+  deleteComment,
+  deletePostComment,
+  removeFollower,
+  deletePost,
+} from './../api';
 import { AuthContext } from '../context/auth.context';
 import { useParams, useNavigate } from 'react-router-dom';
 import { SpinnerCircular } from 'spinners-react';
@@ -29,11 +44,117 @@ export const EditProfilePage = ({ toastProfileUpdated }) => {
 
   const removeUser = async () => {
     try {
+      let allUsers = await getUsers();
+      let allNotifications = await getNotifications();
+      let allPosts = await getAllPosts();
+      let allComments = await getAllComments();
+
+      await removeUserLikeFromPosts(allPosts.data);
+
+      await updateFollowersNotifications(allNotifications.data);
+
+      await deleteAllNotificationsGeneratedByUser(allNotifications.data);
+
+      await getAllUserCommentsAndPosts(allPosts.data, allComments.data);
+
+      await UpdateUsersFollowers(allUsers.data);
+
+      await deleteUserPosts(allPosts.data);
+
       /* await deleteUser(userId); */
-      logOutUser();
+      /* logOutUser(); */
     } catch (error) {
       console.log('Something went wront while deleting user from API', error);
     }
+  };
+
+  const deleteUserPosts = async (allPosts) => {
+    console.log('allPosts', allPosts);
+    allPosts.forEach(async (post) => {
+      if (post.userId._id === userId) {
+        await deletePost(post._id);
+      }
+    });
+  };
+
+  const UpdateUsersFollowers = async (allUsers) => {
+    allUsers.forEach(async (user) => {
+      if (user.followers.includes(userId)) {
+        await removeFollower(user._id, userId);
+      }
+    });
+  };
+
+  const getAllUserCommentsAndPosts = async (allPosts, allComments) => {
+    let filteredCommentsFromUser = allComments.filter((oneComment) => oneComment.userId._id === userId);
+    if (filteredCommentsFromUser) {
+      filteredCommentsFromUser.forEach((comment) => checkEachPost(allPosts, comment._id));
+    }
+  };
+
+  const checkEachPost = async (allPosts, commentId) => {
+    allPosts.forEach((post) => {
+      deleteUserCommentFromPost(post, commentId);
+    });
+  };
+
+  const deleteUserCommentFromPost = (post, userCommentId) => {
+    post.comments.forEach(async (oneComment) => {
+      if (oneComment._id === userCommentId) {
+        let filteredComments = post.comments.filter((comment) => comment._id !== userCommentId);
+        await updatePost({ comments: filteredComments }, post._id);
+
+        await deleteComment(userCommentId);
+      }
+    });
+  };
+
+  const deleteAllNotificationsGeneratedByUser = async (allNotifications) => {
+    let filteredNotifications = allNotifications.filter((oneNotification) => oneNotification.userId._id === userId);
+
+    filteredNotifications.forEach(async (notification) => await deleteNotification(notification._id));
+  };
+
+  const updateFollowersNotifications = async (allNotifications) => {
+    let filteredNotifications = allNotifications.filter((oneNotification) => oneNotification.userId._id === userId);
+
+    if (filteredNotifications) {
+      filteredNotifications.forEach((oneNotification) => removeNotificationFromUser(oneNotification._id));
+    }
+  };
+
+  const removeNotificationFromUser = async (notificationId) => {
+    let allUsers = await getUsers();
+
+    allUsers.data.forEach(async (follower) => {
+      let filteredNotifications = follower.notifications.filter((oneNotificationId) => oneNotificationId !== notificationId);
+
+      await updateUser({ notifications: filteredNotifications }, follower._id);
+    });
+  };
+
+  const removeUserLikeFromPosts = async (allPosts) => {
+    try {
+      let filteredPostsToRemoveLike = allPosts.filter((onePost) => onePost.likes.includes(userId));
+
+      if (filteredPostsToRemoveLike) {
+        filteredPostsToRemoveLike.forEach(async (post) => {
+          removeUserLike(post);
+
+          let filteredLikes = post.likes.filter((likeID) => likeID !== userId);
+          await updatePost({ likes: filteredLikes }, post._id);
+        });
+      }
+    } catch (error) {
+      console.log('Something went wrong while trying to remove like from posts =>', error);
+    }
+  };
+
+  const removeUserLike = async (post) => {
+    let currentUser = await getUser(userId);
+    let filteredUserLikes = currentUser.data.likes.filter((postId) => postId !== post._id);
+    let response = await updateUser({ likes: filteredUserLikes }, userId);
+    console.log('postId deleted from user likes =>', response.data);
   };
 
   const handleSubmit = async (e) => {

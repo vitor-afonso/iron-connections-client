@@ -58,6 +58,12 @@ export const updatePostLikesRemove = (requestBody, postId) => {
   });
 };
 
+export const getAllComments = () => {
+  return axios.get(`${API_URL}/comments`, {
+    headers: { Authorization: `Bearer ${localStorage.getItem('authToken')}` },
+  });
+};
+
 export const addNewComment = (postId, comment) => {
   return axios.post(`${API_URL}/posts/${postId}/comment`, comment, {
     headers: { Authorization: `Bearer ${localStorage.getItem('authToken')}` },
