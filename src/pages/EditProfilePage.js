@@ -13,7 +13,6 @@ import {
   deleteNotification,
   getAllComments,
   deleteComment,
-  deletePostComment,
   removeFollower,
   deletePost,
 } from './../api';
@@ -61,8 +60,9 @@ export const EditProfilePage = ({ toastProfileUpdated }) => {
 
       await deleteUserPosts(allPosts.data);
 
-      /* await deleteUser(userId); */
-      /* logOutUser(); */
+      await deleteUser(userId);
+
+      logOutUser();
     } catch (error) {
       console.log('Something went wront while deleting user from API', error);
     }

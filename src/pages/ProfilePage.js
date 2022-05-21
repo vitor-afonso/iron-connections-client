@@ -33,6 +33,7 @@ export const ProfilePage = ({ deletedCommentToast }) => {
     (async () => {
       try {
         getOneUser();
+        window.scrollTo(0, 0);
       } catch (error) {
         console.log('Something went wrong while trying to get user in profile =>', error);
       }

@@ -10,7 +10,7 @@ import { useNavigate } from 'react-router-dom';
 
 export const FeedPage = ({ deletedCommentToast }) => {
   const [posts, setPosts] = useState([]);
-  const [isNewUser, setIsNewUser] = useState(true);
+  const [isNewUser, setIsNewUser] = useState(false);
   const [allPostsIdsToDisplay, setAllPostsIdsToDisplay] = useState([]);
   const { user } = useContext(AuthContext);
   const navigate = useNavigate();
@@ -45,6 +45,7 @@ export const FeedPage = ({ deletedCommentToast }) => {
   useEffect(() => {
     getPosts();
     getOneUser();
+    window.scrollTo(0, 0);
   }, [user]);
 
   return (

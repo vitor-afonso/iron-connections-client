@@ -86,6 +86,7 @@ export const UsersPage = () => {
     if (user) {
       getAllUsers();
       getOneUser();
+      window.scrollTo(0, 0);
     }
   }, [user]);
 
