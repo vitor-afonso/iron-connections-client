@@ -36,6 +36,29 @@ function App() {
   const deletedCommentToast = () => toast.info('Comment successfully deleted!');
   const toastUpdated = () => toast.info('Post successfully updated!');
   const toastProfileUpdated = () => toast.info('Profile successfully updated!');
+  const toastNotification = () => toast.info('You have a new notification!');
+
+  useEffect(() => {
+    if (socket) {
+      const onNewNotification = (newNotification) => {
+        if (newNotification.userId !== user._id && haveNotification !== 'bg-indigo-500') {
+          setHaveNotification('bg-indigo-500');
+          toastNotification();
+        }
+      };
+      socket.on('newNotification', onNewNotification);
+
+      return () => {
+        socket.off('newNotification', onNewNotification);
+      };
+    }
+  }, [socket, user]);
+
+  useEffect(() => {
+    if (rightPosition === 'right-0') {
+      toggleNotifications();
+    }
+  }, [location.pathname]);
 
   const toggleNotifications = () => {
     if (rightPosition === 'right-[-400px]') {
@@ -48,22 +71,6 @@ function App() {
       setIsShowing(false);
     }
   };
-
-  useEffect(() => {
-    if (rightPosition === 'right-0') {
-      toggleNotifications();
-    }
-  }, [location.pathname]);
-
-  useEffect(() => {
-    if (socket) {
-      socket.on('newNotification', (newNotification) => {
-        if (newNotification.userId !== user._id && haveNotification !== 'bg-indigo-500') {
-          setHaveNotification('bg-indigo-500');
-        }
-      });
-    }
-  }, [socket, user]);
 
   return (
     <div className='App bg-slate-200 min-w-screen min-h-[calc(100vh_-_48px)] relative '>
@@ -168,7 +175,7 @@ function App() {
           className={`fixed top-[48px] ${rightPosition}  h-[calc(100vh_-_48px)] z-50`}
         >
           <div className={`fixed  ${rightPosition} bg-white h-[calc(100vh_-_48px)] overflow-y-auto`}>
-            <Notifications rightPosition={rightPosition} toggleNotifications={toggleNotifications} setHaveNotification={setHaveNotification} />
+            <Notifications toggleNotifications={toggleNotifications} setHaveNotification={setHaveNotification} />
           </div>
         </Transition.Child>
       </Transition>

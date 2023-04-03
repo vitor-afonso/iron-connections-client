@@ -1,6 +1,6 @@
 //jshint esversion:8
 
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect } from 'react';
 import { AuthContext } from '../context/auth.context';
 import { Link } from 'react-router-dom';
 import homeImg from '../icons/home_black_24dp.svg';
@@ -16,8 +16,31 @@ import { getUser } from '../api';
 
 export const MenuBar = ({ toggleNotifications, setHaveNotification, haveNotification }) => {
   const { isLoggedIn, user, logOutUser } = useContext(AuthContext);
-  const [notifications, setNotifications] = useState([]);
   const { socket } = useContext(SocketIoContext);
+
+  useEffect(() => {
+    if (socket && user) {
+      socket.on('postRemoved', handleNotificationBadge);
+      return () => {
+        socket.off('postRemoved', handleNotificationBadge);
+      };
+    }
+  }, [socket, user]);
+
+  useEffect(() => {
+    if (socket && user) {
+      socket.on('commentRemoved', handleNotificationBadge);
+      return () => {
+        socket.off('commentRemoved', handleNotificationBadge);
+      };
+    }
+  }, [socket, user]);
+
+  useEffect(() => {
+    if (user) {
+      getUserSetNotifications();
+    }
+  }, [user]);
 
   const getUserSetNotifications = async () => {
     try {
@@ -25,7 +48,6 @@ export const MenuBar = ({ toggleNotifications, setHaveNotification, haveNotifica
         let currentUser = await getUser(user._id);
 
         if (currentUser.data.notifications.length > 0) {
-          setNotifications(currentUser.data.notifications);
           setHaveNotification('bg-indigo-500');
         } else {
           setHaveNotification('');
@@ -36,48 +58,13 @@ export const MenuBar = ({ toggleNotifications, setHaveNotification, haveNotifica
     }
   };
 
-  useEffect(() => {
-    if (socket && user) {
-      socket.on('newNotification', (newNotification) => {
-        if (newNotification.userId !== user._id && haveNotification === '') {
-          setHaveNotification('bg-indigo-500');
-        }
-      });
-    }
-  }, [socket, user]);
+  const handleNotificationBadge = async () => {
+    const { data } = await getUser(user._id);
 
-  useEffect(() => {
-    if (socket && user) {
-      socket.on('postRemoved', async (postRemoved) => {
-        /* console.log('a post was removed!!'); */
-        let response = await getUser(user._id);
-        setNotifications(response.data.notifications);
-        if (response.data.notifications.length === 0) {
-          setHaveNotification('');
-        }
-      });
+    if (data.notifications.length === 0) {
+      setHaveNotification('');
     }
-  }, [socket, user]);
-
-  useEffect(() => {
-    if (socket && user) {
-      socket.on('commentRemoved', async (commentRemoved) => {
-        /* console.log('a comment was removed!!'); */
-
-        const response = await getUser(user._id);
-        setNotifications(response.data.notifications);
-        if (response.data.notifications.length === 0) {
-          setHaveNotification('');
-        }
-      });
-    }
-  }, [socket, user]);
-
-  useEffect(() => {
-    if (user) {
-      getUserSetNotifications();
-    }
-  }, [user]);
+  };
 
   const MenuBarMobile = () => {
     return (
@@ -125,7 +112,7 @@ export const MenuBar = ({ toggleNotifications, setHaveNotification, haveNotifica
             <li>
               <div className={`hover:text-indigo-500 visited:bg-slate-400 relative`}>
                 <span className={`absolute top-2 right-4 ${haveNotification} w-[8px] h-[8px] rounded-md`}></span>
-                <img src={notificationsImg} alt='Notifications' className={`h-6 w-6 rounded-3xl`} onClick={() => toggleNotifications()} />
+                <img src={notificationsImg} alt='Notifications' className={`h-6 w-6 rounded-3xl`} onClick={toggleNotifications} />
               </div>
             </li>
 
@@ -190,7 +177,7 @@ export const MenuBar = ({ toggleNotifications, setHaveNotification, haveNotifica
               </li>
 
               <li className='relative'>
-                <div className='hover:text-indigo-500 visited:bg-slate-400 gap-2' onClick={() => toggleNotifications()}>
+                <div className='hover:text-indigo-500 visited:bg-slate-400 gap-2' onClick={toggleNotifications}>
                   <span className={`absolute top-2 right-4 ${haveNotification} w-2 h-2 rounded-[50%]`}></span>
                   Notifications
                 </div>
