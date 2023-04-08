@@ -3,25 +3,29 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { signup } from '../api';
+import { SpinnerCircular } from 'spinners-react';
 
 export const SignupPage = (props) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [username, setUsername] = useState('');
   const [errorMessage, setErrorMessage] = useState(undefined);
+  const [isLoading, setIsLoading] = useState(false);
 
   const navigate = useNavigate();
 
   const handleSignupSubmit = async (e) => {
     e.preventDefault();
-
     try {
+      setIsLoading(true);
       const requestBody = { email, password, username };
       await signup(requestBody);
       navigate('/login');
     } catch (error) {
       const errorDescription = error.response.data.message;
       setErrorMessage(errorDescription);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -41,29 +45,29 @@ export const SignupPage = (props) => {
         <div className='bg-white py-8 px-6 shadow rounded-lg sm:px-10'>
           <form onSubmit={handleSignupSubmit} className='mb-0 space-y-6'>
             <div>
-              <label for='email' className='block text-sm font-medium text-gray-700'>
+              <label htmlFor='email' className='block text-sm font-medium text-gray-700'>
                 Email address
               </label>
               <div className='mt-1'>
-                <input id='email' name='email' type='email' autocomplete='email' required className='' value={email} onChange={(e) => setEmail(e.target.value)} />
+                <input id='email' name='email' type='email' autoComplete='email' required className='' value={email} onChange={(e) => setEmail(e.target.value)} />
               </div>
             </div>
 
             <div>
-              <label for='password' className='block text-sm font-medium text-gray-700'>
+              <label htmlFor='password' className='block text-sm font-medium text-gray-700'>
                 Password
               </label>
               <div className='mt-1'>
-                <input id='password' name='password' type='password' autocomplete='current-password' required className='' value={password} onChange={(e) => setPassword(e.target.value)} />
+                <input id='password' name='password' type='password' autoComplete='current-password' required className='' value={password} onChange={(e) => setPassword(e.target.value)} />
               </div>
             </div>
 
             <div>
-              <label for='username' className='block text-sm font-medium text-gray-700'>
+              <label htmlFor='username' className='block text-sm font-medium text-gray-700'>
                 Username
               </label>
-              <div className='mt-1'>
-                <input id='username' name='username' type='text' autocomplete='current-username' required className='' value={username} onChange={(e) => setUsername(e.target.value)} />
+              <div className='mt-1 mx-auto'>
+                <input id='username' name='username' type='text' autoComplete='current-username' required className='' value={username} onChange={(e) => setUsername(e.target.value)} />
               </div>
             </div>
 
@@ -71,18 +75,24 @@ export const SignupPage = (props) => {
 
             <div className='flex items-center'>
               <input id='terms-and-privacy' name='terms-and-privacy' type='checkbox' className='' />
-              <label for='terms-and-privacy' className='ml-2 block text-sm text-gray-900'>
+              <label htmlFor='terms-and-privacy' className='ml-2 block text-sm text-gray-900'>
                 I agree to the terms and privacy policy.
               </label>
             </div>
 
-            <div>
-              <button
-                type='submit'
-                className='w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500'
-              >
-                Sign up
-              </button>
+            <div className='flex justify-center'>
+              {!isLoading ? (
+                <button
+                  type='submit'
+                  className='w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500'
+                >
+                  Sign up
+                </button>
+              ) : (
+                <div>
+                  <SpinnerCircular size={90} thickness={115} speed={100} color='rgb(86,13,248)' secondaryColor='rgba(57, 146, 172, 0.48)' />
+                </div>
+              )}
             </div>
           </form>
         </div>

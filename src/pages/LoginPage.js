@@ -4,11 +4,13 @@ import { useState, useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../context/auth.context';
 import { login } from '../api';
+import { SpinnerCircular } from 'spinners-react';
 
 export const LoginPage = (props) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState(undefined);
+  const [isLoading, setIsLoading] = useState(false);
 
   const navigate = useNavigate();
 
@@ -16,8 +18,8 @@ export const LoginPage = (props) => {
 
   const handleLoginSubmit = async (e) => {
     e.preventDefault();
-
     try {
+      setIsLoading(true);
       const requestBody = { email, password };
 
       let response = await login(requestBody);
@@ -34,6 +36,8 @@ export const LoginPage = (props) => {
     } catch (error) {
       const errorDescription = error.response.data.message;
       setErrorMessage(errorDescription);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -72,13 +76,19 @@ export const LoginPage = (props) => {
 
             {errorMessage && <p className='error-message text-red-500'>{errorMessage}</p>}
 
-            <div>
-              <button
-                type='submit'
-                className='w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500'
-              >
-                Login
-              </button>
+            <div className='flex justify-center'>
+              {!isLoading ? (
+                <button
+                  type='submit'
+                  className='w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500'
+                >
+                  Login
+                </button>
+              ) : (
+                <div>
+                  <SpinnerCircular size={90} thickness={115} speed={100} color='rgb(86,13,248)' secondaryColor='rgba(57, 146, 172, 0.48)' />
+                </div>
+              )}
             </div>
           </form>
         </div>
