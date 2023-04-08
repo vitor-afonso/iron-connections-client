@@ -1,18 +1,27 @@
 // jshint esversion:9
 
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { signup } from '../api';
 import { SpinnerCircular } from 'spinners-react';
+import showLoadingMessage from '../utils/app.utils';
 
-export const SignupPage = (props) => {
+export const SignupPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [username, setUsername] = useState('');
   const [errorMessage, setErrorMessage] = useState(undefined);
   const [isLoading, setIsLoading] = useState(false);
-
   const navigate = useNavigate();
+  const msgRef = useRef(null);
+
+  useEffect(() => {
+    if (isLoading && msgRef) {
+      setTimeout(() => {
+        showLoadingMessage(msgRef, 0, 100);
+      }, 4000);
+    }
+  }, [isLoading, msgRef]);
 
   const handleSignupSubmit = async (e) => {
     e.preventDefault();
@@ -35,7 +44,7 @@ export const SignupPage = (props) => {
         <h2 className='mt-6 text-center text-3xl font-extrabold text-gray-900'>Create your account</h2>
         <p className='mt-2 text-center text-sm text-gray-600 max-w'>
           Already have an account?
-          <Link to='/login' className='font-medium text-indigo-600 hover:text-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500'>
+          <Link to='/login' className='ml-1 font-medium text-indigo-600 hover:text-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500'>
             Sign in
           </Link>
         </p>
@@ -90,7 +99,10 @@ export const SignupPage = (props) => {
                 </button>
               ) : (
                 <div>
-                  <SpinnerCircular size={90} thickness={115} speed={100} color='rgb(86,13,248)' secondaryColor='rgba(57, 146, 172, 0.48)' />
+                  <div className='flex justify-center'>
+                    <SpinnerCircular size={90} thickness={115} speed={100} color='rgb(86,13,248)' secondaryColor='rgba(57, 146, 172, 0.48)' />
+                  </div>
+                  <p ref={msgRef} className='mt-4'></p>
                 </div>
               )}
             </div>

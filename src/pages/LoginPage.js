@@ -1,25 +1,34 @@
 // jshint esversion:9
 
-import { useState, useContext } from 'react';
+import { useState, useContext, useRef, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../context/auth.context';
 import { login } from '../api';
 import { SpinnerCircular } from 'spinners-react';
+import showLoadingMessage from '../utils/app.utils';
 
-export const LoginPage = (props) => {
+export const LoginPage = () => {
+  const { storeToken, authenticateUser } = useContext(AuthContext);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState(undefined);
   const [isLoading, setIsLoading] = useState(false);
-
   const navigate = useNavigate();
+  const msgRef = useRef(null);
 
-  const { storeToken, authenticateUser } = useContext(AuthContext);
+  useEffect(() => {
+    if (isLoading && msgRef) {
+      setTimeout(() => {
+        showLoadingMessage(msgRef, 0, 100);
+      }, 4000);
+    }
+  }, [isLoading, msgRef]);
 
   const handleLoginSubmit = async (e) => {
     e.preventDefault();
     try {
       setIsLoading(true);
+
       const requestBody = { email, password };
 
       let response = await login(requestBody);
@@ -86,7 +95,10 @@ export const LoginPage = (props) => {
                 </button>
               ) : (
                 <div>
-                  <SpinnerCircular size={90} thickness={115} speed={100} color='rgb(86,13,248)' secondaryColor='rgba(57, 146, 172, 0.48)' />
+                  <div className='flex justify-center'>
+                    <SpinnerCircular size={90} thickness={115} speed={100} color='rgb(86,13,248)' secondaryColor='rgba(57, 146, 172, 0.48)' />
+                  </div>
+                  <p ref={msgRef} className='mt-4'></p>
                 </div>
               )}
             </div>
